@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="//mingzai721252.me">
   <title>mysql查询性能优化 | 明仔的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="MySql优化-查询优化 mysql的优化主要分为：查询优化+索引优化+库表解构优化等起头并进。  本博文仅对查询优化进行梳理总结 为什么查询慢 优化数据访问 重构查询方式 查询执行基础 查询优化器   一、为什么查询慢查询的生命周期： 客户端&amp;gt;服务器&amp;gt;服务器解析查询&amp;gt;生成执行计划&amp;gt;执行&amp;gt;返回客户端  造成查询慢的主要因素：包括网络，cpu计算，生成统计信息和执行计划">
+  <meta name="description" content="MySql优化-查询优化 mysql的优化主要分为：查询优化+索引优化+库表解构优化等起头并进。  本博文仅对查询优化进行梳理总结 为什么查询慢 优化数据访问 重构查询方式 查询执行基础 查询优化器   一、为什么查询慢   查询的生命周期： 客户端&amp;gt;服务器&amp;gt;服务器解析查询&amp;gt;生成执行计划&amp;gt;执行&amp;gt;返回客户端     造成查询慢的主要因素：包括网络，cpu计算，生成统计信">
 <meta name="keywords" content="mysql,db,数据库">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mysql查询性能优化">
 <meta property="og:url" content="//mingzai721252.me/2019/05/29/mysql查询性能优化/index.html">
 <meta property="og:site_name" content="明仔的博客">
-<meta property="og:description" content="MySql优化-查询优化 mysql的优化主要分为：查询优化+索引优化+库表解构优化等起头并进。  本博文仅对查询优化进行梳理总结 为什么查询慢 优化数据访问 重构查询方式 查询执行基础 查询优化器   一、为什么查询慢查询的生命周期： 客户端&amp;gt;服务器&amp;gt;服务器解析查询&amp;gt;生成执行计划&amp;gt;执行&amp;gt;返回客户端  造成查询慢的主要因素：包括网络，cpu计算，生成统计信息和执行计划">
+<meta property="og:description" content="MySql优化-查询优化 mysql的优化主要分为：查询优化+索引优化+库表解构优化等起头并进。  本博文仅对查询优化进行梳理总结 为什么查询慢 优化数据访问 重构查询方式 查询执行基础 查询优化器   一、为什么查询慢   查询的生命周期： 客户端&amp;gt;服务器&amp;gt;服务器解析查询&amp;gt;生成执行计划&amp;gt;执行&amp;gt;返回客户端     造成查询慢的主要因素：包括网络，cpu计算，生成统计信">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-29T10:49:40.245Z">
+<meta property="og:updated_time" content="2019-07-23T02:55:14.867Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql查询性能优化">
-<meta name="twitter:description" content="MySql优化-查询优化 mysql的优化主要分为：查询优化+索引优化+库表解构优化等起头并进。  本博文仅对查询优化进行梳理总结 为什么查询慢 优化数据访问 重构查询方式 查询执行基础 查询优化器   一、为什么查询慢查询的生命周期： 客户端&amp;gt;服务器&amp;gt;服务器解析查询&amp;gt;生成执行计划&amp;gt;执行&amp;gt;返回客户端  造成查询慢的主要因素：包括网络，cpu计算，生成统计信息和执行计划">
+<meta name="twitter:description" content="MySql优化-查询优化 mysql的优化主要分为：查询优化+索引优化+库表解构优化等起头并进。  本博文仅对查询优化进行梳理总结 为什么查询慢 优化数据访问 重构查询方式 查询执行基础 查询优化器   一、为什么查询慢   查询的生命周期： 客户端&amp;gt;服务器&amp;gt;服务器解析查询&amp;gt;生成执行计划&amp;gt;执行&amp;gt;返回客户端     造成查询慢的主要因素：包括网络，cpu计算，生成统计信">
   
     <link rel="alternative" href="/atom.xml" title="明仔的博客" type="application/atom+xml">
   
@@ -190,9 +190,9 @@
 <li>查询优化器</li>
 </ul>
 <hr>
-<h4 id="一、为什么查询慢"><a href="#一、为什么查询慢" class="headerlink" title="一、为什么查询慢"></a>一、为什么查询慢</h4><p><font size="2">查询的生命周期： 客户端&gt;服务器&gt;服务器解析查询&gt;生成执行计划&gt;执行&gt;返回客户端 </font></p>
-<p>造成查询慢的主要因素：包括网络，cpu计算，生成统计信息和执行计划，所等待（互斥等待）等操作，向底层存储引擎检索数据的调用操作。</p>
-<p>总结：把查询当成一个任务，对一系列的子任务进行优化。</p>
+<h4 id="一、为什么查询慢"><a href="#一、为什么查询慢" class="headerlink" title="一、为什么查询慢"></a>一、为什么查询慢</h4><p>   <font size="2">查询的生命周期： 客户端&gt;服务器&gt;服务器解析查询&gt;生成执行计划&gt;执行&gt;返回客户端 </font></p>
+<p>   造成查询慢的主要因素：包括网络，cpu计算，生成统计信息和执行计划，所等待（互斥等待）等操作，向底层存储引擎检索数据的调用操作。</p>
+<p>   总结：把查询当成一个任务，对一系列的子任务进行优化。</p>
 <h4 id="二、优化数据访问"><a href="#二、优化数据访问" class="headerlink" title="二、优化数据访问"></a>二、优化数据访问</h4><p>   <font size="2">检索大量超过需要的数据（太多行和列）例如：我们的分页limit就是优化检索数据行</font></p>
 <p>   尽量少用SELECT *，精确到指定的列或者关联的主表字段</p>
 <p>   响应时间的影响因素：存储引擎的锁（表锁，行锁）、高并发资源竞争、硬件响应等。推荐”快速上限估计”法来评估响应时间是否合理</p>
@@ -463,18 +463,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">VsCode</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Sass</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">bootstrap</a>
               </li>
              
@@ -487,6 +475,18 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">VsCode</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Sass</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
@@ -496,6 +496,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">javasScript</a>
               </li>
              
               <li class="article-tag-list-item">

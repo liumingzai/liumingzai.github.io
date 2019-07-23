@@ -160,6 +160,106 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-防篡改对象" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/23/防篡改对象/">防篡改对象</a>
+    </h1>
+  
+
+        
+        <a href="/2019/07/23/防篡改对象/" class="archive-article-date">
+  	<time datetime="2019-07-23T02:40:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="防篡改对象"><a href="#防篡改对象" class="headerlink" title="防篡改对象"></a>防篡改对象</h2><blockquote>
+<p>防篡改对象（tamper-proof object）: JavaScript共享本质一直是开发人员心头的痛。因为任何对象都可能被同一环境中运行的代码修改。开发人员很可能意外地修改别人的代码。ECMAScript5致力于解决这个问题，定义了防篡改对象。一旦定义对象为防篡改，是无法撤回的。</p>
+</blockquote>
+<ul>
+<li>不可扩展对象 (tamper-proof object)</li>
+<li>密封对象 (sealed object)</li>
+<li>冻结对象 (frozen object)</li>
+</ul>
+<h4 id="一、不可扩展对象"><a href="#一、不可扩展对象" class="headerlink" title="一、不可扩展对象"></a>一、不可扩展对象</h4><p>默认情况下，所有对象都是可扩展的，可以向对象中添加属性和方法。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var person = &#123;name: <span class="string">"tony"</span>&#125;;</span><br><span class="line">person.age = 29;</span><br></pre></td></tr></table></figure>
+<p>定义不可扩展对象：Object.preventExtensions(); 非严格模式下，给对象添加新成员导致静默失败，返回undefined；在严格模式下，会抛出错误。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var person = &#123;name: <span class="string">"tony"</span>&#125;;</span><br><span class="line">Object.preventExtensions(person);</span><br><span class="line">person.age = 29;</span><br><span class="line">console.log(person.age);   //undefined</span><br></pre></td></tr></table></figure>
+<p>判断对象是否可扩展：Object.isExtensible();<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var person = &#123;name: <span class="string">"tony"</span>&#125;;</span><br><span class="line">colsole.log(person.isExtensible(person));  //返回<span class="literal">true</span></span><br><span class="line">Object.preventExtensions(person);</span><br><span class="line">colsole.log(person.isExtensible(person));  //返回<span class="literal">false</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<h4 id="二、密封对象"><a href="#二、密封对象" class="headerlink" title="二、密封对象"></a>二、密封对象</h4><p> ECMAScript5为对象定义了第二个保护级别是密封对象（sealed object）密封对象不可扩展且已有成员的[[Configurable]]特性为false，也就是不能删除。因此不能使用Object.definePropery()把数据属性修改为访问器属性，或者相反。但属性值可以修改</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var person = &#123;name:<span class="string">"tony"</span>&#125;</span><br><span class="line">Object.seal(person);</span><br><span class="line"></span><br><span class="line">person.age = 29;</span><br><span class="line">console.log(person.age); //undefined</span><br><span class="line"></span><br><span class="line">delete person.name;</span><br><span class="line">console.log(person.name); //tony</span><br></pre></td></tr></table></figure>
+<p>在非严格模式被忽略，上面运行结果。严格模式会抛出错误，判断对象是否是密封对象： Object.isSealed()</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var person = &#123;name:<span class="string">"tony"</span>&#125;</span><br><span class="line">colsole.log(person.isExtensible(person));   //<span class="literal">true</span></span><br><span class="line">console.log(Object.isSealed(person); //<span class="literal">false</span></span><br><span class="line"></span><br><span class="line">Object.seal(person);</span><br><span class="line">colsole.log(person.isExtensible(person));   //<span class="literal">false</span></span><br><span class="line">console.log(Object.isSealed(person); //<span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="三、冻结对象"><a href="#三、冻结对象" class="headerlink" title="三、冻结对象"></a>三、冻结对象</h4><p>最严格的的方串改级别是冻结对象（frozen object）。冻结对象既不可以扩展，又是密封，而且对象数据属性[[Writable]]特性被设置为false。如果定义[[Set]]函数，访问器属性仍是科协的。ECMAScript5定义Object.frozen()方法来冻结对象</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var person = &#123;name:<span class="string">"tony"</span>&#125;</span><br><span class="line">Object.frozen(person);</span><br><span class="line"></span><br><span class="line">person.age = 29;</span><br><span class="line">console.log(person.age); //undefined</span><br><span class="line"></span><br><span class="line">delete person.name</span><br><span class="line">console.log(person.name)  //tony</span><br><span class="line"></span><br><span class="line">person.name = <span class="string">"tom"</span></span><br><span class="line">console.log(person.name) //tony</span><br></pre></td></tr></table></figure>
+<p>与密封和不允许扩展一样，对冻结对象执行非法操作在非严格模式下被忽略，严格模式下抛出错误。判断对象是否冻结对象Object.isFrozen()</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var person = &#123;name:<span class="string">"tony"</span>&#125;</span><br><span class="line">console.log(Object.isExtensible(person)); //<span class="literal">true</span></span><br><span class="line">console.log(Object.isSealed(person)); //<span class="literal">false</span></span><br><span class="line">console.log(Object.isFrozen(person)); //<span class="literal">false</span></span><br><span class="line"></span><br><span class="line">Object.frozen(person);</span><br><span class="line">console.log(Object.isExtensible(person)); //<span class="literal">false</span></span><br><span class="line">console.log(Object.isSealed(person)); //<span class="literal">true</span></span><br><span class="line">console.log(Object.isFrozen(person)); //<span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">javasScript</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/07/23/防篡改对象/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-WEB攻击" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -538,9 +638,9 @@
 <li>查询优化器</li>
 </ul>
 <hr>
-<h4 id="一、为什么查询慢"><a href="#一、为什么查询慢" class="headerlink" title="一、为什么查询慢"></a>一、为什么查询慢</h4><p><font size="2">查询的生命周期： 客户端&gt;服务器&gt;服务器解析查询&gt;生成执行计划&gt;执行&gt;返回客户端 </font></p>
-<p>造成查询慢的主要因素：包括网络，cpu计算，生成统计信息和执行计划，所等待（互斥等待）等操作，向底层存储引擎检索数据的调用操作。</p>
-<p>总结：把查询当成一个任务，对一系列的子任务进行优化。</p>
+<h4 id="一、为什么查询慢"><a href="#一、为什么查询慢" class="headerlink" title="一、为什么查询慢"></a>一、为什么查询慢</h4><p>   <font size="2">查询的生命周期： 客户端&gt;服务器&gt;服务器解析查询&gt;生成执行计划&gt;执行&gt;返回客户端 </font></p>
+<p>   造成查询慢的主要因素：包括网络，cpu计算，生成统计信息和执行计划，所等待（互斥等待）等操作，向底层存储引擎检索数据的调用操作。</p>
+<p>   总结：把查询当成一个任务，对一系列的子任务进行优化。</p>
 <h4 id="二、优化数据访问"><a href="#二、优化数据访问" class="headerlink" title="二、优化数据访问"></a>二、优化数据访问</h4><p>   <font size="2">检索大量超过需要的数据（太多行和列）例如：我们的分页limit就是优化检索数据行</font></p>
 <p>   尽量少用SELECT *，精确到指定的列或者关联的主表字段</p>
 <p>   响应时间的影响因素：存储引擎的锁（表锁，行锁）、高并发资源竞争、硬件响应等。推荐”快速上限估计”法来评估响应时间是否合理</p>
@@ -905,18 +1005,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">VsCode</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Sass</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">bootstrap</a>
               </li>
              
@@ -929,6 +1017,18 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">VsCode</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Sass</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
@@ -938,6 +1038,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">javasScript</a>
               </li>
              
               <li class="article-tag-list-item">
