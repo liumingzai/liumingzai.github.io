@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="明仔的博客">
 <meta property="og:description" content="防篡改对象 防篡改对象（tamper-proof object）: JavaScript共享本质一直是开发人员心头的痛。因为任何对象都可能被同一环境中运行的代码修改。开发人员很可能意外地修改别人的代码。ECMAScript5致力于解决这个问题，定义了防篡改对象。一旦定义对象为防篡改，是无法撤回的。   不可扩展对象 (tamper-proof object) 密封对象 (sealed object">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-07-23T03:24:06.405Z">
+<meta property="og:updated_time" content="2019-07-23T03:27:41.334Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="防篡改对象">
 <meta name="twitter:description" content="防篡改对象 防篡改对象（tamper-proof object）: JavaScript共享本质一直是开发人员心头的痛。因为任何对象都可能被同一环境中运行的代码修改。开发人员很可能意外地修改别人的代码。ECMAScript5致力于解决这个问题，定义了防篡改对象。一旦定义对象为防篡改，是无法撤回的。   不可扩展对象 (tamper-proof object) 密封对象 (sealed object">
@@ -202,6 +202,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var person = &#123;name:<span class="string">"tony"</span>&#125;</span><br><span class="line">Object.frozen(person);</span><br><span class="line"></span><br><span class="line">person.age = 29;</span><br><span class="line">console.log(person.age); //undefined</span><br><span class="line"></span><br><span class="line">delete person.name</span><br><span class="line">console.log(person.name)  //tony</span><br><span class="line"></span><br><span class="line">person.name = <span class="string">"tom"</span></span><br><span class="line">console.log(person.name) //tony</span><br></pre></td></tr></table></figure>
 <p>与密封和不允许扩展一样，对冻结对象执行非法操作在非严格模式下被忽略，严格模式下抛出错误。判断对象是否冻结对象Object.isFrozen()</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var person = &#123;name:<span class="string">"tony"</span>&#125;</span><br><span class="line">console.log(Object.isExtensible(person)); //<span class="literal">true</span></span><br><span class="line">console.log(Object.isSealed(person)); //<span class="literal">false</span></span><br><span class="line">console.log(Object.isFrozen(person)); //<span class="literal">false</span></span><br><span class="line"></span><br><span class="line">Object.frozen(person);</span><br><span class="line">console.log(Object.isExtensible(person)); //<span class="literal">false</span></span><br><span class="line">console.log(Object.isSealed(person)); //<span class="literal">true</span></span><br><span class="line">console.log(Object.isFrozen(person)); //<span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<p><font color="#eb7350" size="2">对JavaScript库而言，冻结对象非常有用，避免被人篡改。</font></p>
 
       
 
@@ -417,18 +418,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">bootstrap</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">carousel</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">前端</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">VsCode</a>
               </li>
              
@@ -438,6 +427,18 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">CSS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">bootstrap</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">carousel</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">前端</a>
               </li>
              
               <li class="article-tag-list-item">
