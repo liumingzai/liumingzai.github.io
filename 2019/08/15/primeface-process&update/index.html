@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="//mingzai721252.me">
   <title>primefaces+jsf异步ajax-process&amp;update | 明仔的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="本博文通过几个问题解析f:ajax jsf标签以及 p:remoteCommand primeface标签的操作  ###如何理解PrimeFaces process/update 和JSF的ajax execute/render属性 process属性：作用于服务端，其属性值只会影响EditableValueHolder(可编辑的标签，如input) 或者ActionSource(有事件操作的">
+  <meta name="description" content="本博文介绍f:ajax jsf标签以及 p:remoteCommand primeface标签的原理  如何理解PrimeFaces process/update 和JSF的ajax execute/render属性process属性：作用于服务端，其属性值只会影响EditableValueHolder(可编辑的标签，如input) 或者ActionSource(有事件操作的标签，如comman">
 <meta name="keywords" content="Primefaces,jsf,ajax">
 <meta property="og:type" content="article">
 <meta property="og:title" content="primefaces+jsf异步ajax-process&amp;update">
 <meta property="og:url" content="//mingzai721252.me/2019/08/15/primeface-process&update/index.html">
 <meta property="og:site_name" content="明仔的博客">
-<meta property="og:description" content="本博文通过几个问题解析f:ajax jsf标签以及 p:remoteCommand primeface标签的操作  ###如何理解PrimeFaces process/update 和JSF的ajax execute/render属性 process属性：作用于服务端，其属性值只会影响EditableValueHolder(可编辑的标签，如input) 或者ActionSource(有事件操作的">
+<meta property="og:description" content="本博文介绍f:ajax jsf标签以及 p:remoteCommand primeface标签的原理  如何理解PrimeFaces process/update 和JSF的ajax execute/render属性process属性：作用于服务端，其属性值只会影响EditableValueHolder(可编辑的标签，如input) 或者ActionSource(有事件操作的标签，如comman">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-15T09:34:55.327Z">
+<meta property="og:updated_time" content="2019-08-15T09:42:31.867Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="primefaces+jsf异步ajax-process&amp;update">
-<meta name="twitter:description" content="本博文通过几个问题解析f:ajax jsf标签以及 p:remoteCommand primeface标签的操作  ###如何理解PrimeFaces process/update 和JSF的ajax execute/render属性 process属性：作用于服务端，其属性值只会影响EditableValueHolder(可编辑的标签，如input) 或者ActionSource(有事件操作的">
+<meta name="twitter:description" content="本博文介绍f:ajax jsf标签以及 p:remoteCommand primeface标签的原理  如何理解PrimeFaces process/update 和JSF的ajax execute/render属性process属性：作用于服务端，其属性值只会影响EditableValueHolder(可编辑的标签，如input) 或者ActionSource(有事件操作的标签，如comman">
   
     <link rel="alternative" href="/atom.xml" title="明仔的博客" type="application/atom+xml">
   
@@ -180,10 +180,9 @@
     <div class="article-entry" itemprop="articleBody">
       
         <blockquote>
-<p>本博文通过几个问题解析f:ajax jsf标签以及 p:remoteCommand primeface标签的操作</p>
+<p>本博文介绍f:ajax jsf标签以及 p:remoteCommand primeface标签的原理</p>
 </blockquote>
-<p>###如何理解PrimeFaces process/update 和JSF的ajax execute/render属性</p>
-<p>process属性：作用于服务端，其属性值只会影响EditableValueHolder(可编辑的标签，如input) 或者ActionSource(有事件操作的标签，如commandXXX)接口的UIComponent。<br>通过使用空格分隔IDS process告诉JSF在表单提交时，哪个组件必须在JSF生命周期中被处理。</p>
+<h3 id="如何理解PrimeFaces-process-update-和JSF的ajax-execute-render属性"><a href="#如何理解PrimeFaces-process-update-和JSF的ajax-execute-render属性" class="headerlink" title="如何理解PrimeFaces process/update 和JSF的ajax execute/render属性"></a>如何理解PrimeFaces process/update 和JSF的ajax execute/render属性</h3><p>process属性：作用于服务端，其属性值只会影响EditableValueHolder(可编辑的标签，如input) 或者ActionSource(有事件操作的标签，如commandXXX)接口的UIComponent。<br>通过使用空格分隔IDS process告诉JSF在表单提交时，哪个组件必须在JSF生命周期中被处理。</p>
 <pre><code>JSF将会应用请求值(通过组件自己的client ID查找HTTP请求的参数，如果组件是实现了EditableValueHolder接口的话，将会其设置其为提交的值，如果是实现了ActionSource接口的话，则会将一个新的ActionEvent加入事件队列)，转换、验证和更新模型的值(只针对实现了EditableValueHolder接口的组件)，最后触发队列中的ActionEvent(只针对实现了ActionSource接口的组件)。JSF会跳过处理所有其它没有被process属性包含的组件。并且，作为一种对付请求篡改的防护措施，&lt;font color=&quot;#C7254E&quot;&gt;rendered属性为false的组件在应用请求值阶段也会被跳过。&lt;/font&gt;
 
 process属性值： @all(更新整个文件慎用) @parent(包含当前，同级，下级组件) @form(primeface默认)  @this(ajax默认) @none() IDS(空格分隔)  注意HTML不支持一次提交多个表单
@@ -438,22 +437,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">javasScript</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Primefaces</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">jsf</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">ajax</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">微信公众号</a>
               </li>
              
@@ -475,6 +458,22 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">javasScript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Primefaces</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">jsf</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">ajax</a>
               </li>
              
               <li class="article-tag-list-item">
