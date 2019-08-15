@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="//mingzai721252.me">
-  <title>微信浏览器内置WexinJSBridge对象 | 明仔的博客</title>
+  <title>primefaces+jsf异步ajax-process&amp;update | 明仔的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="微信浏览器内置JS对象WeixinJSBridge 微信公众号平台支持前端网页，可以分享朋友圈，关注微信，可以关闭公众号等  12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849// 分享朋友圈function weixinShareTimeline(title, desc">
-<meta name="keywords" content="微信公众号,微信浏览器,WeixinJSBridge">
+  <meta name="description" content="本博文通过几个问题解析f:ajax jsf标签以及 p:remoteCommand primeface标签的操作  ###如何理解PrimeFaces process/update 和JSF的ajax execute/render属性 process属性：作用于服务端，其属性值只会影响EditableValueHolder(可编辑的标签，如input) 或者ActionSource(有事件操作的">
+<meta name="keywords" content="Primefaces,jsf,ajax">
 <meta property="og:type" content="article">
-<meta property="og:title" content="微信浏览器内置WexinJSBridge对象">
-<meta property="og:url" content="//mingzai721252.me/2019/07/05/微信浏览器内置WexinJSBridge对象/index.html">
+<meta property="og:title" content="primefaces+jsf异步ajax-process&amp;update">
+<meta property="og:url" content="//mingzai721252.me/2019/08/15/primeface-process&update/index.html">
 <meta property="og:site_name" content="明仔的博客">
-<meta property="og:description" content="微信浏览器内置JS对象WeixinJSBridge 微信公众号平台支持前端网页，可以分享朋友圈，关注微信，可以关闭公众号等  12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849// 分享朋友圈function weixinShareTimeline(title, desc">
+<meta property="og:description" content="本博文通过几个问题解析f:ajax jsf标签以及 p:remoteCommand primeface标签的操作  ###如何理解PrimeFaces process/update 和JSF的ajax execute/render属性 process属性：作用于服务端，其属性值只会影响EditableValueHolder(可编辑的标签，如input) 或者ActionSource(有事件操作的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-07-05T09:52:09.150Z">
+<meta property="og:updated_time" content="2019-08-15T09:34:55.327Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="微信浏览器内置WexinJSBridge对象">
-<meta name="twitter:description" content="微信浏览器内置JS对象WeixinJSBridge 微信公众号平台支持前端网页，可以分享朋友圈，关注微信，可以关闭公众号等  12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849// 分享朋友圈function weixinShareTimeline(title, desc">
+<meta name="twitter:title" content="primefaces+jsf异步ajax-process&amp;update">
+<meta name="twitter:description" content="本博文通过几个问题解析f:ajax jsf标签以及 p:remoteCommand primeface标签的操作  ###如何理解PrimeFaces process/update 和JSF的ajax execute/render属性 process属性：作用于服务端，其属性值只会影响EditableValueHolder(可编辑的标签，如input) 或者ActionSource(有事件操作的">
   
     <link rel="alternative" href="/atom.xml" title="明仔的博客" type="application/atom+xml">
   
@@ -159,30 +159,43 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-微信浏览器内置WexinJSBridge对象" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-primeface-process&amp;update" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      微信浏览器内置WexinJSBridge对象
+      primefaces+jsf异步ajax-process&amp;update
     </h1>
   
 
         
-        <a href="/2019/07/05/微信浏览器内置WexinJSBridge对象/" class="archive-article-date">
-  	<time datetime="2019-07-05T09:31:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-05</time>
+        <a href="/2019/08/15/primeface-process&update/" class="archive-article-date">
+  	<time datetime="2019-08-15T01:12:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-15</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="微信浏览器内置JS对象WeixinJSBridge"><a href="#微信浏览器内置JS对象WeixinJSBridge" class="headerlink" title="微信浏览器内置JS对象WeixinJSBridge"></a>微信浏览器内置JS对象WeixinJSBridge</h3><blockquote>
-<p>微信公众号平台支持前端网页，可以分享朋友圈，关注微信，可以关闭公众号等</p>
+        <blockquote>
+<p>本博文通过几个问题解析f:ajax jsf标签以及 p:remoteCommand primeface标签的操作</p>
 </blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">// 分享朋友圈</span><br><span class="line"><span class="keyword">function</span> weixinShareTimeline(title, desc, link, imgUrl) &#123;</span><br><span class="line">    weixinJSBridge.invoke(<span class="string">'shareTimeLine'</span>, &#123;</span><br><span class="line">    <span class="string">"img_url"</span>: imgUrl,</span><br><span class="line">    <span class="string">"link"</span>: link,</span><br><span class="line">    <span class="string">"desc"</span>: desc,</span><br><span class="line">    <span class="string">"title"</span>: title</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 发送好友</span><br><span class="line"><span class="keyword">function</span> weixinSendAppMessage(title, desc, link, imgUrl) &#123;</span><br><span class="line">    weixinJSBridge.invoke(<span class="string">'sendAppMessage'</span>, &#123;</span><br><span class="line">        <span class="string">"img_url"</span>: imgUrl,</span><br><span class="line">        <span class="string">"link"</span>: link,</span><br><span class="line">        <span class="string">"desc"</span>: desc,</span><br><span class="line">        <span class="string">"title"</span>: title</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 分享到腾讯微博</span><br><span class="line"><span class="keyword">function</span> weixinShareWeibo(title, link) &#123;</span><br><span class="line">     weixinJSBridge.invoke(<span class="string">'shareWeibo'</span>, &#123;</span><br><span class="line">        <span class="string">"content"</span>: title+link,</span><br><span class="line">        <span class="string">"url"</span>: link,</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//关注微信号</span><br><span class="line"><span class="keyword">function</span> weixinAddContact(name) &#123;</span><br><span class="line">     weixinJSBridge.invoke(<span class="string">'addContact'</span>, &#123;webtype: <span class="string">'1'</span>, username: name&#125;, <span class="keyword">function</span>(e)&#123;</span><br><span class="line">         WeixinJSBridge.log(e.err_msg);</span><br><span class="line">         <span class="keyword">if</span>(e.err_msg == <span class="string">'add_contact:add'</span> || e.err_msg ==<span class="string">'add_contact:ok'</span>) &#123;</span><br><span class="line">             // add sucesss</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//关闭安卓手机公众号</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">closeWindow</span></span>()&#123;</span><br><span class="line">    document.addEventListener(<span class="string">'WeixinJSBridgeReady'</span>, <span class="function"><span class="title">function</span></span>()&#123;</span><br><span class="line">        WeixinJSBridge.call(<span class="string">'closeWindow'</span>);</span><br><span class="line">    &#125;, <span class="literal">false</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 关闭ios公众号</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">closeWindow</span></span>()&#123;</span><br><span class="line">    WeixinJSBridge.call(<span class="string">'closeWindow'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>###如何理解PrimeFaces process/update 和JSF的ajax execute/render属性</p>
+<p>process属性：作用于服务端，其属性值只会影响EditableValueHolder(可编辑的标签，如input) 或者ActionSource(有事件操作的标签，如commandXXX)接口的UIComponent。<br>通过使用空格分隔IDS process告诉JSF在表单提交时，哪个组件必须在JSF生命周期中被处理。</p>
+<pre><code>JSF将会应用请求值(通过组件自己的client ID查找HTTP请求的参数，如果组件是实现了EditableValueHolder接口的话，将会其设置其为提交的值，如果是实现了ActionSource接口的话，则会将一个新的ActionEvent加入事件队列)，转换、验证和更新模型的值(只针对实现了EditableValueHolder接口的组件)，最后触发队列中的ActionEvent(只针对实现了ActionSource接口的组件)。JSF会跳过处理所有其它没有被process属性包含的组件。并且，作为一种对付请求篡改的防护措施，&lt;font color=&quot;#C7254E&quot;&gt;rendered属性为false的组件在应用请求值阶段也会被跳过。&lt;/font&gt;
+
+process属性值： @all(更新整个文件慎用) @parent(包含当前，同级，下级组件) @form(primeface默认)  @this(ajax默认) @none() IDS(空格分隔)  注意HTML不支持一次提交多个表单
+
+在标准JSF中，与PrimeFaces中process等同的属性为&lt;f:ajax excute&gt;的excute属性。它们效果完全相同，但是execute不支持以逗号分隔的字符串，而PrimeFaces的process支持(仅管我个人推荐遵守空格分隔的惯例)，execute也无法使用@parent关键字。并且，&lt;p:commandXxx process&gt; 缺省情况下为@form，&lt;p:ajax process&gt; 和&lt;f:ajax execute&gt; 缺省为@this。最后，process还支持所谓的PrimeFaces选择器，&lt;font color=&quot;#C7254E&quot;&gt;see also How do PrimeFaces Selectors as in update=”@(.myClass)” work?&lt;/font&gt;  比如&lt;p:message&gt;的选择器.ui-message
+</code></pre><p>update属性：作用于客户端，其属性值会影响HTML显示的所有UIComponents。通过使用空格分隔的IDS，update告诉JavaScript（负责ajax请求/响应)HTML DOM树的那些部分会被更新以响应表单提交</p>
+<pre><code>然后JSF将为其准备正确的ajax响应，其中仅仅包含被要求更新的部分。 JSF会跳过处理所有其它在ajax响应中没有被update属性包含的组件，通过这种方式，来将响应的负荷保持在一个较低的水平。在渲染响应阶段中rendered属性为false的组件在应用请求值阶段也会被跳过。 注意，就算rendered将来会为true，但如果最初是false的话，JavaScript也不会在HTML DOM树中更新此组件。 你需要将其包装一下或者更新其父组件。&lt;font color=&quot;#C7254E&quot;&gt;See also Ajax update/render does not work on a component which has rendered attribute.&lt;/font&gt;
+
+正常情况下，你会使用一个普通的链接( &lt;a&gt;或者&lt;h:link&gt;)，或者通过?faces-redirect=true 或 ExternalContext#redirect()进行重定向，来发送一个真实的GET请求。实际上，作为一个非ajax的提交，process=&quot;@form&quot; update=&quot;@all&quot;效果完全相同。在我使用JSF的整个职业生涯中，我唯一一次遇到@all的合理使用案例是显示一张错误页面，防止ajax请求中出现异常。&lt;font color=&quot;#C7254E&quot;&gt;See also What is the correct way to deal with JSF 2.0 exceptions for AJAXified components?&lt;/font&gt;
+
+在标准JSF中，与PrimeFaces中update等同的属性为&lt;f:ajax render&gt;的render属性。它们效果完全相同，但是render不支持以逗号分隔的字符串，而PrimeFaces的update支持(仅管我个人推荐遵守空格分隔的惯例)，render也无法使用@parent关键字。update和render属性都缺省为@none
+</code></pre>
       
 
       
@@ -195,15 +208,15 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">微信公众号</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Primefaces</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">微信浏览器</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">jsf</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">WeixinJSBridge</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">ajax</a>
         		</li>
       		
 		</ul>
@@ -259,7 +272,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://mingzai721252.me/2019/07/05/微信浏览器内置WexinJSBridge对象/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://mingzai721252.me/2019/08/15/primeface-process&update/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -273,18 +286,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/07/11/WEB攻击/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          WEB攻击
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/05/31/EasySass插件使用/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">EasySass插件使用</div>
+    <a href="/2019/07/23/防篡改对象/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">防篡改对象</div>
       <i class="icon-circle-right"></i>
     </a>
   
