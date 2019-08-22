@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="//mingzai721252.me">
-  <title>Tag: VsCode | 明仔的博客</title>
+  <title>微信公众号图片预览和缩放 | 明仔的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="天津大学07届计算机专业毕业生，主要做全债开发，前端html+css+js及三大框架的应用，以及java后台编码等。">
-<meta name="keywords" content="全栈、前端、java、大数据、MySQL、Elasticsearch、Ngnix、tomcat、angularJS、Vue、开发、编码、HTML、JS、CSS、开源">
-<meta property="og:type" content="website">
-<meta property="og:title" content="明仔的博客">
-<meta property="og:url" content="//mingzai721252.me/tags/VsCode/index.html">
+  <meta name="description" content="微信图片预览实现，通过weui的gallery插件123456789101112131415// 首先先引入weui的js库，以及css库&amp;lt;script src=&quot;/resource/vendor/weui.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;// 编写Dom&amp;lt;image id=&quot;test&quot; src=&quot;test.jpg&quot; click=&quot;showImageGallery(">
+<meta name="keywords" content="微信公众号,微信浏览器,WeixinJSBridge">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信公众号图片预览和缩放">
+<meta property="og:url" content="//mingzai721252.me/2019/08/22/微信公众号图片预览和缩放/index.html">
 <meta property="og:site_name" content="明仔的博客">
-<meta property="og:description" content="天津大学07届计算机专业毕业生，主要做全债开发，前端html+css+js及三大框架的应用，以及java后台编码等。">
+<meta property="og:description" content="微信图片预览实现，通过weui的gallery插件123456789101112131415// 首先先引入weui的js库，以及css库&amp;lt;script src=&quot;/resource/vendor/weui.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;// 编写Dom&amp;lt;image id=&quot;test&quot; src=&quot;test.jpg&quot; click=&quot;showImageGallery(">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-08-22T10:08:42.053Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="明仔的博客">
-<meta name="twitter:description" content="天津大学07届计算机专业毕业生，主要做全债开发，前端html+css+js及三大框架的应用，以及java后台编码等。">
+<meta name="twitter:title" content="微信公众号图片预览和缩放">
+<meta name="twitter:description" content="微信图片预览实现，通过weui的gallery插件123456789101112131415// 首先先引入weui的js库，以及css库&amp;lt;script src=&quot;/resource/vendor/weui.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;// 编写Dom&amp;lt;image id=&quot;test&quot; src=&quot;test.jpg&quot; click=&quot;showImageGallery(">
   
     <link rel="alternative" href="/atom.xml" title="明仔的博客" type="application/atom+xml">
   
@@ -158,68 +159,155 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-微信公众号图片预览和缩放" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/05/31/EasySass插件使用/" class="archive-article-date">
-  	<time datetime="2019-05-31T06:39:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-31</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/05/31/EasySass插件使用/">EasySass插件使用</a>
+    <h1 class="article-title" itemprop="name">
+      微信公众号图片预览和缩放
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2019/08/22/微信公众号图片预览和缩放/" class="archive-article-date">
+  	<time datetime="2019-08-22T09:52:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-22</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="微信图片预览实现，通过weui的gallery插件"><a href="#微信图片预览实现，通过weui的gallery插件" class="headerlink" title="微信图片预览实现，通过weui的gallery插件"></a>微信图片预览实现，通过weui的gallery插件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// 首先先引入weui的js库，以及css库</span><br><span class="line">&lt;script src=<span class="string">"/resource/vendor/weui.min.js"</span>&gt;&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">// 编写Dom</span><br><span class="line">&lt;image id=<span class="string">"test"</span> src=<span class="string">"test.jpg"</span> click=<span class="string">"showImageGallery()"</span> alt=<span class="string">""</span> /&gt;</span><br><span class="line"></span><br><span class="line">// 编写gallery</span><br><span class="line">&lt;script <span class="built_in">type</span>=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line">    <span class="keyword">function</span> <span class="function"><span class="title">showImageGallery</span></span>() &#123;</span><br><span class="line">        var imgUrl = $(<span class="string">"#test"</span>).attr(<span class="string">"src"</span>);</span><br><span class="line">        weui.gallery(imgUrl);</span><br><span class="line">        $(<span class="string">'.weui-gallery__del'</span>).remove();  // 去掉删除按钮</span><br><span class="line">        $(<span class="string">'.weui-gallery span'</span>).html(<span class="string">''</span>);  //清楚span内部这个url，避免imgUrl写入span中</span><br><span class="line">    &#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="微信图片缩放的实现，通过weixinJSBridge的缩放功能"><a href="#微信图片缩放的实现，通过weixinJSBridge的缩放功能" class="headerlink" title="微信图片缩放的实现，通过weixinJSBridge的缩放功能"></a>微信图片缩放的实现，通过weixinJSBridge的缩放功能</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 图片预览</span><br><span class="line">&lt;image id=<span class="string">"test"</span> src=<span class="string">"test.jpg"</span> click=<span class="string">"showImagePreview()"</span> alt=<span class="string">""</span> /&gt;</span><br><span class="line"></span><br><span class="line">&lt;script <span class="built_in">type</span>=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line">    <span class="keyword">function</span> <span class="function"><span class="title">showImagePreview</span></span>() &#123;</span><br><span class="line">        var imgUrl = $(<span class="string">"#test"</span>).attr(<span class="string">"src"</span>);</span><br><span class="line">        var imgs = [];</span><br><span class="line">        imgs.push(imgUrl);</span><br><span class="line">        WeixinJSBridge.invoke(<span class="string">"imagePreview"</span>, &#123;<span class="string">"urls"</span>: imgs, <span class="string">"current"</span>: imageUrl&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">VsCode</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">微信公众号</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Sass</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">微信浏览器</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">CSS</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">WeixinJSBridge</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://mingzai721252.me/2019/08/22/微信公众号图片预览和缩放/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2019/08/15/primeface-process&update/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">primefaces+jsf异步ajax-process&amp;update</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -242,9 +330,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
