@@ -6,13 +6,13 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="//mingzai721252.me">
-  <title>Archives: 2019/7 | 明仔的博客</title>
+  <title>明仔的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="天津大学07届计算机专业毕业生，主要做全债开发，前端html+css+js及三大框架的应用，以及java后台编码等。">
 <meta name="keywords" content="全栈、前端、java、大数据、MySQL、Elasticsearch、Ngnix、tomcat、angularJS、Vue、开发、编码、HTML、JS、CSS、开源">
 <meta property="og:type" content="website">
 <meta property="og:title" content="明仔的博客">
-<meta property="og:url" content="//mingzai721252.me/archives/2019/07/index.html">
+<meta property="og:url" content="//mingzai721252.me/page/2/index.html">
 <meta property="og:site_name" content="明仔的博客">
 <meta property="og:description" content="天津大学07届计算机专业毕业生，主要做全债开发，前端html+css+js及三大框架的应用，以及java后台编码等。">
 <meta property="og:locale" content="zh-Hans">
@@ -160,34 +160,54 @@
           <div id="js-content" class="content-ll">
             
   
-  
+    <article id="post-carousel" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/07/23/防篡改对象/" class="archive-article-date">
-  	<time datetime="2019-07-23T02:40:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-23</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
     <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/07/23/防篡改对象/">防篡改对象</a>
+      <a class="article-title" href="/2019/05/28/carousel/">轮播图</a>
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2019/05/28/carousel/" class="archive-article-date">
+  	<time datetime="2019-05-28T02:34:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-28</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>不同的前端UI里都有应用轮播图，最常用的是bootstrap的carousel，轮播图的一些常用用法总结</p>
+</blockquote>
+<h2 id="怎么使用？"><a href="#怎么使用？" class="headerlink" title="怎么使用？"></a>怎么使用？</h2><h3 id="要引入css和js，bootstrap-css-和-carousel-js"><a href="#要引入css和js，bootstrap-css-和-carousel-js" class="headerlink" title="要引入css和js，bootstrap.css 和  carousel.js"></a>要引入css和js，bootstrap.css 和  carousel.js</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=<span class="string">"carousel-example-generic"</span> class=<span class="string">"carousel slide"</span> data-ride=<span class="string">"carousel"</span>&gt;</span><br><span class="line">  &lt;!-- Indicators --&gt;</span><br><span class="line">  &lt;ol class=<span class="string">"carousel-indicators"</span>&gt;</span><br><span class="line">    &lt;li data-target=<span class="string">"#carousel-example-generic"</span> data-slide-to=<span class="string">"0"</span> class=<span class="string">"active"</span>&gt;&lt;/li&gt;</span><br><span class="line">    &lt;li data-target=<span class="string">"#carousel-example-generic"</span> data-slide-to=<span class="string">"1"</span>&gt;&lt;/li&gt;</span><br><span class="line">    &lt;li data-target=<span class="string">"#carousel-example-generic"</span> data-slide-to=<span class="string">"2"</span>&gt;&lt;/li&gt;</span><br><span class="line">  &lt;/ol&gt;</span><br><span class="line"></span><br><span class="line">  &lt;!-- Wrapper <span class="keyword">for</span> slides --&gt;</span><br><span class="line">  &lt;div class=<span class="string">"carousel-inner"</span> role=<span class="string">"listbox"</span>&gt;</span><br><span class="line">    &lt;div class=<span class="string">"item active"</span>&gt;</span><br><span class="line">      &lt;img src=<span class="string">"..."</span> alt=<span class="string">"..."</span>&gt;</span><br><span class="line">      &lt;div class=<span class="string">"carousel-caption"</span>&gt;</span><br><span class="line">        ...</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div class=<span class="string">"item"</span>&gt;</span><br><span class="line">      &lt;img src=<span class="string">"..."</span> alt=<span class="string">"..."</span>&gt;</span><br><span class="line">      &lt;div class=<span class="string">"carousel-caption"</span>&gt;</span><br><span class="line">        ...</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    ...</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  &lt;!-- Controls --&gt;</span><br><span class="line">  &lt;a class=<span class="string">"left carousel-control"</span> href=<span class="string">"#carousel-example-generic"</span> role=<span class="string">"button"</span> data-slide=<span class="string">"prev"</span>&gt;</span><br><span class="line">    &lt;span class=<span class="string">"glyphicon glyphicon-chevron-left"</span> aria-hidden=<span class="string">"true"</span>&gt;&lt;/span&gt;</span><br><span class="line">    &lt;span class=<span class="string">"sr-only"</span>&gt;Previous&lt;/span&gt;</span><br><span class="line">  &lt;/a&gt;</span><br><span class="line">  &lt;a class=<span class="string">"right carousel-control"</span> href=<span class="string">"#carousel-example-generic"</span> role=<span class="string">"button"</span> data-slide=<span class="string">"next"</span>&gt;</span><br><span class="line">    &lt;span class=<span class="string">"glyphicon glyphicon-chevron-right"</span> aria-hidden=<span class="string">"true"</span>&gt;&lt;/span&gt;</span><br><span class="line">    &lt;span class=<span class="string">"sr-only"</span>&gt;Next&lt;/span&gt;</span><br><span class="line">  &lt;/a&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="Carsoul的基本参数概览"><a href="#Carsoul的基本参数概览" class="headerlink" title="Carsoul的基本参数概览"></a>Carsoul的基本参数概览</h2><p><img src="/assets/img/carousel.png" alt="参数概览"></p>
+<h2 id="Carsoul里面的常用属性说明"><a href="#Carsoul里面的常用属性说明" class="headerlink" title="Carsoul里面的常用属性说明"></a>Carsoul里面的常用属性说明</h2><ul>
+<li>data-ride=”carousel”: k页面加载时加载轮播</li>
+<li>data-interval=”2000”: 轮播时间</li>
+<li>data-warp： 轮播是否循环，默认true</li>
+<li>data-pause：鼠标覆盖循环暂停，默认true</li>
+<li>class=”carousel-indicators”: 指定本内容小圆点</li>
+<li>data-target=”#carouselContainer”：指向父元素的id</li>
+<li>data-slide-to=”0”: 指向内容索引(点击li时，跳转)</li>
+<li>carousel-inner: 指定轮播内容</li>
+<li>class=”item”: 轮播子页</li>
+<li>class=”carousel-caption”: 轮播内容中提示信息</li>
+<li>class=”left carousel-control”: 左边控制按钮</li>
+<li>href=”#carouselContainer”: 指向父容器</li>
+<li>class=”glyphicon glyphicon-chevron-left”: 左边图标</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -197,117 +217,55 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">javasScript</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">bootstrap</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">carousel</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/05/28/carousel/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/07/11/WEB攻击/" class="archive-article-date">
-  	<time datetime="2019-07-11T01:33:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-11</time>
-</a>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/07/11/WEB攻击/">WEB攻击</a>
-    </h1>
-  
+        
+        
+    </div>
+</aside>
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">XSS</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">SQL注入</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">安全漏洞</a>
-        		</li>
-      		
-		</ul>
-	</div>
 
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/07/05/微信浏览器内置WexinJSBridge对象/" class="archive-article-date">
-  	<time datetime="2019-07-05T09:31:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-05</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/07/05/微信浏览器内置WexinJSBridge对象/">微信浏览器内置WexinJSBridge对象</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">微信公众号</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">微信浏览器</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">WeixinJSBridge</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    </nav>
   
-
-    
 
 
           </div>
@@ -329,9 +287,9 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: false,
+		isHome: true,
 		isPost: false,
-		isArchive: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
