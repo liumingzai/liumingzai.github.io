@@ -8,19 +8,19 @@
   <link rel="dns-prefetch" href="//mingzai721252.me">
   <title>Mockjs如何模拟数据接口 | 明仔的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="本篇主要是介绍如何用mockjs生产后端模拟数据接口拦截Ajax,方便前后端分离,支持随机生成文本、数字、布尔值、日期、邮箱、图片等。  栏目 安装 实例 使用 总结  一、安装[Mockjs官网]http://mockjs.com “官网” 12345npm i mockjs --save bower install mockjs --saveyarn add morkjs 一、实例[官网示例">
+  <meta name="description" content="本篇主要是介绍如何用mockjs生产后端模拟数据接口拦截Ajax,方便前后端分离,支持随机生成文本、数字、布尔值、日期、邮箱、图片等。  栏目 安装 实例 使用  一、安装[Mockjs官网]http://mockjs.com “官网” 12345npm i mockjs --save bower install mockjs --saveyarn add morkjs 二、实例[官网示例]ht">
 <meta name="keywords" content="Mockjs,Ajax,模拟数据">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mockjs如何模拟数据接口">
 <meta property="og:url" content="//mingzai721252.me/2019/12/25/Mockjs如何模拟数据接口/index.html">
 <meta property="og:site_name" content="明仔的博客">
-<meta property="og:description" content="本篇主要是介绍如何用mockjs生产后端模拟数据接口拦截Ajax,方便前后端分离,支持随机生成文本、数字、布尔值、日期、邮箱、图片等。  栏目 安装 实例 使用 总结  一、安装[Mockjs官网]http://mockjs.com “官网” 12345npm i mockjs --save bower install mockjs --saveyarn add morkjs 一、实例[官网示例">
+<meta property="og:description" content="本篇主要是介绍如何用mockjs生产后端模拟数据接口拦截Ajax,方便前后端分离,支持随机生成文本、数字、布尔值、日期、邮箱、图片等。  栏目 安装 实例 使用  一、安装[Mockjs官网]http://mockjs.com “官网” 12345npm i mockjs --save bower install mockjs --saveyarn add morkjs 二、实例[官网示例]ht">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="//mingzai721252.me/assets/img/mock.png">
-<meta property="og:updated_time" content="2019-12-25T09:26:58.759Z">
+<meta property="og:updated_time" content="2019-12-25T09:28:22.342Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mockjs如何模拟数据接口">
-<meta name="twitter:description" content="本篇主要是介绍如何用mockjs生产后端模拟数据接口拦截Ajax,方便前后端分离,支持随机生成文本、数字、布尔值、日期、邮箱、图片等。  栏目 安装 实例 使用 总结  一、安装[Mockjs官网]http://mockjs.com “官网” 12345npm i mockjs --save bower install mockjs --saveyarn add morkjs 一、实例[官网示例">
+<meta name="twitter:description" content="本篇主要是介绍如何用mockjs生产后端模拟数据接口拦截Ajax,方便前后端分离,支持随机生成文本、数字、布尔值、日期、邮箱、图片等。  栏目 安装 实例 使用  一、安装[Mockjs官网]http://mockjs.com “官网” 12345npm i mockjs --save bower install mockjs --saveyarn add morkjs 二、实例[官网示例]ht">
 <meta name="twitter:image" content="//mingzai721252.me/assets/img/mock.png">
   
     <link rel="alternative" href="/atom.xml" title="明仔的博客" type="application/atom+xml">
@@ -188,13 +188,12 @@
 <li>安装</li>
 <li>实例</li>
 <li>使用</li>
-<li>总结</li>
 </ul>
 <h3 id="一、安装"><a href="#一、安装" class="headerlink" title="一、安装"></a>一、安装</h3><p>[Mockjs官网]<a href="http://mockjs.com" target="_blank" rel="noopener">http://mockjs.com</a> “官网”</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">npm i mockjs --save </span><br><span class="line"></span><br><span class="line">bower install mockjs --save</span><br><span class="line"></span><br><span class="line">yarn add morkjs</span><br></pre></td></tr></table></figure>
-<h3 id="一、实例"><a href="#一、实例" class="headerlink" title="一、实例"></a>一、实例</h3><p>[官网示例]<a href="http://mockjs.com/examples.html" target="_blank" rel="noopener">http://mockjs.com/examples.html</a> “官网示例”</p>
+<h3 id="二、实例"><a href="#二、实例" class="headerlink" title="二、实例"></a>二、实例</h3><p>[官网示例]<a href="http://mockjs.com/examples.html" target="_blank" rel="noopener">http://mockjs.com/examples.html</a> “官网示例”</p>
 <p>打开浏览器控制台console可以随按照示例联系</p>
-<h3 id="一、使用"><a href="#一、使用" class="headerlink" title="一、使用"></a>一、使用</h3><p>项目中应用</p>
+<h3 id="三、使用"><a href="#三、使用" class="headerlink" title="三、使用"></a>三、使用</h3><p>项目中应用</p>
 <p>定义mock.js</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">import Mock from <span class="string">'mockjs'</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">let</span> Random = Mock.Random;</span><br><span class="line"><span class="built_in">let</span> ProductData = req =&gt; &#123;</span><br><span class="line">  <span class="built_in">let</span> productList = [];</span><br><span class="line">  <span class="keyword">for</span>(<span class="built_in">let</span> i=0; i&lt;100; i++) &#123;</span><br><span class="line">    <span class="built_in">let</span> product = &#123;</span><br><span class="line">      name: Random.ctitle(5,10),</span><br><span class="line">      img: Random.dataImage(<span class="string">'100x100'</span>, <span class="string">'茶缘'</span>+Random.integer(1, 100)),</span><br><span class="line">      price: Random.integer(1000, 10000),</span><br><span class="line">      owner: Random.cname()</span><br><span class="line">    &#125;</span><br><span class="line">    productList.push(product)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">return</span> productList;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Mock.mock(<span class="string">'http://liumingzai.com.cn/getdata4'</span>, ProductData)</span><br></pre></td></tr></table></figure>
 <p>vue中引入<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import <span class="string">'@/mock/mock.js'</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">export</span> default &#123;</span><br><span class="line">    <span class="function"><span class="title">data</span></span>()&#123;</span><br><span class="line">      <span class="built_in">return</span>  &#123;</span><br><span class="line">        products: []</span><br><span class="line">      &#125;,<span class="function"><span class="title">created</span></span>() &#123;</span><br><span class="line">        axios.get(url4).<span class="keyword">then</span>(res=&gt;&#123;</span><br><span class="line">            this.products = res.data</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
@@ -203,7 +202,7 @@
 <p>页面设计</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;div class=<span class="string">"variety"</span>&gt;</span><br><span class="line">   &lt;p&gt;商品列表&lt;/p&gt;</span><br><span class="line">   &lt;ul&gt;</span><br><span class="line">     &lt;li class=<span class="string">"variety-item"</span> v-for=<span class="string">"(item, index) in products"</span> :key=<span class="string">"index"</span>&gt;</span><br><span class="line">         &lt;img :src=<span class="string">"item.img"</span> alt=<span class="string">""</span>&gt;</span><br><span class="line">         &lt;p&gt;&#123;&#123;item.name&#125;&#125;&lt;/p&gt;</span><br><span class="line">         &lt;p&gt;￥&#123;&#123;item.price&#125;&#125;&lt;/p&gt;</span><br><span class="line">     &lt;/li&gt;</span><br><span class="line">   &lt;/ul&gt;</span><br><span class="line"> &lt;/div&gt;</span><br></pre></td></tr></table></figure>
 <p>效果<br><img src="/assets/img/mock.png" alt="预览"></p>
-<h3 id="一、总结"><a href="#一、总结" class="headerlink" title="一、总结"></a>一、总结</h3>
+
       
 
       
@@ -434,18 +433,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Mockjs</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Ajax</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">模拟数据</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">JSON</a>
               </li>
              
@@ -455,6 +442,18 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">前端</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Mockjs</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Ajax</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">模拟数据</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -478,18 +477,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Primefaces</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">jsf</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">ajax</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">微信公众号</a>
               </li>
              
@@ -499,6 +486,18 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">WeixinJSBridge</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Primefaces</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">jsf</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">ajax</a>
               </li>
              
               <li class="article-tag-list-item">
