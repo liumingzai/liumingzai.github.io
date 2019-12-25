@@ -196,7 +196,9 @@
 <h3 id="一、使用"><a href="#一、使用" class="headerlink" title="一、使用"></a>一、使用</h3><p>项目中应用</p>
 <p>定义mock.js</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">import Mock from <span class="string">'mockjs'</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">let</span> Random = Mock.Random;</span><br><span class="line"><span class="built_in">let</span> ProductData = req =&gt; &#123;</span><br><span class="line">  <span class="built_in">let</span> productList = [];</span><br><span class="line">  <span class="keyword">for</span>(<span class="built_in">let</span> i=0; i&lt;100; i++) &#123;</span><br><span class="line">    <span class="built_in">let</span> product = &#123;</span><br><span class="line">      name: Random.ctitle(5,10),</span><br><span class="line">      img: Random.dataImage(<span class="string">'100x100'</span>, <span class="string">'茶缘'</span>+Random.integer(1, 100)),</span><br><span class="line">      price: Random.integer(1000, 10000),</span><br><span class="line">      owner: Random.cname()</span><br><span class="line">    &#125;</span><br><span class="line">    productList.push(product)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">return</span> productList;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Mock.mock(<span class="string">'http://liumingzai.com.cn/getdata4'</span>, ProductData)</span><br></pre></td></tr></table></figure>
-<p>vue中引入<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">import <span class="string">'@/mock/mock.js'</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">export</span> default &#123;</span><br><span class="line">    <span class="function"><span class="title">data</span></span>()&#123;</span><br><span class="line">      <span class="built_in">return</span>  &#123;</span><br><span class="line">        products: []</span><br><span class="line">      &#125;,<span class="function"><span class="title">created</span></span>() &#123;</span><br><span class="line">        axios.get(url4).<span class="keyword">then</span>(res=&gt;&#123;</span><br><span class="line">            this.products = res.data</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">```s</span><br><span class="line"></span><br><span class="line">封装接口配置</span><br><span class="line">``` bash</span><br><span class="line"></span><br><span class="line">const MOCKURL = <span class="string">'http://liumingzai.com.cn/'</span>;</span><br><span class="line"></span><br><span class="line">const URL = &#123;</span><br><span class="line">  getData1: MOCKURL + <span class="string">'getdata1'</span>,</span><br><span class="line">  getData2: MOCKURL + <span class="string">'getdata2'</span>,</span><br><span class="line">  getData3: MOCKURL + <span class="string">'getdata3'</span>,</span><br><span class="line">  getData4: MOCKURL + <span class="string">'getdata4'</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default URL;</span><br></pre></td></tr></table></figure></p>
+<p>vue中引入<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import <span class="string">'@/mock/mock.js'</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">export</span> default &#123;</span><br><span class="line">    <span class="function"><span class="title">data</span></span>()&#123;</span><br><span class="line">      <span class="built_in">return</span>  &#123;</span><br><span class="line">        products: []</span><br><span class="line">      &#125;,<span class="function"><span class="title">created</span></span>() &#123;</span><br><span class="line">        axios.get(url4).<span class="keyword">then</span>(res=&gt;&#123;</span><br><span class="line">            this.products = res.data</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>封装接口配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">const MOCKURL = <span class="string">'http://liumingzai.com.cn/'</span>;</span><br><span class="line"></span><br><span class="line">const URL = &#123;</span><br><span class="line">  getData1: MOCKURL + <span class="string">'getdata1'</span>,</span><br><span class="line">  getData2: MOCKURL + <span class="string">'getdata2'</span>,</span><br><span class="line">  getData3: MOCKURL + <span class="string">'getdata3'</span>,</span><br><span class="line">  getData4: MOCKURL + <span class="string">'getdata4'</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default URL;</span><br></pre></td></tr></table></figure>
 <p>页面设计</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;div class=<span class="string">"variety"</span>&gt;</span><br><span class="line">   &lt;p&gt;商品列表&lt;/p&gt;</span><br><span class="line">   &lt;ul&gt;</span><br><span class="line">     &lt;li class=<span class="string">"variety-item"</span> v-for=<span class="string">"(item, index) in products"</span> :key=<span class="string">"index"</span>&gt;</span><br><span class="line">         &lt;img :src=<span class="string">"item.img"</span> alt=<span class="string">""</span>&gt;</span><br><span class="line">         &lt;p&gt;&#123;&#123;item.name&#125;&#125;&lt;/p&gt;</span><br><span class="line">         &lt;p&gt;￥&#123;&#123;item.price&#125;&#125;&lt;/p&gt;</span><br><span class="line">     &lt;/li&gt;</span><br><span class="line">   &lt;/ul&gt;</span><br><span class="line"> &lt;/div&gt;</span><br></pre></td></tr></table></figure>
 <p>效果<br><img src="/assets/img/mock.png" alt="预览"></p>
@@ -1411,18 +1413,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">JSON</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">JS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">前端</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">VsCode</a>
               </li>
              
@@ -1432,6 +1422,30 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">CSS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Mockjs</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Ajax</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">模拟数据</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">JSON</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">JS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">前端</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1452,18 +1466,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">数据库</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Mockjs</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Ajax</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">模拟数据</a>
               </li>
              
               <li class="article-tag-list-item">
