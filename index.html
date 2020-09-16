@@ -160,6 +160,220 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-img的srcset和size属性是什么？" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/08/31/img的srcset和size属性是什么？/">img的srcset和size属性是什么？</a>
+    </h1>
+  
+
+        
+        <a href="/2020/08/31/img的srcset和size属性是什么？/" class="archive-article-date">
+  	<time datetime="2020-08-31T09:04:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-31</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>这是前端面试响应式布局及img标签会被扩展问到的一道题，紧随src和href重要性之后加分题。</p>
+</blockquote>
+<h4 id="如何创建响应式图片？"><a href="#如何创建响应式图片？" class="headerlink" title="如何创建响应式图片？"></a>如何创建响应式图片？</h4><h1 id="使用image的srcset和sizes属性-根据屏幕密度实现对应尺寸图片"><a href="#使用image的srcset和sizes属性-根据屏幕密度实现对应尺寸图片" class="headerlink" title="使用image的srcset和sizes属性,根据屏幕密度实现对应尺寸图片"></a>使用image的srcset和sizes属性,根据屏幕密度实现对应尺寸图片</h1><ul>
+<li>srcset: 定义了我们允许浏览器选择的图像集，以及每个图像的大小.</li>
+<li>sizes: 定义一组媒体条件并指明当前某些媒体条件为真时，什么样的图片尺寸是追加选择</li>
+<li>w：宽度规格，图像固有宽度，其与sizes属性设定的屏幕密度相关</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;img srcset=<span class="string">"elva-fairy-320w.jpg 320w,</span></span><br><span class="line"><span class="string">             elva-fairy-480w.jpg 480w,</span></span><br><span class="line"><span class="string">             elva-fairy-800w.jpg 800w"</span></span><br><span class="line">     sizes=<span class="string">"(max-width: 320px) 280px,</span></span><br><span class="line"><span class="string">            (max-width: 480px) 440px,</span></span><br><span class="line"><span class="string">            800px"</span></span><br><span class="line">     src=<span class="string">"elva-fairy-800w.jpg"</span> alt=<span class="string">"Elva dressed as a fairy"</span>&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="作为背景图片image-set"><a href="#作为背景图片image-set" class="headerlink" title="作为背景图片image-set()"></a>作为背景图片image-set()</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">.photo &#123;</span><br><span class="line">  background-image: -webkit-image-set(<span class="string">"demo.png"</span> 1x, <span class="string">"demo-2.png"</span> 2x, <span class="string">"demo-3.png"</span> 600dpi);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>demo链接</p>
+<p>这里引入一个概念：什么是屏幕密度（Density）？及与其相关的几个属性<br>分辨率: 显示分辨率一定，显示屏越小图像越清晰，显示屏固定，分辨率越高越清晰。图像分辨率则是指图像单位英寸中所包含的像素点数<br>Density: 屏幕密度density表示每英寸有多少个现实点，与分辨率是两个概念一般3个常用固定值240/160/120<br>dip: device independent pixels(设备独立像素)与dp类似都是与密度无关的像素，和设备硬件有关，一种基于屏幕密度抽象单位。<br>dp：与密度无关的像素，在每英寸160点的显示器上，1dp=1px。设置长度、高度等属相可以用dp或者sp<br>sp：与密度无关的像素，放大像素主要用来处理字体大小，与scale无关<br>px: pixels(像素)屏幕上的点与密度相关，密度大了，单位面积上的px会比较多<br>pt：表示一个点，屏幕的一个屋里长度，1pt=1/72in<br>in：(英寸)屏幕的物理尺寸，屏幕对角线长度。每英寸等于2.54厘米<br>不同屏幕密度：<br>HVGA屏density=160<br>QVGA屏density=120<br>WVGA屏density=240<br>WQVGA屏density=120<br>计算公式：<br>如果密度为320 密度因子320/160,如果设置的TextView宽度为160px，系统会自动将width设置为160px* 密度因子就是320px</p>
+<p>[接下来补充一些解决方案来源于：]<br>(<a href="https://jakearchibald.com/2015/anatomy-of-responsive-images" target="_blank" rel="noopener">https://jakearchibald.com/2015/anatomy-of-responsive-images</a>)<br>(<a href="https://www.zhangxinxu.com/wordpress/2015/11/anatomy-of-responsive-images/" target="_blank" rel="noopener">https://www.zhangxinxu.com/wordpress/2015/11/anatomy-of-responsive-images/</a>)</p>
+<p>1、 固定图像尺寸，满足不同屏幕密度<br><img src="/assets/img/solution1.png" alt="尺寸固定,密度变化"> </p>
+<p>还有一些规则，没有在上图中涵盖：</p>
+<p>内的每个项目srcset是<url> <density>x，例如cat-2x.jpg 2x。其中的项的顺序srcset没关系<br>如果不指定宽度/高度，浏览器将显示图像的原始宽度/高度除以密度。例如，如果选择了2x资源，它将以资源宽度/高度的50%呈现<br>这只是一个提示，即使在3x设备上，浏览器也可能使用1x图像，可能是由于连接不良</density></url></p>
+<p>2、尺寸和密度都变化</p>
+<p><img src="/assets/img/solution2.png" alt="尺寸和密度都变化"> </p>
+<p>不同宽度的图像通常作为响应网站内容的一部分使用。在这个博客中，内容图像占文章宽度的100%，但文章并不总是100%的窗口。</p>
+<p>为了让浏览器选择正确的图像，它需要知道：</p>
+<p>不同大小的图像的URL<br>每个图像资源的解码宽度<br>宽度<img><br>最后一个是特别棘手的，因为图像在CSS准备好之前就开始下载了，所以<img>无法从页面布局中检测到。</p>
+<p>理解这个语法的关键是要知道这些值中的哪个值是指窗口宽度、解码图像宽度和<img>宽度</p>
+<p>3、尺寸，密度，资源都变化</p>
+<p><img src="/assets/img/solution3.png" alt="尺寸和密度都变化"> </p>
+<p>与上一个示例类似，但是框架的宽度不同。这样你就可以以较小的宽度集中在主题上。</p>
+<p>你可以有很多<source>随你的便<br>你呢必须包括<img><br>媒体查询<source>永远都会被遵守，这不仅仅是一个暗示<br>媒体查询基于窗口的宽度，而不是<img><br>第一次匹配<source>将被使用，所以顺序很重要<br>如果没有匹配<source>找到了<img>使用<br>这个<img>毕竟必须出现<source>s</p>
+<p><source>不支持src公司，但是srcset=”whatever.jpg”同样有效<br>一旦<source>或<img>选定时srcset和尺寸属性的工作方式与前面的示例相同，因此您可以混合和匹配技术。</p>
+<p>这个<picture>要素适用于Chrome、Firefox和Opera，然后回到<img>在其他浏览器中。我听说了可能会进入Edge的下一个版本，很不错</picture></p>
+<p>4、不同图片类别</p>
+<p><img src="/assets/img/solution4.png" alt="尺寸和密度都变化"> </p>
+<p>类型是mime类型<br>你可以有多个来源和混合类型具有媒体 ,srcset，甚至尺寸制造可怕的东西<br>这个适用于Chrome、Firefox和Opera，然后回到<img>在其他浏览器中</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">HTML</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">响应式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/08/31/img的srcset和size属性是什么？/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-类型检测" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/07/类型检测/">Error类型</a>
+    </h1>
+  
+
+        
+        <a href="/2020/07/07/类型检测/" class="archive-article-date">
+  	<time datetime="2020-07-07T02:12:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-07</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>我们在调试代码中经常会看到RefrenceError,TypeError之类的，为了弄懂这些错误类型，抛砖引玉的写了这篇小博</p>
+</blockquote>
+<h3 id="错误类型"><a href="#错误类型" class="headerlink" title="错误类型"></a>错误类型</h3><p>ECMA-262 定义了7中错误类型：</p>
+<ul>
+<li>Error</li>
+<li>EvalError</li>
+<li>RangeError</li>
+<li>ReferenceError</li>
+<li>SyntaxError</li>
+<li>TypeError</li>
+<li>URIError</li>
+</ul>
+<p>其中Error是基类型，其他6中都继承自Error，可以通过下面方法测试。所有错误类型共享一组相同属性，Error一般用于开发人员抛出自定义错误</p>
+<p>   EvalError.<strong>proto</strong> == Error.prototype   // 返回：true</p>
+<p>EvalError：使用eval时抛出的。比如以非直接调用方式调用eval，为eval赋值或者说没有把eval当函数调用,在Firefox4+ 和IE8中对第一种会抛出TypeError，由于极少使用eval，再次不过多介绍了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">new <span class="built_in">eval</span>();  // 可能会抛出EvalError;</span><br><span class="line"><span class="built_in">eval</span> = foo;  // 可能会抛出EvalError;</span><br></pre></td></tr></table></figure>
+<p>RangeError： 一看是范围相关，应该like想到数组了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">var arry1 = new Array(-20);  // 抛出RangeError Invalid array length;</span><br><span class="line">var arry2 = new Array(Number.MAX_VALUE);  // 抛出RangeError Invalid array length;</span><br></pre></td></tr></table></figure>
+<p>ReferenceError: 一般在找不到对象情况下会抛出</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">var obj = x;  // 抛出ReferenceError： x is not defined</span><br></pre></td></tr></table></figure>
+<p>SyntaxError： 当出现语法错误的时候会抛出SyntaxError</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var a=<span class="string">"str"</span>;</span><br><span class="line">var b=1;</span><br><span class="line">a++b;   // 抛出SyntaxError: Unexpected identifier</span><br></pre></td></tr></table></figure>
+<p>TypeError：顾名思义是类型错误，当变量中存在意外类型或者不存在的方法，会抛出</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var o =　new 10; // 抛出TypeError: 10 is not a constructor</span><br><span class="line">Function.prototype.toString.call(<span class="string">"get"</span>);  // TypeError: Function.prototype.toString requires that <span class="string">'this'</span> be a Function</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">错误处理</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">js</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/07/07/类型检测/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-ES6解构函数" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -282,7 +496,7 @@
 <p>这涉及到浏览器对BFC约束,下一篇博文介绍BFC.简单的介绍一下margin塌陷和margin合并问题产生的原因及如何解决</p>
 </blockquote>
 <h4 id="margin塌陷"><a href="#margin塌陷" class="headerlink" title="margin塌陷"></a>margin塌陷</h4><p>什么是margin塌陷？下面代码，我们给子元素添加margin当值小于100px你会发现没有任何变化，当大于100px你会发现父元素和子元素一起变动，父子元素的位置没有变动。这就是产生了margin塌陷，父元素相对于浏览器定位，而子元素没有相对于父元素定位。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=<span class="string">"en"</span>&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta charset=<span class="string">"UTF-8"</span>&gt;</span><br><span class="line">&lt;title&gt;margin-塌陷&lt;/title&gt;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">     .parent&#123;</span><br><span class="line">         width:200px;</span><br><span class="line">         height:200px;</span><br><span class="line">         background-color:<span class="comment">#0f0;</span></span><br><span class="line">         margin-top:100px;</span><br><span class="line">     &#125;</span><br><span class="line">     .child&#123;</span><br><span class="line">         width:50px;</span><br><span class="line">	     height:50px;</span><br><span class="line">         background-color:<span class="comment">#00f;</span></span><br><span class="line">         opacity:0.8;</span><br><span class="line">		 margin-top:150px;</span><br><span class="line">     &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body &gt;</span><br><span class="line">	&lt;div class=<span class="string">"parent"</span>&gt;</span><br><span class="line">		&lt;div class=<span class="string">"child"</span>&gt;&lt;/div&gt;</span><br><span class="line">	&lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line"></span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=<span class="string">"en"</span>&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta charset=<span class="string">"UTF-8"</span>&gt;</span><br><span class="line">&lt;title&gt;margin-塌陷&lt;/title&gt;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">     .parent&#123;</span><br><span class="line">         width:200px;</span><br><span class="line">         height:200px;</span><br><span class="line">         background-color:<span class="comment">#0f0;</span></span><br><span class="line">         margin-top:100px;</span><br><span class="line">     &#125;</span><br><span class="line">     .child&#123;</span><br><span class="line">         width:50px;</span><br><span class="line">	     height:50px;</span><br><span class="line">         background-color:<span class="comment">#00f;</span></span><br><span class="line">         opacity:0.8;</span><br><span class="line">     &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body &gt;</span><br><span class="line">	&lt;div class=<span class="string">"parent"</span>&gt;</span><br><span class="line">		&lt;div class=<span class="string">"child"</span>&gt;&lt;/div&gt;</span><br><span class="line">	&lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line"></span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
 <p><img src="/assets/img/margin1.png" alt="概览"></p>
 <p>如何解决margin塌陷？最直接的是给父元素增加broder，但不推荐。需要根据BFC约束，触发BFC(块级格式上下文),改变父级的渲染规则,如下四种触发BFC的方法，添加到parent中</p>
 <p>(1)position:absolute/fixed</p>
@@ -882,15 +1096,15 @@ var factorial = (<span class="keyword">function</span> f(n){
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JSON</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">JS</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
         		</li>
       		
 		</ul>
@@ -984,201 +1198,6 @@ var factorial = (<span class="keyword">function</span> f(n){
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/08/22/微信公众号图片预览和缩放/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-primeface-process&amp;update" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/15/primeface-process&update/">primefaces+jsf异步ajax-process&amp;update</a>
-    </h1>
-  
-
-        
-        <a href="/2019/08/15/primeface-process&update/" class="archive-article-date">
-  	<time datetime="2019-08-15T01:12:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-15</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>本博文介绍f:ajax jsf标签以及 p:remoteCommand primeface标签的原理</p>
-</blockquote>
-<h3 id="如何理解PrimeFaces-process-update-和JSF的ajax-execute-render属性"><a href="#如何理解PrimeFaces-process-update-和JSF的ajax-execute-render属性" class="headerlink" title="如何理解PrimeFaces process/update 和JSF的ajax execute/render属性"></a>如何理解PrimeFaces process/update 和JSF的ajax execute/render属性</h3><p>process属性：作用于服务端，其属性值只会影响EditableValueHolder(可编辑的标签，如input) 或者ActionSource(有事件操作的标签，如commandXXX)接口的UIComponent。<br>通过使用空格分隔IDS process告诉JSF在表单提交时，哪个组件必须在JSF生命周期中被处理。</p>
-<pre><code>JSF将会应用请求值(通过组件自己的client ID查找HTTP请求的参数，如果组件是实现了EditableValueHolder接口的话，将会其设置其为提交的值，如果是实现了ActionSource接口的话，则会将一个新的ActionEvent加入事件队列)，转换、验证和更新模型的值(只针对实现了EditableValueHolder接口的组件)，最后触发队列中的ActionEvent(只针对实现了ActionSource接口的组件)。JSF会跳过处理所有其它没有被process属性包含的组件。并且，作为一种对付请求篡改的防护措施，&lt;font color=&quot;#C7254E&quot;&gt;rendered属性为false的组件在应用请求值阶段也会被跳过。&lt;/font&gt;
-
-process属性值： @all(更新整个文件慎用) @parent(包含当前，同级，下级组件) @form(primeface默认)  @this(ajax默认) @none() IDS(空格分隔)  注意HTML不支持一次提交多个表单
-
-在标准JSF中，与PrimeFaces中process等同的属性为&lt;f:ajax excute&gt;的excute属性。它们效果完全相同，但是execute不支持以逗号分隔的字符串，而PrimeFaces的process支持(仅管我个人推荐遵守空格分隔的惯例)，execute也无法使用@parent关键字。并且，&lt;p:commandXxx process&gt; 缺省情况下为@form，&lt;p:ajax process&gt; 和&lt;f:ajax execute&gt; 缺省为@this。最后，process还支持所谓的PrimeFaces选择器，&lt;font color=&quot;#C7254E&quot;&gt;see also How do PrimeFaces Selectors as in update=”@(.myClass)” work?&lt;/font&gt;  比如&lt;p:message&gt;的选择器.ui-message
-</code></pre><p>update属性：作用于客户端，其属性值会影响HTML显示的所有UIComponents。通过使用空格分隔的IDS，update告诉JavaScript（负责ajax请求/响应)HTML DOM树的那些部分会被更新以响应表单提交</p>
-<pre><code>然后JSF将为其准备正确的ajax响应，其中仅仅包含被要求更新的部分。 JSF会跳过处理所有其它在ajax响应中没有被update属性包含的组件，通过这种方式，来将响应的负荷保持在一个较低的水平。在渲染响应阶段中rendered属性为false的组件在应用请求值阶段也会被跳过。 注意，就算rendered将来会为true，但如果最初是false的话，JavaScript也不会在HTML DOM树中更新此组件。 你需要将其包装一下或者更新其父组件。&lt;font color=&quot;#C7254E&quot;&gt;See also Ajax update/render does not work on a component which has rendered attribute.&lt;/font&gt;
-
-正常情况下，你会使用一个普通的链接( &lt;a&gt;或者&lt;h:link&gt;)，或者通过?faces-redirect=true 或 ExternalContext#redirect()进行重定向，来发送一个真实的GET请求。实际上，作为一个非ajax的提交，process=&quot;@form&quot; update=&quot;@all&quot;效果完全相同。在我使用JSF的整个职业生涯中，我唯一一次遇到@all的合理使用案例是显示一张错误页面，防止ajax请求中出现异常。&lt;font color=&quot;#C7254E&quot;&gt;See also What is the correct way to deal with JSF 2.0 exceptions for AJAXified components?&lt;/font&gt;
-
-在标准JSF中，与PrimeFaces中update等同的属性为&lt;f:ajax render&gt;的render属性。它们效果完全相同，但是render不支持以逗号分隔的字符串，而PrimeFaces的update支持(仅管我个人推荐遵守空格分隔的惯例)，render也无法使用@parent关键字。update和render属性都缺省为@none
-</code></pre>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Primefaces</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">jsf</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">ajax</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/08/15/primeface-process&update/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-防篡改对象" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/23/防篡改对象/">防篡改对象</a>
-    </h1>
-  
-
-        
-        <a href="/2019/07/23/防篡改对象/" class="archive-article-date">
-  	<time datetime="2019-07-23T02:40:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="防篡改对象"><a href="#防篡改对象" class="headerlink" title="防篡改对象"></a>防篡改对象</h2><blockquote>
-<p>防篡改对象（tamper-proof object）: JavaScript共享本质一直是开发人员心头的痛。因为任何对象都可能被同一环境中运行的代码修改。开发人员很可能意外地修改别人的代码。ECMAScript5致力于解决这个问题，定义了防篡改对象。一旦定义对象为防篡改，是无法撤回的。</p>
-</blockquote>
-<ul>
-<li>不可扩展对象 (tamper-proof object)</li>
-<li>密封对象 (sealed object)</li>
-<li>冻结对象 (frozen object)</li>
-</ul>
-<h4 id="一、不可扩展对象"><a href="#一、不可扩展对象" class="headerlink" title="一、不可扩展对象"></a>一、不可扩展对象</h4><p>默认情况下，所有对象都是可扩展的，可以向对象中添加属性和方法。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var person = &#123;name: <span class="string">"tony"</span>&#125;;</span><br><span class="line">person.age = 29;</span><br></pre></td></tr></table></figure>
-<p>定义不可扩展对象：Object.preventExtensions(); 非严格模式下，给对象添加新成员导致静默失败，返回undefined；在严格模式下，会抛出错误。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var person = &#123;name: <span class="string">"tony"</span>&#125;;</span><br><span class="line">Object.preventExtensions(person);</span><br><span class="line">person.age = 29;</span><br><span class="line">console.log(person.age);   //undefined</span><br></pre></td></tr></table></figure>
-<p>判断对象是否可扩展：Object.isExtensible();<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var person = &#123;name: <span class="string">"tony"</span>&#125;;</span><br><span class="line">colsole.log(person.isExtensible(person));  //返回<span class="literal">true</span></span><br><span class="line">Object.preventExtensions(person);</span><br><span class="line">colsole.log(person.isExtensible(person));  //返回<span class="literal">false</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="二、密封对象"><a href="#二、密封对象" class="headerlink" title="二、密封对象"></a>二、密封对象</h4><p> ECMAScript5为对象定义了第二个保护级别是密封对象（sealed object）密封对象不可扩展且已有成员的[[Configurable]]特性为false，也就是不能删除。因此不能使用Object.definePropery()把数据属性修改为访问器属性，或者相反。但属性值可以修改</p>
- <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var person = &#123;name:<span class="string">"tony"</span>&#125;</span><br><span class="line">Object.seal(person);</span><br><span class="line"></span><br><span class="line">person.age = 29;</span><br><span class="line">console.log(person.age); //undefined</span><br><span class="line"></span><br><span class="line">delete person.name;</span><br><span class="line">console.log(person.name); //tony</span><br></pre></td></tr></table></figure>
-<p>在非严格模式被忽略，上面运行结果。严格模式会抛出错误，判断对象是否是密封对象： Object.isSealed()</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var person = &#123;name:<span class="string">"tony"</span>&#125;</span><br><span class="line">colsole.log(person.isExtensible(person));   //<span class="literal">true</span></span><br><span class="line">console.log(Object.isSealed(person); //<span class="literal">false</span></span><br><span class="line"></span><br><span class="line">Object.seal(person);</span><br><span class="line">colsole.log(person.isExtensible(person));   //<span class="literal">false</span></span><br><span class="line">console.log(Object.isSealed(person); //<span class="literal">true</span></span><br></pre></td></tr></table></figure>
-<h4 id="三、冻结对象"><a href="#三、冻结对象" class="headerlink" title="三、冻结对象"></a>三、冻结对象</h4><p>最严格的的方串改级别是冻结对象（frozen object）。冻结对象既不可以扩展，又是密封，而且对象数据属性[[Writable]]特性被设置为false。如果定义[[Set]]函数，访问器属性仍是科协的。ECMAScript5定义Object.frozen()方法来冻结对象</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var person = &#123;name:<span class="string">"tony"</span>&#125;</span><br><span class="line">Object.frozen(person);</span><br><span class="line"></span><br><span class="line">person.age = 29;</span><br><span class="line">console.log(person.age); //undefined</span><br><span class="line"></span><br><span class="line">delete person.name</span><br><span class="line">console.log(person.name)  //tony</span><br><span class="line"></span><br><span class="line">person.name = <span class="string">"tom"</span></span><br><span class="line">console.log(person.name) //tony</span><br></pre></td></tr></table></figure>
-<p>与密封和不允许扩展一样，对冻结对象执行非法操作在非严格模式下被忽略，严格模式下抛出错误。判断对象是否冻结对象Object.isFrozen()</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var person = &#123;name:<span class="string">"tony"</span>&#125;</span><br><span class="line">console.log(Object.isExtensible(person)); //<span class="literal">true</span></span><br><span class="line">console.log(Object.isSealed(person)); //<span class="literal">false</span></span><br><span class="line">console.log(Object.isFrozen(person)); //<span class="literal">false</span></span><br><span class="line"></span><br><span class="line">Object.frozen(person);</span><br><span class="line">console.log(Object.isExtensible(person)); //<span class="literal">false</span></span><br><span class="line">console.log(Object.isSealed(person)); //<span class="literal">true</span></span><br><span class="line">console.log(Object.isFrozen(person)); //<span class="literal">true</span></span><br></pre></td></tr></table></figure>
-<p><font color="#eb7350" size="2">对JavaScript库而言，冻结对象非常有用，避免被人篡改。</font></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">javasScript</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/07/23/防篡改对象/">展开全文 >></a>
         </p>
       
 
@@ -1305,18 +1324,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">JSON</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">JS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">前端</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">对象</a>
               </li>
              
@@ -1333,18 +1340,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Mockjs</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Ajax</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">模拟数据</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">VsCode</a>
               </li>
              
@@ -1357,11 +1352,27 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">bootstrap</a>
+                <a href="javascript:void(0)" class="js-tag color2">Mockjs</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">carousel</a>
+                <a href="javascript:void(0)" class="js-tag color5">Ajax</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">模拟数据</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">前端</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">响应式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1370,6 +1381,22 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">布局</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">JSON</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">JS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">bootstrap</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">carousel</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1409,14 +1436,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Javascript</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">递归算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">JAVA</a>
               </li>
              
@@ -1437,11 +1456,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">JavaScript</a>
+                <a href="javascript:void(0)" class="js-tag color5">错误处理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">浏览器</a>
+                <a href="javascript:void(0)" class="js-tag color3">js</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">递归算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1458,6 +1485,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">安全漏洞</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">JavaScript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">浏览器</a>
               </li>
             
             <div class="clearfix"></div>
