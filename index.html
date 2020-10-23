@@ -167,7 +167,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/23/java接口的default方法和static方法/">&#39;java接口的default方法和static方法&#39;</a>
+      <a class="article-title" href="/2020/10/23/java接口的default方法和static方法/">java接口的default方法和static方法</a>
     </h1>
   
 
@@ -184,42 +184,14 @@
 <p>接口中的变量未声明类型，默认都是public static final也就是常量。方法默认都是public abstract 抽象方法。但是在jdk1.8中接口中可以定义default和static方法。我们一起来看看</p>
 </blockquote>
 <p>声明两个接口DefaultAndStaticTest.java,里面包含了abstract method、default method、static method</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public interface DefaultAndStaticTest &#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     *  必须被实现类重写</span><br><span class="line">     */</span><br><span class="line">    void  overideMethod();</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     *  如果实现类继承的多个接口都有该default方法，需要在实现类中重写</span><br><span class="line">     */</span><br><span class="line">    default void commonDefault()&#123;</span><br><span class="line">        System.out.println(&quot;interface default method commonDefault&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 可以被实现类重写，也可以不重写</span><br><span class="line">     */</span><br><span class="line">    default void sayDefault()&#123;</span><br><span class="line">        System.out.println(&quot;interface default method sayDefault&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * method does not override method from its superclass</span><br><span class="line">     * 不能被实现类重写</span><br><span class="line">     */</span><br><span class="line">    static void sayStatic()</span><br><span class="line">    &#123;</span><br><span class="line">        System.out.println(&quot;interface static method&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public interface DefaultAndStaticTest &#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     *  必须被实现类重写</span><br><span class="line">     */</span><br><span class="line">    void  overideMethod();</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     *  如果实现类继承的多个接口都有该default方法，需要在实现类中重写</span><br><span class="line">     */</span><br><span class="line">    default void <span class="function"><span class="title">commonDefault</span></span>()&#123;</span><br><span class="line">        System.out.println(<span class="string">"interface default method commonDefault"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 可以被实现类重写，也可以不重写</span><br><span class="line">     */</span><br><span class="line">    default void <span class="function"><span class="title">sayDefault</span></span>()&#123;</span><br><span class="line">        System.out.println(<span class="string">"interface default method sayDefault"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * method does not override method from its superclass</span><br><span class="line">     * 不能被实现类重写</span><br><span class="line">     */</span><br><span class="line">    static void sayStatic()</span><br><span class="line">    &#123;</span><br><span class="line">        System.out.println(<span class="string">"interface static method"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>声明另一个接口DefaultTest.java，包含一个default方法，和上面的接口相同签名的default方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public interface DefaultTest &#123;</span><br><span class="line"></span><br><span class="line">    default void commonDefault()&#123;</span><br><span class="line">        System.out.println(&quot;interface default method commonDefault&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">编写实现类TestUtil</span><br></pre></td></tr></table></figure>
-<p>public class TestUtil implements DefaultAndStaticTest, DefaultTest {</p>
-<pre><code>/**
- *  must either be declared abstract or implement abstract method
- *  必须声明或者实现抽象方法
- */
-@Override
-public void overideMethod() {
-    System.out.println(&quot;必须实现接口中抽象方法&quot;);
-}
-
-/**
- *  inherits unrelated default for commonDefault() from DefaultAndStaticTest and DefaultTest
- *  当类实现的两个接口中都有default方法commonDefault，需要在实现类中重写该default方法
- */
-@Override
-public void commonDefault() {
-    System.out.println(&quot;我是DefaultAndStaticTest和DefaultTest两个接口都有的default已经被重写&quot;);
-}
-
-public void sayStatic() {
-    System.out.println(&quot;我是TestUtil中方法而非接口静态方法&quot;);
-}
-
-public static void main(String[] args) {
-    new TestUtil().commonDefault();
-    new TestUtil().sayStatic();
-    DefaultAndStaticTest.sayStatic();
-}
-</code></pre><p>}</p>
-<p><code>`</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public interface DefaultTest &#123;</span><br><span class="line"></span><br><span class="line">    default void <span class="function"><span class="title">commonDefault</span></span>()&#123;</span><br><span class="line">        System.out.println(<span class="string">"interface default method commonDefault"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编写实现类TestUtil</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public class TestUtil implements DefaultAndStaticTest, DefaultTest &#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     *  must either be declared abstract or implement abstract method</span><br><span class="line">     *  必须声明或者实现抽象方法</span><br><span class="line">     */</span><br><span class="line">    @Override</span><br><span class="line">    public void <span class="function"><span class="title">overideMethod</span></span>() &#123;</span><br><span class="line">        System.out.println(<span class="string">"必须实现接口中抽象方法"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     *  inherits unrelated default <span class="keyword">for</span> commonDefault() from DefaultAndStaticTest and DefaultTest</span><br><span class="line">     *  当类实现的两个接口中都有default方法commonDefault，需要在实现类中重写该default方法</span><br><span class="line">     */</span><br><span class="line">    @Override</span><br><span class="line">    public void <span class="function"><span class="title">commonDefault</span></span>() &#123;</span><br><span class="line">        System.out.println(<span class="string">"我是DefaultAndStaticTest和DefaultTest两个接口都有的default已经被重写"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void <span class="function"><span class="title">sayStatic</span></span>() &#123;</span><br><span class="line">        System.out.println(<span class="string">"我是TestUtil中方法而非接口静态方法"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        new TestUtil().commonDefault();</span><br><span class="line">        new TestUtil().sayStatic();</span><br><span class="line">        DefaultAndStaticTest.sayStatic();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>控制台输出：</p>
-<p>interface default method sayDefault<br>我是DefaultAndStaticTest和DefaultTest两个接口都有的default已经被重写<br>我是TestUtil中方法而非接口静态方法<br>interface static method<br>Process finished with exit code 0</p>
-<p>思考：如果interface中实现了default，实现类中也重写了该方法， 声明个子类继承实现类并实现接口，用子类实例调用default方法调用的是接口的default还是实现类重写的default呢？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">interface default method sayDefault</span><br><span class="line">我是DefaultAndStaticTest和DefaultTest两个接口都有的default已经被重写</span><br><span class="line">我是TestUtil中方法而非接口静态方法</span><br><span class="line">interface static method</span><br><span class="line">Process finished with exit code 0</span><br></pre></td></tr></table></figure>
+<p><font color="orange">思考：如果interface中实现了default，实现类中也重写了该方法， 声明个子类继承实现类并实现接口，用子类实例调用default方法调用的是接口的default还是实现类重写的default呢？</font></p>
 
       
 
@@ -1386,6 +1358,18 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Mockjs</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Ajax</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">模拟数据</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">JSON</a>
               </li>
              
@@ -1395,14 +1379,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">前端</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">jdk1.8</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">java</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1419,6 +1395,46 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">响应式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">css</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">布局</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">db</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Primefaces</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">jsf</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">ajax</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">jdk1.8</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1462,47 +1478,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
+                <a href="javascript:void(0)" class="js-tag color5">错误处理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">db</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Mockjs</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Ajax</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">模拟数据</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Primefaces</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">jsf</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">ajax</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">css</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">布局</a>
+                <a href="javascript:void(0)" class="js-tag color3">js</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1511,14 +1491,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">浏览器</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">错误处理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">js</a>
               </li>
              
               <li class="article-tag-list-item">
