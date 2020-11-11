@@ -160,6 +160,123 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-浏览器缓存" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/11/浏览器缓存/">浏览器缓存</a>
+    </h1>
+  
+
+        
+        <a href="/2020/11/11/浏览器缓存/" class="archive-article-date">
+  	<time datetime="2020-11-11T02:10:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>如何让公司省一点带宽(减轻服务器负担)，用户省一点流量呢(减少冗余数据传输)，提升用户体验(加快客户端加载速度)？用浏览器缓存静态资源(css, js, png,jpg等)</p>
+</blockquote>
+<h3 id="浏览器缓存策略"><a href="#浏览器缓存策略" class="headerlink" title="浏览器缓存策略"></a>浏览器缓存策略</h3><p>浏览器缓存(Browser Caching)是浏览器本地磁盘对用户最近请求的文档进行存储，再次访问时浏览器直接从磁盘加载文档，主要分如下两类：</p>
+<ul>
+<li>强制缓存</li>
+<li>协商缓存</li>
+</ul>
+<h4 id="什么是强制缓存？"><a href="#什么是强制缓存？" class="headerlink" title="什么是强制缓存？"></a>什么是强制缓存？</h4><p>强缓存就是浏览器根本不会发请求给服务器，通过http头中的Expires和cache-control两个字段来控制的(如果两者同时存在，cache-contol会优先生效)，如果两个字段满足条件，就不会去向服务器发出请求直接使用缓存。</p>
+<p>CACHE-CONTROL常用字段</p>
+<ul>
+<li>no-cache: 不使用强缓存(本地缓存)，需要使用缓存协商，先与服务器确认返回的响应是否被更改，如果之前的响应中存在ETag，那么请求的时候会与服务端验证，如果资源未被更改，则可以避免重新下载。</li>
+<li>no-store：禁止使用缓存（强制缓存&amp;协商缓存），每次请求资源都要向服务请求</li>
+<li>public：资源可被代理服务器(CDN或中间件代理)和浏览器缓存</li>
+<li>private：资源只能被浏览器缓存</li>
+<li>max-age：缓存的最长有效时间</li>
+</ul>
+<p>那怎么判断强缓存被触发？ 就判断资源是否过期max-age。主要看响应头Response headers中Cache-Control的值和no-cache，也有另一个判断过期的参考值Expires已经被淘汰且Cache-Control优先羽expires</p>
+<h4 id="什么是协商缓存？"><a href="#什么是协商缓存？" class="headerlink" title="什么是协商缓存？"></a>什么是协商缓存？</h4><p>上面的强缓存是在本地判断缓存的资源是否可以继续用，而协商缓存顾名思义就是和服务器求证这个资源是否未被更新，从而决定要不要继续使用本地缓存的资源。</p>
+<p>Last-Modified/If-Modified-Since当浏览器再次跟服务器请求资源的时候，就会加上If-Modified-Since这个请求header，它的值就是上一次服务器发回来响应头中Last-Modified的值。</p>
+<p>Etag/If-None-Match 这两个值是每一个资源唯一标识符(可以理解为md5)，Etag存在于响应头中，IF-None-Match存在于请求头中，只要资源变化了，这个值就会变，其判断过程类似上面（服务器优先验证Etag，其次Last-Modified）</p>
+<p>那么怎么判断协商缓存被触发呢？当cache-control为no-cache, 查看Response headers中ETag和LastModified，在下一次请求Request header中带上If-None-Match和If-Modified-Sine（对应ETag和LastModified）<br>1、请求资源时，把用户本地该资源的 ETag 同时带到服务端，服务端和最新资源做对比。<br>2、如果资源没更改，返回304码（携带header信息），浏览器读取本地缓存。<br>3、如果资源有更改，返回200码（携带body数据），返回最新的资源。</p>
+<h4 id="缓存流程分第一次请求和后续请求"><a href="#缓存流程分第一次请求和后续请求" class="headerlink" title="缓存流程分第一次请求和后续请求"></a>缓存流程分第一次请求和后续请求</h4><h5 id="第一次请求"><a href="#第一次请求" class="headerlink" title="第一次请求"></a>第一次请求</h5><p><img src="/assets/img/brows-cache-first.png" alt="浏览器缓存"> </p>
+<h5 id="后续请求"><a href="#后续请求" class="headerlink" title="后续请求"></a>后续请求</h5><p><img src="/assets/img/browser-cache.png" alt="浏览器缓存"> </p>
+<h4 id="为什么要有ETag，Last-Modified存在哪些问题？"><a href="#为什么要有ETag，Last-Modified存在哪些问题？" class="headerlink" title="为什么要有ETag，Last-Modified存在哪些问题？"></a>为什么要有ETag，Last-Modified存在哪些问题？</h4><p>你可能会觉得使用Last-Modified已经足以让浏览器知道本地的缓存副本是否足够新，为什么还需要Etag呢？HTTP1.1中Etag的出现（也就是说，ETag是新增的，为了解决之前只有If-Modified的缺点）主要是为了解决几个Last-Modified比较难解决的问题：</p>
+<ul>
+<li>一些文件也许会周期性的更改，但是他的内容并不改变(仅仅改变的修改时间)，这个时候我们并不希望客户端认为这个文件被修改了，而重新GET；</li>
+<li>某些文件修改非常频繁，比如在秒以下的时间内进行修改，(比方说1s内修改了N次)，If-Modified-Since能检查到的粒度是s级的，这种修改无法判断(或者说UNIX记录MTIME只能精确到秒)；</li>
+<li>某些服务器不能精确的得到文件的最后修改时间。</li>
+</ul>
+<h4 id="强缓存和协商缓存区别是什么？"><a href="#强缓存和协商缓存区别是什么？" class="headerlink" title="强缓存和协商缓存区别是什么？"></a>强缓存和协商缓存区别是什么？</h4><ul>
+<li>缓存类型一个是强缓存一个是写上缓存，通过Cache-Control判断</li>
+<li>状态码不同：强缓存状态码200，协商缓存状态码304</li>
+<li>强缓存不会去服务器拿资源。协商缓存通过服务器来告知去哪里拿资源</li>
+</ul>
+<h4 id="用户哪些行为刷新页面对缓存影响（转载：https-www-pianshen-com-article-31621262769-）"><a href="#用户哪些行为刷新页面对缓存影响（转载：https-www-pianshen-com-article-31621262769-）" class="headerlink" title="用户哪些行为刷新页面对缓存影响（转载：https://www.pianshen.com/article/31621262769/）"></a>用户哪些行为刷新页面对缓存影响（转载：<a href="https://www.pianshen.com/article/31621262769/）" target="_blank" rel="noopener">https://www.pianshen.com/article/31621262769/）</a></h4><p><img src="/assets/img/behavior.png" alt="用户行为"> </p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">http</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">缓存</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/11/11/浏览器缓存/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Normalize-css用途" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1051,184 +1168,9 @@ var factorial = (<span class="keyword">function</span> f(n){
 
 
   
-    <article id="post-数据库加密与java加密一致性" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/22/数据库加密与java加密一致性/">数据库加密与java加密一致性</a>
-    </h1>
-  
-
-        
-        <a href="/2019/10/22/数据库加密与java加密一致性/" class="archive-article-date">
-  	<time datetime="2019-10-22T09:49:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>本篇博主主要根据红宝书里讲到的JSON大家不常用到的功能，但是很实用的功能做介绍。</p>
-</blockquote>
-<h2 id="栏目"><a href="#栏目" class="headerlink" title="栏目"></a>栏目</h2><ul>
-<li>目的</li>
-<li>JAVA加密/解密具类</li>
-<li>Postgresql加密解密</li>
-<li>Postgresql加密解密函数</li>
-</ul>
-<hr>
-<h3 id="一、目的"><a href="#一、目的" class="headerlink" title="一、目的"></a>一、目的</h3><p>为了安全起见，项目中要对用户的敏感信息（手机号，邮箱，护照号，社保卡号，身份证号，银行卡号）进行加密处理。那么就需要一套加密解密算法，并保证服务器端和数据库端加密解密的一致性。</p>
-<h3 id="二、JAVA加密-解密工具类"><a href="#二、JAVA加密-解密工具类" class="headerlink" title="二、JAVA加密/解密工具类"></a>二、JAVA加密/解密工具类</h3><pre><code class="bash">public class AesUtil {
-
-    private static final String ALGORITHM_MODE_PADDING5 = <span class="string">"AES/ECB/PKCS5Padding"</span>; //support 16 length key
-    private final static String KEY = <span class="string">"0000000000888888"</span>;//at least 16 characters
-
-
-    /**
-     * AES加密字符串
-     * @param content
-     * @<span class="built_in">return</span> 密文
-     */
-    public static String encrypt(String content) {
-        try {
-            byte[] byteContent = content.getBytes(<span class="string">"utf-8"</span>);
-            SecretKeySpec skeySpec = new SecretKeySpec(KEY.getBytes(<span class="string">"UTF-8"</span>), <span class="string">"AES"</span>);// 转换为AES专用密钥
-            Cipher cipher = Cipher.getInstance(ALGORITHM_MODE_PADDING5);
-            cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
-            byte[] resultByter = cipher.doFinal(byteContent);// 加密
-            String result = encodeBase64(resultByter);
-            <span class="built_in">return</span> result;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        <span class="built_in">return</span> null;
-    }
-
-    /**
-     * 解密AES加密过的字符串
-     * @param content
-     * @<span class="built_in">return</span> 明文
-     */
-    public static String  decrypt(String  content) {
-        try {
-            byte[] contentBytes = decodeBase64(content);
-            SecretKeySpec skeySpec = new SecretKeySpec(KEY.getBytes(<span class="string">"UTF-8"</span>), <span class="string">"AES"</span>);
-            Cipher cipher = Cipher.getInstance(ALGORITHM_MODE_PADDING5);
-            cipher.init(Cipher.DECRYPT_MODE, skeySpec);
-            String result = new String(cipher.doFinal(contentBytes),<span class="string">"UTF-8"</span>);
-            <span class="built_in">return</span> result; // 明文
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        <span class="built_in">return</span> null;
-    }
-
-
-    public static byte[] decodeBase64(String encodedText)
-    {
-        final java.util.Base64.Decoder decoder = java.util.Base64.getDecoder();
-        <span class="built_in">return</span> decoder.decode(encodedText);
-    }
-
-    public static String encodeBase64(byte[] data)
-    {
-        final java.util.Base64.Encoder encoder = java.util.Base64.getEncoder();
-        <span class="built_in">return</span> encoder.encodeToString(data);
-    }
-
-    public static void main(String[] args) throws Exception{
-        String content = <span class="string">"welcome to 明仔博客"</span>;
-        String encryptStr =  AesUtil.encrypt(content);
-        System.out.println(<span class="string">"加密后："</span> + encryptStr);
-        String decryptStr = AesUtil.decrypt(encryptStr);
-        System.out.println(<span class="string">"解密后的内容："</span> + decryptStr);
-    }
-}
-</code></pre>
-<p>运行结果如下图<br><img src="/assets/img/result.png" alt="图片"></p>
-<h3 id="二、Postgresql加密解密"><a href="#二、Postgresql加密解密" class="headerlink" title="二、Postgresql加密解密"></a>二、Postgresql加密解密</h3><p>首先需要在Postgresql数据库端安装pgcrypto模块, 为了使用decrypt和encrypt函数</p>
-<p>create extension pgcrypto</p>
-<p>SELECT encode(encrypt(‘welcome to 明仔博客’::bytea,’0000000000888888’,’aes-ecb’),’base64’) </p>
-<font color="#eb7350" size="2">值得注意的是秘钥和加密模式要一致,也可以通过创建数据库函数来简化加密过程</font>
-
-<p>运行结果如下图<br><img src="/assets/img/postgresql.png" alt="图片"></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Postgresql</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">AES</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">加密encrypt</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">解密decrypt</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/10/22/数据库加密与java加密一致性/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
   
 
@@ -1323,42 +1265,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">VsCode</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Sass</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Mockjs</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Ajax</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">模拟数据</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">JSON</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">JS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">前端</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">对象</a>
               </li>
              
@@ -1375,11 +1281,55 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">JSON</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">JS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">前端</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Mockjs</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Ajax</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">模拟数据</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">VsCode</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Sass</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">bootstrap</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">carousel</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">css</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">布局</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1391,11 +1341,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">css</a>
+                <a href="javascript:void(0)" class="js-tag color2">jdk1.8</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">布局</a>
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1408,18 +1358,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">数据库</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">微信公众号</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">微信浏览器</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">WeixinJSBridge</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1443,6 +1381,18 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">微信公众号</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">微信浏览器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">WeixinJSBridge</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">JAVA</a>
               </li>
              
@@ -1463,11 +1413,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">jdk1.8</a>
+                <a href="javascript:void(0)" class="js-tag color5">错误处理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">java</a>
+                <a href="javascript:void(0)" class="js-tag color3">js</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">http</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1476,14 +1434,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">浏览器</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">错误处理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">js</a>
               </li>
              
               <li class="article-tag-list-item">
