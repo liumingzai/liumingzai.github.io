@@ -181,12 +181,15 @@
     <div class="article-entry" itemprop="articleBody">
       
         <blockquote>
-<p>接到一个面试题合并二维数组成一维有序数组。要求用reduce实现。我想foreach和for在此时被reduce的逼格虐倒。按照我的疑惑来了解一下reduce。</p>
+<p>reduce在我们实际开发中的高逼格应用</p>
 </blockquote>
-<pre><code>reduce的语法按我的理解其实是一个callback回调包含四个参数，以及一个初始值initalValue
-
-四个参数分别是: previousValue、currentValue、index、array。我觉得需要强调的可能有第一个参数，表示上一次回调返回值或者initialValue。第三个参数index是从1开始的，如果要从0开始可以设置initalValue为0
-</code></pre><h4 id="常用来回答一套传统的面试题，求数组元素的和（工作好几年的我第一个印象还是循环）那么高逼格的写法是如何的呢？"><a href="#常用来回答一套传统的面试题，求数组元素的和（工作好几年的我第一个印象还是循环）那么高逼格的写法是如何的呢？" class="headerlink" title="常用来回答一套传统的面试题，求数组元素的和（工作好几年的我第一个印象还是循环）那么高逼格的写法是如何的呢？"></a>常用来回答一套传统的面试题，求数组元素的和（工作好几年的我第一个印象还是循环）那么高逼格的写法是如何的呢？</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">let</span> arr = [1,2,3,4,5];</span><br><span class="line"><span class="built_in">let</span> sum = arr.reduce(<span class="keyword">function</span>(prev, cur, index, arr)&#123;</span><br><span class="line">  console.log(prev, cur, index);</span><br><span class="line">  <span class="built_in">return</span> prev+cur;  // pre上一次回调返回值</span><br><span class="line">&#125;)</span><br><span class="line">console.log(sum);  //15</span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line">1 2 1</span><br><span class="line">3 3 2</span><br><span class="line">6 4 3</span><br><span class="line">10 5 4</span><br><span class="line">15</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>reduce的语法按我的理解其实是一个callback回调包含四个参数，以及一个初始值initalValue</p>
+</li>
+<li><p>四个参数分别是: previousValue、currentValue、index、array。我觉得需要强调的可能有第一个参数，表示上一次回调返回值或者initialValue。第三个参数index是从1开始的，如果要从0开始可以设置initalValue为0</p>
+</li>
+</ul>
+<h4 id="常用来回答一套传统的面试题，求数组元素的和（工作好几年的我第一个印象还是循环）那么高逼格的写法是如何的呢？"><a href="#常用来回答一套传统的面试题，求数组元素的和（工作好几年的我第一个印象还是循环）那么高逼格的写法是如何的呢？" class="headerlink" title="常用来回答一套传统的面试题，求数组元素的和（工作好几年的我第一个印象还是循环）那么高逼格的写法是如何的呢？"></a>常用来回答一套传统的面试题，求数组元素的和（工作好几年的我第一个印象还是循环）那么高逼格的写法是如何的呢？</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">let</span> arr = [1,2,3,4,5];</span><br><span class="line"><span class="built_in">let</span> sum = arr.reduce(<span class="keyword">function</span>(prev, cur, index, arr)&#123;</span><br><span class="line">  console.log(prev, cur, index);</span><br><span class="line">  <span class="built_in">return</span> prev+cur;  // pre上一次回调返回值</span><br><span class="line">&#125;)</span><br><span class="line">console.log(sum);  //15</span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line">1 2 1</span><br><span class="line">3 3 2</span><br><span class="line">6 4 3</span><br><span class="line">10 5 4</span><br><span class="line">15</span><br></pre></td></tr></table></figure>
 <h4 id="可能有人和我一样，觉得这个initailValue又什么用呢？我们对比一下下面的代码"><a href="#可能有人和我一样，觉得这个initailValue又什么用呢？我们对比一下下面的代码" class="headerlink" title="可能有人和我一样，觉得这个initailValue又什么用呢？我们对比一下下面的代码"></a>可能有人和我一样，觉得这个initailValue又什么用呢？我们对比一下下面的代码</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">let</span> arr = [];</span><br><span class="line"><span class="built_in">let</span> sum = arr.reduce(<span class="keyword">function</span>(prev, cur)&#123;</span><br><span class="line">  <span class="built_in">return</span> prev+cur; </span><br><span class="line">&#125;)</span><br><span class="line">console.log(sum);  //报错，<span class="string">"TypeError: Reduce of empty array with no initial value"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">let</span> arr = [];</span><br><span class="line"><span class="built_in">let</span> sum = arr.reduce(<span class="keyword">function</span>(prev, cur)&#123;</span><br><span class="line">  <span class="built_in">return</span> prev+cur;  </span><br><span class="line">&#125;, 0)</span><br><span class="line">console.log(sum);  // 0</span><br></pre></td></tr></table></figure>
 <h4 id="上面简单的reduce用法已经介绍完了，那么我们看看如何玩转reduce，从几个算法面试题入手"><a href="#上面简单的reduce用法已经介绍完了，那么我们看看如何玩转reduce，从几个算法面试题入手" class="headerlink" title="上面简单的reduce用法已经介绍完了，那么我们看看如何玩转reduce，从几个算法面试题入手"></a>上面简单的reduce用法已经介绍完了，那么我们看看如何玩转reduce，从几个算法面试题入手</h4><ul>
 <li>第一道算法题：获取数组中每个元素重复次数（返回一个对象，initalValue定义为空对象）</li>
@@ -203,7 +206,19 @@
 <ul>
 <li>第四道算法题：将多维数组转换为一维有序数组(偏平化)</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">let</span> arr =[[1, [2, [3,7],[5,7]]]];</span><br><span class="line"><span class="built_in">let</span> result = <span class="keyword">function</span>(arr) &#123;</span><br><span class="line">  <span class="built_in">return</span> arr.reduce((pre, cur) =&gt; pre.concat(Array.isArray(cur)? result(cur): cur),[])</span><br><span class="line">&#125;</span><br><span class="line">console.log(result(arr));</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"> <span class="built_in">let</span> arr =[[1, [2, [3,7],[5,7]]]];</span><br><span class="line"> <span class="built_in">let</span> result = <span class="keyword">function</span>(arr) &#123;</span><br><span class="line">   <span class="built_in">return</span> arr.reduce((pre, cur) =&gt; pre.concat(Array.isArray(cur)? result(cur): cur),[])</span><br><span class="line"> &#125;</span><br><span class="line"> console.log(result(arr));</span><br><span class="line"></span><br><span class="line"> 运行结果：</span><br><span class="line">[ 1, 2, 3, 7, 5, 7 ]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第五道算法题：生成裴波那契数列</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">const fibonacci = (n) =&gt; &#123;</span><br><span class="line">  <span class="built_in">return</span> Array(n).fill(0).reduce((pre, cur,i)=&gt; &#123;</span><br><span class="line">    console.log(pre, cur, i)</span><br><span class="line">    <span class="built_in">return</span> pre.concat(i&gt;1 ? pre[i-1]+pre[i-2]: i) </span><br><span class="line">  &#125; ,[])</span><br><span class="line">    </span><br><span class="line">&#125; </span><br><span class="line">console.log(fibonacci(5))</span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line">[] 0 0</span><br><span class="line">[ 0 ] 0 1</span><br><span class="line">[ 0, 1 ] 0 2</span><br><span class="line">[ 0, 1, 1 ] 0 3</span><br><span class="line">[ 0, 1, 1, 2 ] 0 4</span><br><span class="line">[ 0, 1, 1, 2, 3 ]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第六道算法题：过滤对象key属性</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">const pick = (obj, arr)=&gt;</span><br><span class="line">  arr.reduce((pre, cur)=&gt; &#123;</span><br><span class="line">    // <span class="keyword">if</span>(cur <span class="keyword">in</span> obj) &#123;</span><br><span class="line">    <span class="keyword">if</span>(Object.keys(obj).includes(cur))&#123;</span><br><span class="line">      pre[cur] = obj[cur]</span><br><span class="line">      <span class="built_in">return</span> pre;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;, &#123;&#125;)</span><br><span class="line"></span><br><span class="line">console.dir(pick(&#123;id: 12, name: <span class="string">'张三'</span> , age:24&#125;, [<span class="string">'id'</span>, <span class="string">'name'</span>]));</span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line">&#123; id: 12, name: <span class="string">'张三'</span> &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第七道算法题：分组聚合</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">运行结果：</span><br></pre></td></tr></table></figure>
 <h4 id="其实reduce操作不局限于数组，只要可枚举的类型都适用"><a href="#其实reduce操作不局限于数组，只要可枚举的类型都适用" class="headerlink" title="其实reduce操作不局限于数组，只要可枚举的类型都适用"></a>其实reduce操作不局限于数组，只要可枚举的类型都适用</h4><pre><code class="bash"><span class="built_in">let</span> personIncome = [{category:<span class="string">"salary"</span>, value: 2000}, {category:<span class="string">"performace"</span>, value: 500},  {category:<span class="string">"benefits"</span>, value: 500}];
 <span class="built_in">let</span> payment = personIncome.reduce((pre, cur)=&gt; {
   <span class="built_in">return</span> pre + cur.value;
@@ -213,6 +228,7 @@ console.log(payment);
 
 运行结果：
 3000
+
 </code></pre>
 
       
@@ -1306,26 +1322,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">前端</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">css</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">布局</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">JSON</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">JS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Mockjs</a>
               </li>
              
@@ -1338,23 +1334,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
+                <a href="javascript:void(0)" class="js-tag color5">JSON</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">响应式</a>
+                <a href="javascript:void(0)" class="js-tag color3">JS</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Primefaces</a>
+                <a href="javascript:void(0)" class="js-tag color3">前端</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">jsf</a>
+                <a href="javascript:void(0)" class="js-tag color4">css</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">ajax</a>
+                <a href="javascript:void(0)" class="js-tag color3">布局</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1366,11 +1362,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">es6</a>
+                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">reduce</a>
+                <a href="javascript:void(0)" class="js-tag color4">响应式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1379,14 +1375,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">java</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Javascript</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">递归算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1402,11 +1390,43 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">http</a>
+                <a href="javascript:void(0)" class="js-tag color1">Javascript</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
+                <a href="javascript:void(0)" class="js-tag color5">递归算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Primefaces</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">jsf</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">ajax</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">es6</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">reduce</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">微信公众号</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">微信浏览器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">WeixinJSBridge</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1430,15 +1450,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">微信公众号</a>
+                <a href="javascript:void(0)" class="js-tag color5">http</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">微信浏览器</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">WeixinJSBridge</a>
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1450,15 +1466,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">javasScript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">错误处理</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">js</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">javasScript</a>
               </li>
              
               <li class="article-tag-list-item">
