@@ -160,6 +160,285 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-margin塌陷" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/10/margin塌陷/">margin塌陷</a>
+    </h1>
+  
+
+        
+        <a href="/2020/03/10/margin塌陷/" class="archive-article-date">
+  	<time datetime="2020-03-10T03:30:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>这涉及到浏览器对BFC约束,下一篇博文介绍BFC.简单的介绍一下margin塌陷和margin合并问题产生的原因及如何解决</p>
+</blockquote>
+<h4 id="margin塌陷"><a href="#margin塌陷" class="headerlink" title="margin塌陷"></a>margin塌陷</h4><p>什么是margin塌陷？下面代码，我们给子元素添加margin当值小于100px你会发现没有任何变化，当大于100px你会发现父元素和子元素一起变动，父子元素的位置没有变动。这就是产生了margin塌陷，父元素相对于浏览器定位，而子元素没有相对于父元素定位。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=<span class="string">"en"</span>&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta charset=<span class="string">"UTF-8"</span>&gt;</span><br><span class="line">&lt;title&gt;margin-塌陷&lt;/title&gt;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">     .parent&#123;</span><br><span class="line">         width:200px;</span><br><span class="line">         height:200px;</span><br><span class="line">         background-color:<span class="comment">#0f0;</span></span><br><span class="line">         margin-top:100px;</span><br><span class="line">     &#125;</span><br><span class="line">     .child&#123;</span><br><span class="line">         width:50px;</span><br><span class="line">	     height:50px;</span><br><span class="line">         background-color:<span class="comment">#00f;</span></span><br><span class="line">         opacity:0.8;</span><br><span class="line">     &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body &gt;</span><br><span class="line">	&lt;div class=<span class="string">"parent"</span>&gt;</span><br><span class="line">		&lt;div class=<span class="string">"child"</span>&gt;&lt;/div&gt;</span><br><span class="line">	&lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line"></span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="/assets/img/margin1.png" alt="概览"></p>
+<p>如何解决margin塌陷？最直接的是给父元素增加broder，但不推荐。需要根据BFC约束，触发BFC(块级格式上下文),改变父级的渲染规则,如下四种触发BFC的方法，添加到parent中</p>
+<p>(1)position:absolute/fixed</p>
+<p>(2)display:inline-block;</p>
+<p>(3)float:left/right</p>
+<p>(4)overflow:hidden</p>
+<h4 id="margin合并"><a href="#margin合并" class="headerlink" title="margin合并"></a>margin合并</h4><p>什么是margin合并？如下代码在浏览器运行后会发现，box1和box2之间的间隙不是250px而是150px，取最大的合并了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=<span class="string">"en"</span>&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta charset=<span class="string">"UTF-8"</span>&gt;</span><br><span class="line">&lt;title&gt;margin-合并&lt;/title&gt;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">     .box1&#123;</span><br><span class="line">         width:100px;</span><br><span class="line">         height:100px;</span><br><span class="line">         background-color:<span class="comment">#0f0;</span></span><br><span class="line">         margin-bottom:100px;</span><br><span class="line">     &#125;</span><br><span class="line">     .box2&#123;</span><br><span class="line">         width:100px;</span><br><span class="line">	     height:100px;</span><br><span class="line">         background-color:<span class="comment">#00f;</span></span><br><span class="line">		 margin-top:150px;</span><br><span class="line">     &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body &gt;</span><br><span class="line">	&lt;div class=<span class="string">"box1"</span>&gt;&lt;/div&gt;</span><br><span class="line">	&lt;div class=<span class="string">"box2"</span>&gt;&lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line"></span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="/assets/img/margin2.png" alt="概览"></p>
+<p>如何解决margin合并问题？ 给box2包一层父元素，按照BFC原则设置overflow:hidden。或者给两个box都包一层父元素<br>如果不改变html结构，可以直接设置父元素的margin-bottom为250px</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">css</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">布局</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/03/10/margin塌陷/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-如何编写高质量的递归函数" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/10/如何编写高质量的递归函数/">如何编写高质量的递归函数</a>
+    </h1>
+  
+
+        
+        <a href="/2020/03/10/如何编写高质量的递归函数/" class="archive-article-date">
+  	<time datetime="2020-03-10T02:58:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>大家对于阶乘:4!=4×3×2×1=24或者裴波那契数列F(n) = F(n-1) + F(n-2)都会想到递归算法,写一个递归函数需要注意什么呢请往下看。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">function</span> factorial(n)&#123;</span><br><span class="line">    <span class="keyword">if</span>(n&lt;=1) <span class="built_in">return</span> 1;</span><br><span class="line">    <span class="keyword">if</span>(n&gt;1) <span class="built_in">return</span> n * factorial(n-1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这是一个经典的求阶乘的递归,表面上看没什么问题，我们写下面一段代码却可以导致它报错</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">function</span> factorial(n)&#123;</span><br><span class="line">    <span class="keyword">if</span>(n&lt;=1) <span class="built_in">return</span> 1;</span><br><span class="line">    <span class="keyword">if</span>(n&gt;1) <span class="built_in">return</span> n * factorial(n-1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var other = factorial;</span><br><span class="line">factorial = null;</span><br><span class="line">console.log(other(4)) // 报错Uncaught TypeError: factorial is not a <span class="keyword">function</span> at factorial</span><br></pre></td></tr></table></figure>
+<p>什么原因导致报错呢？首先分析我们将factorial()函数保存到变量other中，再将factorial置为null，执行other()就会调用factorial(),此时的factorial已经不是一个函数。如何解决呢？<br>引入arguments.callee可以解决这个问题，因为arguments.callee是一个指向正在执行的函数指针，因此可以用它实现递归调用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">function</span> factorial(n)&#123;</span><br><span class="line">    <span class="keyword">if</span>(n&lt;=1) <span class="built_in">return</span> 1;</span><br><span class="line">    <span class="keyword">if</span>(n&gt;1) <span class="built_in">return</span> n * arguments.callee(n-1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那么大功告成了吗？因为在严格模式下，不能通过脚本访问arguments.callee。所以需要使用命名函数表达式来达到效果</p>
+<pre><code class="bash">
+var factorial = (<span class="keyword">function</span> f(n){
+    <span class="keyword">if</span>(n&lt;=1) <span class="built_in">return</span> 1;
+    <span class="keyword">if</span>(n&gt;1) <span class="built_in">return</span> n * f(n-1);
+});
+
+</code></pre>
+<p>上述代码创建了一个IIFE的函数表达式，将它赋值给factorial。此时对factorial做任何置null或者把函数赋值给另一个变量。函数名字f仍然生效</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Javascript</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">递归算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/03/10/如何编写高质量的递归函数/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-获取浏览器缩放比例" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/01/14/获取浏览器缩放比例/">获取浏览器缩放比例</a>
+    </h1>
+  
+
+        
+        <a href="/2020/01/14/获取浏览器缩放比例/" class="archive-article-date">
+  	<time datetime="2020-01-14T05:51:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-14</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本篇博主在开发中遇到一个问题,编码样式已经通过@media screen的CSS3适配了不同设备分辨率，但是浏览器缩放样式还是出现尴尬的一幕。</p>
+</blockquote>
+<p>下面贴出获取浏览器缩放比例的代码。转载的原地址忘记了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  <span class="keyword">function</span> <span class="function"><span class="title">browserZoom</span></span> ()&#123;</span><br><span class="line">    var ratio = 0;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (window.devicePixelRatio !== undefined) &#123;</span><br><span class="line">        ratio = window.devicePixelRatio;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (~navigator.userAgent.toLowerCase().indexOf(<span class="string">'msie'</span>)) &#123;</span><br><span class="line">      <span class="keyword">if</span> (window.screen.deviceXDPI &amp;&amp; window.screen.logicalXDPI) &#123;</span><br><span class="line">        ratio = window.screen.deviceXDPI / window.screen.logicalXDPI;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (window.outerWidth !== undefined &amp;&amp; window.innerWidth !== undefined) &#123;</span><br><span class="line">      ratio = window.outerWidth / window.innerWidth;</span><br><span class="line">    &#125;</span><br><span class="line">      </span><br><span class="line">    <span class="keyword">if</span> (ratio)&#123;</span><br><span class="line">      ratio = Math.round(ratio * 100);</span><br><span class="line">    &#125;</span><br><span class="line">      </span><br><span class="line">    <span class="built_in">return</span> ratio;</span><br><span class="line">  &#125;;</span><br><span class="line">browserZoom();</span><br></pre></td></tr></table></figure>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">JavaScript</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">浏览器</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/01/14/获取浏览器缩放比例/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Mockjs如何模拟数据接口" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1008,313 +1287,6 @@ process属性值： @all(更新整个文件慎用) @parent(包含当前，同级
 
 
   
-    <article id="post-微信浏览器内置WexinJSBridge对象" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/05/微信浏览器内置WexinJSBridge对象/">微信浏览器内置WexinJSBridge对象</a>
-    </h1>
-  
-
-        
-        <a href="/2019/07/05/微信浏览器内置WexinJSBridge对象/" class="archive-article-date">
-  	<time datetime="2019-07-05T09:31:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-05</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="微信浏览器内置JS对象WeixinJSBridge"><a href="#微信浏览器内置JS对象WeixinJSBridge" class="headerlink" title="微信浏览器内置JS对象WeixinJSBridge"></a>微信浏览器内置JS对象WeixinJSBridge</h3><blockquote>
-<p>微信公众号平台支持前端网页，可以分享朋友圈，关注微信，可以关闭公众号等</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">// 分享朋友圈</span><br><span class="line"><span class="keyword">function</span> weixinShareTimeline(title, desc, link, imgUrl) &#123;</span><br><span class="line">    weixinJSBridge.invoke(<span class="string">'shareTimeLine'</span>, &#123;</span><br><span class="line">    <span class="string">"img_url"</span>: imgUrl,</span><br><span class="line">    <span class="string">"link"</span>: link,</span><br><span class="line">    <span class="string">"desc"</span>: desc,</span><br><span class="line">    <span class="string">"title"</span>: title</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 发送好友</span><br><span class="line"><span class="keyword">function</span> weixinSendAppMessage(title, desc, link, imgUrl) &#123;</span><br><span class="line">    weixinJSBridge.invoke(<span class="string">'sendAppMessage'</span>, &#123;</span><br><span class="line">        <span class="string">"img_url"</span>: imgUrl,</span><br><span class="line">        <span class="string">"link"</span>: link,</span><br><span class="line">        <span class="string">"desc"</span>: desc,</span><br><span class="line">        <span class="string">"title"</span>: title</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 分享到腾讯微博</span><br><span class="line"><span class="keyword">function</span> weixinShareWeibo(title, link) &#123;</span><br><span class="line">     weixinJSBridge.invoke(<span class="string">'shareWeibo'</span>, &#123;</span><br><span class="line">        <span class="string">"content"</span>: title+link,</span><br><span class="line">        <span class="string">"url"</span>: link,</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//关注微信号</span><br><span class="line"><span class="keyword">function</span> weixinAddContact(name) &#123;</span><br><span class="line">     weixinJSBridge.invoke(<span class="string">'addContact'</span>, &#123;webtype: <span class="string">'1'</span>, username: name&#125;, <span class="keyword">function</span>(e)&#123;</span><br><span class="line">         WeixinJSBridge.log(e.err_msg);</span><br><span class="line">         <span class="keyword">if</span>(e.err_msg == <span class="string">'add_contact:add'</span> || e.err_msg ==<span class="string">'add_contact:ok'</span>) &#123;</span><br><span class="line">             // add sucesss</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//关闭安卓手机公众号</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">closeWindow</span></span>()&#123;</span><br><span class="line">    document.addEventListener(<span class="string">'WeixinJSBridgeReady'</span>, <span class="function"><span class="title">function</span></span>()&#123;</span><br><span class="line">        WeixinJSBridge.call(<span class="string">'closeWindow'</span>);</span><br><span class="line">    &#125;, <span class="literal">false</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 关闭ios公众号</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">closeWindow</span></span>()&#123;</span><br><span class="line">    WeixinJSBridge.call(<span class="string">'closeWindow'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">微信公众号</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">微信浏览器</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">WeixinJSBridge</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/07/05/微信浏览器内置WexinJSBridge对象/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-EasySass插件使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/31/EasySass插件使用/">EasySass插件使用</a>
-    </h1>
-  
-
-        
-        <a href="/2019/05/31/EasySass插件使用/" class="archive-article-date">
-  	<time datetime="2019-05-31T06:39:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-31</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>VsCode是我用的最好用的一个前端开发工具，里面有很多成熟的插件，可以帮我们高效的解决很多问题</p>
-</blockquote>
-<h3 id="本博文主要介绍EasyScss插件的应用"><a href="#本博文主要介绍EasyScss插件的应用" class="headerlink" title="本博文主要介绍EasyScss插件的应用"></a>本博文主要介绍EasyScss插件的应用</h3><font size="2"> 问题是由于对于写带有循环分支的scss想转css迁移到其他项目中应用,话不多说我们直奔主题<br><br><br>在Vscode插件中搜索EeasySass插件进行安装，插件中有说明如何编译scss to css<br><br><img src="/assets/img/easyscss.png" alt="插件预览"><br><br><font size="2"> 打开一个scss文件，选择ctrl+shift+p, 或者右击打开Command paletter.., 输入complie all file scss/sass in the project, 就可以看到生成的css和map文件<br><br><font color="#dd0000">其他vscode插件，后期继续更新！！！</font>
-
-</font></font>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">VsCode</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Sass</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">CSS</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/05/31/EasySass插件使用/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-mysql查询性能优化" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/29/mysql查询性能优化/">mysql查询性能优化</a>
-    </h1>
-  
-
-        
-        <a href="/2019/05/29/mysql查询性能优化/" class="archive-article-date">
-  	<time datetime="2019-05-29T07:31:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-29</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="MySql优化-查询优化"><a href="#MySql优化-查询优化" class="headerlink" title="MySql优化-查询优化"></a>MySql优化-查询优化</h3><blockquote>
-<p>mysql的优化主要分为：查询优化+索引优化+库表解构优化等起头并进。</p>
-</blockquote>
-<h4 id="本博文仅对查询优化进行梳理总结"><a href="#本博文仅对查询优化进行梳理总结" class="headerlink" title="本博文仅对查询优化进行梳理总结"></a>本博文仅对查询优化进行梳理总结</h4><ul>
-<li>为什么查询慢</li>
-<li>优化数据访问</li>
-<li>重构查询方式</li>
-<li>查询执行基础</li>
-<li>查询优化器</li>
-</ul>
-<hr>
-<h4 id="一、为什么查询慢"><a href="#一、为什么查询慢" class="headerlink" title="一、为什么查询慢"></a>一、为什么查询慢</h4><p>   <font size="2">查询的生命周期： 客户端&gt;服务器&gt;服务器解析查询&gt;生成执行计划&gt;执行&gt;返回客户端 </font></p>
-<p>   造成查询慢的主要因素：包括网络，cpu计算，生成统计信息和执行计划，所等待（互斥等待）等操作，向底层存储引擎检索数据的调用操作。</p>
-<p>   总结：把查询当成一个任务，对一系列的子任务进行优化。</p>
-<h4 id="二、优化数据访问"><a href="#二、优化数据访问" class="headerlink" title="二、优化数据访问"></a>二、优化数据访问</h4><p>   <font size="2">检索大量超过需要的数据（太多行和列）例如：我们的分页limit就是优化检索数据行</font></p>
-<p>   尽量少用SELECT *，精确到指定的列或者关联的主表字段</p>
-<p>   响应时间的影响因素：存储引擎的锁（表锁，行锁）、高并发资源竞争、硬件响应等。推荐”快速上限估计”法来评估响应时间是否合理</p>
-<p>   扫描行数和返回行数比率越小越好。在1:1~10:1之间</p>
-<p>   对扫描行数寻找合适的访问类型，访问类型需要了解自扫描表、扫描索引、范围访问和单值访问的概念。通过EXPLAIN结果可以查看访问类型</p>
-<h4 id="三、重构查询方式"><a href="#三、重构查询方式" class="headerlink" title="三、重构查询方式"></a>三、重构查询方式</h4><p>   <font size="2">分而治之，将大查询分解成小查询，如果是事物引擎可以提高效率，减少服务器一次处理成本和压力，减少锁持有时间</font></p>
-<p>   <font size="2">分解关联查询可以让缓存效率更高，减少锁的竞争，减少记录冗余查询，在应用层面做关联查询提高性能便于扩展，减少重复访问数据，相当于实现了哈希关联</font></p>
-<h4 id="三、查询执行的基础（查询过程）"><a href="#三、查询执行的基础（查询过程）" class="headerlink" title="三、查询执行的基础（查询过程）"></a>三、查询执行的基础（查询过程）</h4><ol>
-<li>客户端发请求给服务器</li>
-<li>服务器先检查查询缓存，如果有缓存，立即返回缓存结果，否则进行下一阶段</li>
-<li>服务器进行SQL解析，预处理，再有优化器生成对应执行计划</li>
-<li>mysql根据执行计划生成查询执行引擎，调用存储引擎的API接口执行查询</li>
-<li>返回结果给客户端</li>
-</ol>
-<hr>
-<p>   <font size="2">Mysql客户端服务器之间通信采用半双工通信协议，通过设置max_allowed_packet控制查询太大，服务器端拒收更多数据抛出错误</font></p>
-<p>   <font size="2">Mysql的查询状态，每一个mysql链接都可看做一个线程，任何时刻都有一个状态，可以通过show full processlist命令查看</font></p>
-<ol>
-<li>sleep: 线程等待客户端发送新请求</li>
-<li>query：线程正在执行查询或者将结果返回给客户端</li>
-<li>locked: 服务器层，该线程正在等待锁(表锁，行锁)</li>
-<li>analyzing and statistics: 线程正在收集存储引擎的统计信息，并生成查询执行计划</li>
-<li>copying to tmp table [on desk] 线程正在执行查询，并将结果复制临时表，一般用于group by操作或者文件排序，union等，内存临时表如果标记[on desk]标识放到磁盘上</li>
-<li>sorting result：线程正在对结果集进行排序</li>
-<li>sending data：线程可能做多个状态间传递数据，或者生产结果集或者向客户的返回数据</li>
-</ol>
-<hr>
-<p>   <font size="2">查询缓存query cache计算查询语句哈希值，移除注解；检查是否命中缓存通过一个对大小写敏感的哈希查找实现，如果当前查询命中缓存，直接返回结果。</font></p>
-<h4 id="四、查询优化器（重点）"><a href="#四、查询优化器（重点）" class="headerlink" title="四、查询优化器（重点）"></a>四、查询优化器（重点）</h4><p>   <font size="2">查询优化器在进行语解析和预处理后，找到最好的执行计划。</font></p>
-<p>   Mysql能够处理的优化类型：</p>
-<ol>
-<li>重新定义关联表顺序</li>
-<li>将外连接转内连接</li>
-<li>使用等价变换规则</li>
-<li>优化count() min() max() 通过查询对于B-Tree索引来优化</li>
-<li>预估并转化为常数表达式</li>
-<li>覆盖索引扫描</li>
-<li>子查询优化</li>
-<li>提前终止查询</li>
-<li>等值传播</li>
-<li>列表IN()的比较，mysql会对IN()数据先排序再进行二分查找，查询复杂度O(log n)相对于OR复杂度O(n)速度更快</li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">db</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">数据库</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/05/29/mysql查询性能优化/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
@@ -1412,34 +1384,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">对象</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">参数解构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">ES6</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">VsCode</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Sass</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">JSON</a>
               </li>
              
@@ -1480,11 +1424,39 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">对象</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">参数解构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">ES6</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">HTML</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">响应式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">作用域</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">执行环境</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1496,55 +1468,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">db</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Primefaces</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">jsf</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">ajax</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Javascript</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">递归算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">es6</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">reduce</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">微信公众号</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">微信浏览器</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">WeixinJSBridge</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1568,6 +1496,38 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Primefaces</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">jsf</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">ajax</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">递归算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">微信公众号</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">微信浏览器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">WeixinJSBridge</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">http</a>
               </li>
              
@@ -1576,11 +1536,31 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">错误处理</a>
+                <a href="javascript:void(0)" class="js-tag color2">VsCode</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">js</a>
+                <a href="javascript:void(0)" class="js-tag color5">Sass</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">closure</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">db</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1589,6 +1569,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">浏览器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">错误处理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">js</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1605,6 +1593,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">安全漏洞</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">prototype</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">继承</a>
               </li>
             
             <div class="clearfix"></div>
