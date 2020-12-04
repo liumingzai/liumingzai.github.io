@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="明仔的博客">
 <meta property="og:description" content="reduce在我们实际开发中的高逼格应用   reduce的语法按我的理解其实是一个callback回调包含四个参数，以及一个初始值initalValue  四个参数分别是: previousValue、currentValue、index、array。我觉得需要强调的可能有第一个参数，表示上一次回调返回值或者initialValue。第三个参数index是从1开始的，如果要从0开始可以设置in">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-12-04T03:45:36.106Z">
+<meta property="og:updated_time" content="2020-12-04T05:33:53.897Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="reduce为何成了高逼格">
 <meta name="twitter:description" content="reduce在我们实际开发中的高逼格应用   reduce的语法按我的理解其实是一个callback回调包含四个参数，以及一个初始值initalValue  四个参数分别是: previousValue、currentValue、index、array。我觉得需要强调的可能有第一个参数，表示上一次回调返回值或者initialValue。第三个参数index是从1开始的，如果要从0开始可以设置in">
@@ -217,7 +217,7 @@
 <ul>
 <li>第七道算法题：分组聚合</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">//闭包存储的变量func</span><br><span class="line">const groupBy = (arr, func) =&gt; </span><br><span class="line">  arr.map(typeof func === <span class="string">'funciton'</span> ? func: val=&gt;val[func])</span><br><span class="line">  .reduce((pre, cur, i)=&gt;&#123;</span><br><span class="line">    pre[cur] = (pre[cur] || []).concat(arr[i]);</span><br><span class="line">    <span class="built_in">return</span> pre;</span><br><span class="line">  &#125;,&#123;&#125;);</span><br><span class="line">  </span><br><span class="line">console.log(groupBy([<span class="string">'one'</span>,<span class="string">'two'</span>,<span class="string">'three'</span>], <span class="string">'length'</span>))</span><br><span class="line"> // console.log(groupBy([6.1,6.2,6.3], Math.floor));  很奇怪，单独的执行[6.1,6.2,6.3].map(Math.floor) 是ok的 [6.1,6.2,6.3].map(func)就返回undefined</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line">&#123; <span class="string">'3'</span>: [ <span class="string">'one'</span>, <span class="string">'two'</span> ], <span class="string">'5'</span>: [ <span class="string">'three'</span> ] &#125;</span><br><span class="line"></span><br><span class="line">const groupBy = </span><br><span class="line">  (arr) =&gt; arr</span><br><span class="line">    .map(Math.floor)</span><br><span class="line">    .reduce((pre, cur, i)=&gt;&#123;</span><br><span class="line">      pre[cur] = (pre[cur] || []).concat(arr[i]);</span><br><span class="line">      <span class="built_in">return</span> pre;</span><br><span class="line">  &#125;,&#123;&#125;);</span><br><span class="line">  </span><br><span class="line">console.log(groupBy([6.1, 6.2, 4.3]));  </span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line">&#123; <span class="string">'4'</span>: [ 4.3 ], <span class="string">'6'</span>: [ 6.1, 6.2 ] &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">//闭包存储的变量func</span><br><span class="line">const groupBy = (arr, func) =&gt; </span><br><span class="line">  arr.map(typeof func === <span class="string">'function'</span> ? func: val=&gt;val[func])</span><br><span class="line">  .reduce((pre, cur, i)=&gt;&#123;</span><br><span class="line">    pre[cur] = (pre[cur] || []).concat(arr[i]);</span><br><span class="line">    <span class="built_in">return</span> pre;</span><br><span class="line">  &#125;,&#123;&#125;);</span><br><span class="line">  </span><br><span class="line">console.log(groupBy([<span class="string">'one'</span>,<span class="string">'two'</span>,<span class="string">'three'</span>], <span class="string">'length'</span>))</span><br><span class="line">console.log(groupBy([6.1, 6.2, 4.3]));  </span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line">&#123; <span class="string">'3'</span>: [ <span class="string">'one'</span>, <span class="string">'two'</span> ], <span class="string">'5'</span>: [ <span class="string">'three'</span> ] &#125;</span><br><span class="line">&#123; <span class="string">'4'</span>: [ 4.3 ], <span class="string">'6'</span>: [ 6.1, 6.2 ] &#125;</span><br><span class="line"></span><br><span class="line">const groupBy = </span><br><span class="line">  (arr) =&gt; arr</span><br><span class="line">    .map(Math.floor)</span><br><span class="line">    .reduce((pre, cur, i)=&gt;&#123;</span><br><span class="line">      pre[cur] = (pre[cur] || []).concat(arr[i]);</span><br><span class="line">      <span class="built_in">return</span> pre;</span><br><span class="line">  &#125;,&#123;&#125;);</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">运行结果：</span><br></pre></td></tr></table></figure>
 <h4 id="其实reduce操作不局限于数组，只要可枚举的类型都适用"><a href="#其实reduce操作不局限于数组，只要可枚举的类型都适用" class="headerlink" title="其实reduce操作不局限于数组，只要可枚举的类型都适用"></a>其实reduce操作不局限于数组，只要可枚举的类型都适用</h4><pre><code class="bash"><span class="built_in">let</span> personIncome = [{category:<span class="string">"salary"</span>, value: 2000}, {category:<span class="string">"performace"</span>, value: 500},  {category:<span class="string">"benefits"</span>, value: 500}];
 <span class="built_in">let</span> payment = personIncome.reduce((pre, cur)=&gt; {
   <span class="built_in">return</span> pre + cur.value;
@@ -473,15 +473,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">前端</a>
+                <a href="javascript:void(0)" class="js-tag color2">VsCode</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">css</a>
+                <a href="javascript:void(0)" class="js-tag color5">Sass</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">布局</a>
+                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -490,6 +490,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">JS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">前端</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -502,6 +506,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">模拟数据</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">css</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">布局</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -529,14 +541,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">es6</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">reduce</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
@@ -561,14 +565,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Javascript</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">递归算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">javascript</a>
               </li>
              
@@ -581,15 +577,31 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">VsCode</a>
+                <a href="javascript:void(0)" class="js-tag color1">Javascript</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Sass</a>
+                <a href="javascript:void(0)" class="js-tag color5">递归算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
+                <a href="javascript:void(0)" class="js-tag color1">微信公众号</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">微信浏览器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">WeixinJSBridge</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">es6</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">reduce</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -613,26 +625,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">错误处理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">js</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">微信公众号</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">微信浏览器</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">WeixinJSBridge</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">http</a>
               </li>
              
@@ -641,11 +633,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">closure</a>
+                <a href="javascript:void(0)" class="js-tag color5">错误处理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">javasScript</a>
+                <a href="javascript:void(0)" class="js-tag color3">js</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -654,6 +646,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">浏览器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">closure</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">javasScript</a>
               </li>
              
               <li class="article-tag-list-item">
