@@ -160,6 +160,148 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-二叉树" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/14/二叉树/">二叉树</a>
+    </h1>
+  
+
+        
+        <a href="/2020/12/14/二叉树/" class="archive-article-date">
+  	<time datetime="2020-12-14T05:54:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-12-14</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="二叉树入门"><a href="#二叉树入门" class="headerlink" title="二叉树入门"></a>二叉树入门</h2><h3 id="什么是二叉树？（满足两个条件：）"><a href="#什么是二叉树？（满足两个条件：）" class="headerlink" title="什么是二叉树？（满足两个条件：）"></a>什么是二叉树？（满足两个条件：）</h3><ul>
+<li>1、本身是有序树；</li>
+<li>2、树中包含的各个节点的度不超过2（0,1,2)</li>
+</ul>
+<h3 id="二叉树的深度、高度、度"><a href="#二叉树的深度、高度、度" class="headerlink" title="二叉树的深度、高度、度"></a>二叉树的深度、高度、度</h3><ul>
+<li><p>树中的一个节点的深度是<strong>根节点</strong>到该节点的最长简单路径边的条数 （从上到下计算，一棵树只有一个节点它的深度是0;）</p>
+</li>
+<li><p>树中的一个节点的高度是从该节点到<strong>叶子节点</strong>的最长简单路径边的条数（从下往上计算，叶子节点高度为0，根节点高度为整个树高度）</p>
+</li>
+<li><p>树中的一个节点的度是指该节点所拥有的的<strong>子树</strong>的个数。书中所有节点的度的最大值是该树的度。（叶子节点的度为0）</p>
+</li>
+</ul>
+<ol>
+<li><h4 id="如何计算二叉树的高度"><a href="#如何计算二叉树的高度" class="headerlink" title="如何计算二叉树的高度"></a>如何计算二叉树的高度</h4></li>
+</ol>
+<ul>
+<li>使用递归计算节点左右子树的高度，使用有序遍历找到左右子树高度后，储存居右最大的子树高度，并向其添加1以包括当前树的级别</li>
+</ul>
+<ol start="2">
+<li><h4 id="如何计算二叉树的深度"><a href="#如何计算二叉树的深度" class="headerlink" title="如何计算二叉树的深度"></a>如何计算二叉树的深度</h4></li>
+</ol>
+<ul>
+<li>使用递归计算节点左右子节点的深度，找到左右子节点的深度后，储存具有最大值的孩子的深度，并向其添加1以包括当前树的级别</li>
+</ul>
+<h3 id="二叉树性质："><a href="#二叉树性质：" class="headerlink" title="二叉树性质："></a>二叉树性质：</h3><ul>
+<li><p>二叉树的深度为k(k&gt;=1)  最多2<sup>k</sup> -1个节点</p>
+</li>
+<li><p>二叉树第i层(i&gt;=1) 最多2<sup>i-1</sup> 个节点</p>
+</li>
+<li><p>二叉树中叶子节点数N0,度为2的节点数N2 则N0 = N2 + 1</p>
+</li>
+</ul>
+<h3 id="二叉树节点运算"><a href="#二叉树节点运算" class="headerlink" title="二叉树节点运算"></a>二叉树节点运算</h3><ol>
+<li><p>举例：二叉树叶子节点有3个，度为1的节点有3个，该二叉树的总结点数？</p>
+<p>由于N0 = N2 + 1 那么N2就是2  x = N0 + N1 +N2 为8 (因为二叉树的性质中，除了N0和N2,剩下的都是度为1的节点N1（节点数不超过2），总结点就是N = N0+N1+N2)</p>
+</li>
+<li><p>举例：一棵树度为4，其中度为1，2，3，4的结点个数分别为4，2，1，1，则这棵树的叶子节点个数为多少？（来源网络）</p>
+<p>解答：树的总结点数 = 度数*该度数对应的节点数+1</p>
+<p>n0+4+2+1+1 = (0<em>n0+1</em>4+2<em>2+3</em>1+4*1) + 1  得出n0为8</p>
+</li>
+</ol>
+<h3 id="什么是满二叉树"><a href="#什么是满二叉树" class="headerlink" title="什么是满二叉树"></a>什么是满二叉树</h3><p>如果二叉树中除了叶子结点，每个结点的度为2，则此二叉树称为满二叉树</p>
+<p>满二叉树性质：</p>
+<ul>
+<li>满二叉树中第i层节点数为2<sup>i-1</sup></li>
+<li>深度为k的满二叉树必有2<sup>k</sup> -1个节点，叶子数2<sup>k-1</sup></li>
+<li>满二叉树不存在度为1的节点</li>
+<li>居右n个节点的满二叉树的深度log<sub>2</sub>(n+1)</li>
+</ul>
+<h3 id="什么是完全二叉树"><a href="#什么是完全二叉树" class="headerlink" title="什么是完全二叉树"></a>什么是完全二叉树</h3><p>如果二叉树中除了最后一层节点为满二叉树，且最后一层结点依次从左到右分步，则此二叉树被称为完全二叉树</p>
+<p>完全二叉树性质：</p>
+<ul>
+<li>当 i&gt;1 时，父亲结点为结点 [i/2] 。（i=1 时，表示的是根结点，无父亲结点）</li>
+<li>如果 2<em>i&gt;n（总结点的个数） ，则结点 i 肯定没有左孩子（为叶子结点）；否则其左孩子是结点 2</em>i 。</li>
+<li>如果 2<em>i+1&gt;n ，则结点 i 肯定没有右孩子；否则右孩子是结点 2</em>i+1 。</li>
+</ul>
+<h3 id="什么是平衡二叉树（AVL树）"><a href="#什么是平衡二叉树（AVL树）" class="headerlink" title="什么是平衡二叉树（AVL树）"></a>什么是平衡二叉树（AVL树）</h3><p>是一颗空树或它的左右两个子树的高度差的绝对值不超过1，并且左右两子树都是一颗平衡二叉树。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">树</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">队列</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">链表</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/12/14/二叉树/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-医学影像DCM格式H5展示" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1111,108 +1253,6 @@ console.log(payment);
 
 
   
-    <article id="post-类型检测" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/07/类型检测/">Error类型</a>
-    </h1>
-  
-
-        
-        <a href="/2020/07/07/类型检测/" class="archive-article-date">
-  	<time datetime="2020-07-07T02:12:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>我们在调试代码中经常会看到RefrenceError,TypeError之类的，为了弄懂这些错误类型，抛砖引玉的写了这篇小博</p>
-</blockquote>
-<h3 id="错误类型"><a href="#错误类型" class="headerlink" title="错误类型"></a>错误类型</h3><p>ECMA-262 定义了7中错误类型：</p>
-<ul>
-<li>Error</li>
-<li>EvalError</li>
-<li>RangeError</li>
-<li>ReferenceError</li>
-<li>SyntaxError</li>
-<li>TypeError</li>
-<li>URIError</li>
-</ul>
-<p>其中Error是基类型，其他6中都继承自Error，可以通过下面方法测试。所有错误类型共享一组相同属性，Error一般用于开发人员抛出自定义错误</p>
-<p>   EvalError.<strong>proto</strong> == Error.prototype   // 返回：true</p>
-<p>EvalError：使用eval时抛出的。比如以非直接调用方式调用eval，为eval赋值或者说没有把eval当函数调用,在Firefox4+ 和IE8中对第一种会抛出TypeError，由于极少使用eval，再次不过多介绍了</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">new <span class="built_in">eval</span>();  // 可能会抛出EvalError;</span><br><span class="line"><span class="built_in">eval</span> = foo;  // 可能会抛出EvalError;</span><br></pre></td></tr></table></figure>
-<p>RangeError： 一看是范围相关，应该like想到数组了</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">var arry1 = new Array(-20);  // 抛出RangeError Invalid array length;</span><br><span class="line">var arry2 = new Array(Number.MAX_VALUE);  // 抛出RangeError Invalid array length;</span><br></pre></td></tr></table></figure>
-<p>ReferenceError: 一般在找不到对象情况下会抛出</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">var obj = x;  // 抛出ReferenceError： x is not defined</span><br></pre></td></tr></table></figure>
-<p>SyntaxError： 当出现语法错误的时候会抛出SyntaxError</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var a=<span class="string">"str"</span>;</span><br><span class="line">var b=1;</span><br><span class="line">a++b;   // 抛出SyntaxError: Unexpected identifier</span><br></pre></td></tr></table></figure>
-<p>TypeError：顾名思义是类型错误，当变量中存在意外类型或者不存在的方法，会抛出</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var o =　new 10; // 抛出TypeError: 10 is not a constructor</span><br><span class="line">Function.prototype.toString.call(<span class="string">"get"</span>);  // TypeError: Function.prototype.toString requires that <span class="string">'this'</span> be a Function</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">错误处理</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">js</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/07/07/类型检测/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1310,18 +1350,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">VsCode</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Sass</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">对象</a>
               </li>
              
@@ -1338,6 +1366,18 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">VsCode</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Sass</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">JSON</a>
               </li>
              
@@ -1347,6 +1387,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">前端</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">css</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">布局</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1362,11 +1410,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">css</a>
+                <a href="javascript:void(0)" class="js-tag color5">bootstrap</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">布局</a>
+                <a href="javascript:void(0)" class="js-tag color4">carousel</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1375,14 +1423,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">响应式</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">bootstrap</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">carousel</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1454,6 +1494,22 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">队列</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">微信公众号</a>
               </li>
              
@@ -1486,19 +1542,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">http</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">错误处理</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">js</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">http</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -160,6 +160,108 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-类型检测" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/07/类型检测/">Error类型</a>
+    </h1>
+  
+
+        
+        <a href="/2020/07/07/类型检测/" class="archive-article-date">
+  	<time datetime="2020-07-07T02:12:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-07</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>我们在调试代码中经常会看到RefrenceError,TypeError之类的，为了弄懂这些错误类型，抛砖引玉的写了这篇小博</p>
+</blockquote>
+<h3 id="错误类型"><a href="#错误类型" class="headerlink" title="错误类型"></a>错误类型</h3><p>ECMA-262 定义了7中错误类型：</p>
+<ul>
+<li>Error</li>
+<li>EvalError</li>
+<li>RangeError</li>
+<li>ReferenceError</li>
+<li>SyntaxError</li>
+<li>TypeError</li>
+<li>URIError</li>
+</ul>
+<p>其中Error是基类型，其他6中都继承自Error，可以通过下面方法测试。所有错误类型共享一组相同属性，Error一般用于开发人员抛出自定义错误</p>
+<p>   EvalError.<strong>proto</strong> == Error.prototype   // 返回：true</p>
+<p>EvalError：使用eval时抛出的。比如以非直接调用方式调用eval，为eval赋值或者说没有把eval当函数调用,在Firefox4+ 和IE8中对第一种会抛出TypeError，由于极少使用eval，再次不过多介绍了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">new <span class="built_in">eval</span>();  // 可能会抛出EvalError;</span><br><span class="line"><span class="built_in">eval</span> = foo;  // 可能会抛出EvalError;</span><br></pre></td></tr></table></figure>
+<p>RangeError： 一看是范围相关，应该like想到数组了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">var arry1 = new Array(-20);  // 抛出RangeError Invalid array length;</span><br><span class="line">var arry2 = new Array(Number.MAX_VALUE);  // 抛出RangeError Invalid array length;</span><br></pre></td></tr></table></figure>
+<p>ReferenceError: 一般在找不到对象情况下会抛出</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">var obj = x;  // 抛出ReferenceError： x is not defined</span><br></pre></td></tr></table></figure>
+<p>SyntaxError： 当出现语法错误的时候会抛出SyntaxError</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var a=<span class="string">"str"</span>;</span><br><span class="line">var b=1;</span><br><span class="line">a++b;   // 抛出SyntaxError: Unexpected identifier</span><br></pre></td></tr></table></figure>
+<p>TypeError：顾名思义是类型错误，当变量中存在意外类型或者不存在的方法，会抛出</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var o =　new 10; // 抛出TypeError: 10 is not a constructor</span><br><span class="line">Function.prototype.toString.call(<span class="string">"get"</span>);  // TypeError: Function.prototype.toString requires that <span class="string">'this'</span> be a Function</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">错误处理</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">js</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/07/07/类型检测/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-ES6解构函数" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1109,105 +1211,6 @@ process属性值： @all(更新整个文件慎用) @parent(包含当前，同级
 
 
   
-    <article id="post-防篡改对象" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/23/防篡改对象/">防篡改对象</a>
-    </h1>
-  
-
-        
-        <a href="/2019/07/23/防篡改对象/" class="archive-article-date">
-  	<time datetime="2019-07-23T02:40:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="防篡改对象"><a href="#防篡改对象" class="headerlink" title="防篡改对象"></a>防篡改对象</h2><blockquote>
-<p>防篡改对象（tamper-proof object）: JavaScript共享本质一直是开发人员心头的痛。因为任何对象都可能被同一环境中运行的代码修改。开发人员很可能意外地修改别人的代码。ECMAScript5致力于解决这个问题，定义了防篡改对象。一旦定义对象为防篡改，是无法撤回的。</p>
-</blockquote>
-<ul>
-<li>不可扩展对象 (tamper-proof object)</li>
-<li>密封对象 (sealed object)</li>
-<li>冻结对象 (frozen object)</li>
-</ul>
-<h4 id="一、不可扩展对象"><a href="#一、不可扩展对象" class="headerlink" title="一、不可扩展对象"></a>一、不可扩展对象</h4><p>默认情况下，所有对象都是可扩展的，可以向对象中添加属性和方法。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var person = &#123;name: <span class="string">"tony"</span>&#125;;</span><br><span class="line">person.age = 29;</span><br></pre></td></tr></table></figure>
-<p>定义不可扩展对象：Object.preventExtensions(); 非严格模式下，给对象添加新成员导致静默失败，返回undefined；在严格模式下，会抛出错误。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var person = &#123;name: <span class="string">"tony"</span>&#125;;</span><br><span class="line">Object.preventExtensions(person);</span><br><span class="line">person.age = 29;</span><br><span class="line">console.log(person.age);   //undefined</span><br></pre></td></tr></table></figure>
-<p>判断对象是否可扩展：Object.isExtensible();<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var person = &#123;name: <span class="string">"tony"</span>&#125;;</span><br><span class="line">colsole.log(person.isExtensible(person));  //返回<span class="literal">true</span></span><br><span class="line">Object.preventExtensions(person);</span><br><span class="line">colsole.log(person.isExtensible(person));  //返回<span class="literal">false</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="二、密封对象"><a href="#二、密封对象" class="headerlink" title="二、密封对象"></a>二、密封对象</h4><p> ECMAScript5为对象定义了第二个保护级别是密封对象（sealed object）密封对象不可扩展且已有成员的[[Configurable]]特性为false，也就是不能删除。因此不能使用Object.definePropery()把数据属性修改为访问器属性，或者相反。但属性值可以修改</p>
- <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var person = &#123;name:<span class="string">"tony"</span>&#125;</span><br><span class="line">Object.seal(person);</span><br><span class="line"></span><br><span class="line">person.age = 29;</span><br><span class="line">console.log(person.age); //undefined</span><br><span class="line"></span><br><span class="line">delete person.name;</span><br><span class="line">console.log(person.name); //tony</span><br></pre></td></tr></table></figure>
-<p>在非严格模式被忽略，上面运行结果。严格模式会抛出错误，判断对象是否是密封对象： Object.isSealed()</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var person = &#123;name:<span class="string">"tony"</span>&#125;</span><br><span class="line">colsole.log(person.isExtensible(person));   //<span class="literal">true</span></span><br><span class="line">console.log(Object.isSealed(person); //<span class="literal">false</span></span><br><span class="line"></span><br><span class="line">Object.seal(person);</span><br><span class="line">colsole.log(person.isExtensible(person));   //<span class="literal">false</span></span><br><span class="line">console.log(Object.isSealed(person); //<span class="literal">true</span></span><br></pre></td></tr></table></figure>
-<h4 id="三、冻结对象"><a href="#三、冻结对象" class="headerlink" title="三、冻结对象"></a>三、冻结对象</h4><p>最严格的的方串改级别是冻结对象（frozen object）。冻结对象既不可以扩展，又是密封，而且对象数据属性[[Writable]]特性被设置为false。如果定义[[Set]]函数，访问器属性仍是科协的。ECMAScript5定义Object.frozen()方法来冻结对象</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var person = &#123;name:<span class="string">"tony"</span>&#125;</span><br><span class="line">Object.frozen(person);</span><br><span class="line"></span><br><span class="line">person.age = 29;</span><br><span class="line">console.log(person.age); //undefined</span><br><span class="line"></span><br><span class="line">delete person.name</span><br><span class="line">console.log(person.name)  //tony</span><br><span class="line"></span><br><span class="line">person.name = <span class="string">"tom"</span></span><br><span class="line">console.log(person.name) //tony</span><br></pre></td></tr></table></figure>
-<p>与密封和不允许扩展一样，对冻结对象执行非法操作在非严格模式下被忽略，严格模式下抛出错误。判断对象是否冻结对象Object.isFrozen()</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var person = &#123;name:<span class="string">"tony"</span>&#125;</span><br><span class="line">console.log(Object.isExtensible(person)); //<span class="literal">true</span></span><br><span class="line">console.log(Object.isSealed(person)); //<span class="literal">false</span></span><br><span class="line">console.log(Object.isFrozen(person)); //<span class="literal">false</span></span><br><span class="line"></span><br><span class="line">Object.frozen(person);</span><br><span class="line">console.log(Object.isExtensible(person)); //<span class="literal">false</span></span><br><span class="line">console.log(Object.isSealed(person)); //<span class="literal">true</span></span><br><span class="line">console.log(Object.isFrozen(person)); //<span class="literal">true</span></span><br></pre></td></tr></table></figure>
-<p><font color="#eb7350" size="2">对JavaScript库而言，冻结对象非常有用，避免被人篡改。</font></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">javasScript</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/07/23/防篡改对象/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
@@ -1305,18 +1308,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">VsCode</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Sass</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">对象</a>
               </li>
              
@@ -1333,6 +1324,18 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">VsCode</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Sass</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">JSON</a>
               </li>
              
@@ -1342,6 +1345,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">前端</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">css</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">布局</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1357,11 +1368,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">css</a>
+                <a href="javascript:void(0)" class="js-tag color5">bootstrap</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">布局</a>
+                <a href="javascript:void(0)" class="js-tag color4">carousel</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1370,14 +1381,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">响应式</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">bootstrap</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">carousel</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1449,6 +1452,22 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">队列</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">微信公众号</a>
               </li>
              
@@ -1481,19 +1500,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">http</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">错误处理</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">js</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">http</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
               </li>
              
               <li class="article-tag-list-item">
