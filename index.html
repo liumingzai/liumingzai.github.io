@@ -160,6 +160,89 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-将富文本字符串html转为带格式的文本text" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/16/将富文本字符串html转为带格式的文本text/">将富文本字符串html转为带格式的文本text</a>
+    </h1>
+  
+
+        
+        <a href="/2020/12/16/将富文本字符串html转为带格式的文本text/" class="archive-article-date">
+  	<time datetime="2020-12-16T01:03:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-12-16</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>给移动端提供的api返回的富文本数据包含html标签</p><p></p><span></span>等。app开发同事反馈他们的webview只能整页渲染做不到对html片段做渲染。虽保持怀疑但能不撕逼就奋力解决<p></p>
+</blockquote>
+<h3 id="方案一、用正则过滤标签"><a href="#方案一、用正则过滤标签" class="headerlink" title="方案一、用正则过滤标签"></a>方案一、用正则过滤标签</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">String text = htmlStr.replace(/&lt;[^&gt;]+&gt;|&amp;[^&gt;]+;/g, <span class="string">""</span>) : <span class="string">''</span> );</span><br></pre></td></tr></table></figure>
+<p>富文本编辑器中有制表位、换行、空行、如果有上下角标，栅格线可能还需要额外处理，图片资源等等吧。造轮子的过程很漫长</p>
+<h3 id="方案二、通过JDK9自带的Html解析器HTMLEditorKit-ParserCallback-下面只对handleText做解读。还有handleComment、handleStartTag、handleError等暂不介绍"><a href="#方案二、通过JDK9自带的Html解析器HTMLEditorKit-ParserCallback-下面只对handleText做解读。还有handleComment、handleStartTag、handleError等暂不介绍" class="headerlink" title="方案二、通过JDK9自带的Html解析器HTMLEditorKit.ParserCallback,下面只对handleText做解读。还有handleComment、handleStartTag、handleError等暂不介绍"></a>方案二、通过JDK9自带的Html解析器HTMLEditorKit.ParserCallback,下面只对handleText做解读。还有handleComment、handleStartTag、handleError等暂不介绍</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">package com.liumingzai.test;</span><br><span class="line"></span><br><span class="line">import javax.swing.text.html.HTMLEditorKit;</span><br><span class="line">import javax.swing.text.html.parser.ParserDelegator;</span><br><span class="line">import java.io.*;</span><br><span class="line"></span><br><span class="line">public class HtmlToText extends  HTMLEditorKit.ParserCallback &#123;</span><br><span class="line"></span><br><span class="line">    private static HtmlToText html2Text = new HtmlToText();</span><br><span class="line"></span><br><span class="line">    StringBuffer stringBuffer;</span><br><span class="line"></span><br><span class="line">    private <span class="function"><span class="title">HtmlToText</span></span>() &#123;&#125;</span><br><span class="line"></span><br><span class="line">    public void parse(String str) throws IOException &#123;</span><br><span class="line"></span><br><span class="line">        InputStream iin = new ByteArrayInputStream(str.getBytes());</span><br><span class="line">        Reader <span class="keyword">in</span> = new InputStreamReader(iin);</span><br><span class="line">        stringBuffer = new StringBuffer();</span><br><span class="line">        ParserDelegator delegator = new ParserDelegator();</span><br><span class="line">        delegator.parse(<span class="keyword">in</span>, this, Boolean.TRUE);         // the third parameter is TRUE to ignore charset directive</span><br><span class="line">        iin.close();</span><br><span class="line">        in.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void handleText(char[] text, int pos) &#123;</span><br><span class="line">        stringBuffer.append(text).append( <span class="string">"\n"</span> );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public String <span class="function"><span class="title">getText</span></span>() &#123;</span><br><span class="line">        <span class="built_in">return</span> stringBuffer.toString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static String getContent(String str) &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            html2Text.parse(str);</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            // TODO Auto-generated catch block</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">return</span> html2Text.getText();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        String hm = <span class="string">"&lt;p&gt;　　2019年6月6日是第24个全国&amp;ldquo;爱眼日&amp;rdquo;，今年的爱眼日主题是号召全社会&amp;ldquo;共同呵护好孩子的眼睛，让他们拥有一个光明的未来&amp;rdquo;。&lt;/p&gt;\n"</span> +</span><br><span class="line">                <span class="string">"\n"</span> +</span><br><span class="line">                <span class="string">"&lt;p&gt;&lt;img alt=\"杨书记.jpg\" src=\"https://www.pkufh.com/Sites/Uploaded/Image/2019/06/066369544014514513905026911.jpg\" title=\"杨书记.jpg\" /&gt;&lt;/p&gt;\n"</span> +</span><br><span class="line">                <span class="string">"\n"</span> +</span><br><span class="line">                <span class="string">"&lt;p&gt;　　北京大学第一医院眼科主任杨柳教授表示：&amp;ldquo;近年来我国儿童青少年近视呈&amp;lsquo;发病早、进展快、高度近视比例增加&amp;rsquo;的趋势，因高度近视导致眼底病变的情况愈发多见。青少年近视防控已经成为国家层面重视的重大公共卫生问题，刻不容缓。作为有悠久历史和&amp;lsquo;厚德尚道&amp;rsquo;院训的北大医院和新扩大的眼视光中心，贯彻落实习近平总书记关于儿童青少年近视防控的重要指示精神，做好青少年的近视防控工作，是我们的职责所在。&amp;rdquo;&lt;/p&gt;\n"</span> +</span><br><span class="line">                <span class="string">"\n"</span> +</span><br><span class="line">                <span class="string">"&lt;p&gt;&lt;strong&gt;北大-黄小手牵手 近视防控光明行&lt;/strong&gt;&lt;/p&gt;\n"</span> +</span><br><span class="line">                <span class="string">"\n"</span> +</span><br><span class="line">                <span class="string">"&lt;p&gt;&lt;img alt=\"11.jpg\" src=\"https://www.pkufh.com/Sites/Uploaded/Image/2019/06/066369544017687951193520799.jpg\" title=\"11.jpg\" /&gt;&lt;/p&gt;\n"</span> +</span><br><span class="line">                <span class="string">"\n"</span> +</span><br><span class="line">                <span class="string">"&lt;p&gt;　　6月6日，北大医院眼视光中心副主任荣蓓副主任医师以及青年医师王珂欣、汪晓莎组成的医疗团队走进黄城根小学，小学教师、学生及家长共计50余人参加了本次活动。&lt;/p&gt;\n"</span> +</span><br><span class="line">                <span class="string">"\n"</span> +</span><br><span class="line">                <span class="string">"&lt;p&gt;&lt;img alt=\"12.jpg\" src=\"https://www.pkufh.com/Sites/Uploaded/Image/2019/06/066369544018737951358328608.jpg\" title=\"12.jpg\" /&gt;&lt;/p&gt;\n"</span> +</span><br><span class="line">                <span class="string">"\n"</span> +</span><br><span class="line">                <span class="string">"&lt;p&gt;　　荣蓓副主任医师围绕青少年近视的病因、预防、筛查、矫正等方面给学生及家长进行了全方位的科普宣讲，指出青少年近视防控是学校、家长、学生、医生共同努力的系统工程，各方都需要掌握科学的防控知识，缺一不可。&lt;/p&gt;\n"</span>;</span><br><span class="line">        String text = HtmlToText.getContent(hm);</span><br><span class="line">        System.out.println(text);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">上文解析结果如下:</span><br><span class="line"></span><br><span class="line">　　2019年6月6日是第24个全国“爱眼日”，今年的爱眼日主题是号召全社会“共同呵护好孩子的眼睛，让他们拥有一个光明的未来”。</span><br><span class="line">　　北京大学第一医院眼科主任杨柳教授表示：“近年来我国儿童青少年近视呈‘发病早、进展快、高度近视比例增加’的趋势，因高度近视导致眼底病变的情况愈发多见。青少年近视防控已经成为国家层面重视的重大公共卫生问题，刻不容缓。作为有悠久历史和‘厚德尚道’院训的北大医院和新扩大的眼视光中心，贯彻落实习近平总书记关于儿童青少年近视防控的重要指示精神，做好青少年的近视防控工作，是我们的职责所在。”</span><br><span class="line">北大-黄小手牵手 近视防控光明行</span><br><span class="line">　　6月6日，北大医院眼视光中心副主任荣蓓副主任医师以及青年医师王珂欣、汪晓莎组成的医疗团队走进黄城根小学，小学教师、学生及家长共计50余人参加了本次活动。</span><br><span class="line">　　荣蓓副主任医师围绕青少年近视的病因、预防、筛查、矫正等方面给学生及家长进行了全方位的科普宣讲，指出青少年近视防控是学校、家长、学生、医生共同努力的系统工程，各方都需要掌握科学的防控知识，缺一不可。</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">后端</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/12/16/将富文本字符串html转为带格式的文本text/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-二叉树" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -167,7 +250,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/14/二叉树/">二叉树</a>
+      <a class="article-title" href="/2020/12/14/二叉树/">二叉树入门</a>
     </h1>
   
 
@@ -180,7 +263,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="二叉树入门"><a href="#二叉树入门" class="headerlink" title="二叉树入门"></a>二叉树入门</h2><h3 id="什么是二叉树？（满足两个条件：）"><a href="#什么是二叉树？（满足两个条件：）" class="headerlink" title="什么是二叉树？（满足两个条件：）"></a>什么是二叉树？（满足两个条件：）</h3><ul>
+        <blockquote>
+<p>算法小抄作者 labuladong说到学习数据结构和算法框架思维先刷二叉树题目，灌溉了很多经典的算法（回溯，动归，分治等解决树的问题）</p>
+</blockquote>
+<h3 id="什么是二叉树？（满足两个条件：）"><a href="#什么是二叉树？（满足两个条件：）" class="headerlink" title="什么是二叉树？（满足两个条件：）"></a>什么是二叉树？（满足两个条件：）</h3><ul>
 <li>1、本身是有序树；</li>
 <li>2、树中包含的各个节点的度不超过2（0,1,2)</li>
 </ul>
@@ -1141,118 +1227,6 @@ console.log(payment);
 
 
   
-    <article id="post-img的srcset和size属性是什么？" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/08/31/img的srcset和size属性是什么？/">img的srcset和size属性是什么？</a>
-    </h1>
-  
-
-        
-        <a href="/2020/08/31/img的srcset和size属性是什么？/" class="archive-article-date">
-  	<time datetime="2020-08-31T09:04:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-31</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>这是前端面试响应式布局及img标签会被扩展问到的一道题，紧随src和href重要性之后加分题。</p>
-</blockquote>
-<h4 id="如何创建响应式图片？"><a href="#如何创建响应式图片？" class="headerlink" title="如何创建响应式图片？"></a>如何创建响应式图片？</h4><h1 id="使用image的srcset和sizes属性-根据屏幕密度实现对应尺寸图片"><a href="#使用image的srcset和sizes属性-根据屏幕密度实现对应尺寸图片" class="headerlink" title="使用image的srcset和sizes属性,根据屏幕密度实现对应尺寸图片"></a>使用image的srcset和sizes属性,根据屏幕密度实现对应尺寸图片</h1><ul>
-<li>srcset: 定义了我们允许浏览器选择的图像集，以及每个图像的大小.</li>
-<li>sizes: 定义一组媒体条件并指明当前某些媒体条件为真时，什么样的图片尺寸是追加选择</li>
-<li>w：宽度规格，图像固有宽度，其与sizes属性设定的屏幕密度相关</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;img srcset=<span class="string">"elva-fairy-320w.jpg 320w,</span></span><br><span class="line"><span class="string">             elva-fairy-480w.jpg 480w,</span></span><br><span class="line"><span class="string">             elva-fairy-800w.jpg 800w"</span></span><br><span class="line">     sizes=<span class="string">"(max-width: 320px) 280px,</span></span><br><span class="line"><span class="string">            (max-width: 480px) 440px,</span></span><br><span class="line"><span class="string">            800px"</span></span><br><span class="line">     src=<span class="string">"elva-fairy-800w.jpg"</span> alt=<span class="string">"Elva dressed as a fairy"</span>&gt;</span><br></pre></td></tr></table></figure>
-<h1 id="作为背景图片image-set"><a href="#作为背景图片image-set" class="headerlink" title="作为背景图片image-set()"></a>作为背景图片image-set()</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">.photo &#123;</span><br><span class="line">  background-image: -webkit-image-set(<span class="string">"demo.png"</span> 1x, <span class="string">"demo-2.png"</span> 2x, <span class="string">"demo-3.png"</span> 600dpi);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>demo链接</p>
-<p>这里引入一个概念：什么是屏幕密度（Density）？及与其相关的几个属性<br>分辨率: 显示分辨率一定，显示屏越小图像越清晰，显示屏固定，分辨率越高越清晰。图像分辨率则是指图像单位英寸中所包含的像素点数<br>Density: 屏幕密度density表示每英寸有多少个现实点，与分辨率是两个概念一般3个常用固定值240/160/120<br>dip: device independent pixels(设备独立像素)与dp类似都是与密度无关的像素，和设备硬件有关，一种基于屏幕密度抽象单位。<br>dp：与密度无关的像素，在每英寸160点的显示器上，1dp=1px。设置长度、高度等属相可以用dp或者sp<br>sp：与密度无关的像素，放大像素主要用来处理字体大小，与scale无关<br>px: pixels(像素)屏幕上的点与密度相关，密度大了，单位面积上的px会比较多<br>pt：表示一个点，屏幕的一个屋里长度，1pt=1/72in<br>in：(英寸)屏幕的物理尺寸，屏幕对角线长度。每英寸等于2.54厘米<br>不同屏幕密度：<br>HVGA屏density=160<br>QVGA屏density=120<br>WVGA屏density=240<br>WQVGA屏density=120<br>计算公式：<br>如果密度为320 密度因子320/160,如果设置的TextView宽度为160px，系统会自动将width设置为160px* 密度因子就是320px</p>
-<p>[接下来补充一些解决方案来源于：]<br>(<a href="https://jakearchibald.com/2015/anatomy-of-responsive-images" target="_blank" rel="noopener">https://jakearchibald.com/2015/anatomy-of-responsive-images</a>)<br>(<a href="https://www.zhangxinxu.com/wordpress/2015/11/anatomy-of-responsive-images/" target="_blank" rel="noopener">https://www.zhangxinxu.com/wordpress/2015/11/anatomy-of-responsive-images/</a>)</p>
-<p>1、 固定图像尺寸，满足不同屏幕密度<br><img src="/assets/img/solution1.png" alt="尺寸固定,密度变化"> </p>
-<p>还有一些规则，没有在上图中涵盖：</p>
-<p>内的每个项目srcset是<url> <density>x，例如cat-2x.jpg 2x。其中的项的顺序srcset没关系<br>如果不指定宽度/高度，浏览器将显示图像的原始宽度/高度除以密度。例如，如果选择了2x资源，它将以资源宽度/高度的50%呈现<br>这只是一个提示，即使在3x设备上，浏览器也可能使用1x图像，可能是由于连接不良</density></url></p>
-<p>2、尺寸和密度都变化</p>
-<p><img src="/assets/img/solution2.png" alt="尺寸和密度都变化"> </p>
-<p>不同宽度的图像通常作为响应网站内容的一部分使用。在这个博客中，内容图像占文章宽度的100%，但文章并不总是100%的窗口。</p>
-<p>为了让浏览器选择正确的图像，它需要知道：</p>
-<p>不同大小的图像的URL<br>每个图像资源的解码宽度<br>宽度<img><br>最后一个是特别棘手的，因为图像在CSS准备好之前就开始下载了，所以<img>无法从页面布局中检测到。</p>
-<p>理解这个语法的关键是要知道这些值中的哪个值是指窗口宽度、解码图像宽度和<img>宽度</p>
-<p>3、尺寸，密度，资源都变化</p>
-<p><img src="/assets/img/solution3.png" alt="尺寸和密度都变化"> </p>
-<p>与上一个示例类似，但是框架的宽度不同。这样你就可以以较小的宽度集中在主题上。</p>
-<p>你可以有很多<source>随你的便<br>你呢必须包括<img><br>媒体查询<source>永远都会被遵守，这不仅仅是一个暗示<br>媒体查询基于窗口的宽度，而不是<img><br>第一次匹配<source>将被使用，所以顺序很重要<br>如果没有匹配<source>找到了<img>使用<br>这个<img>毕竟必须出现<source>s</p>
-<p><source>不支持src公司，但是srcset=”whatever.jpg”同样有效<br>一旦<source>或<img>选定时srcset和尺寸属性的工作方式与前面的示例相同，因此您可以混合和匹配技术。</p>
-<p>这个<picture>要素适用于Chrome、Firefox和Opera，然后回到<img>在其他浏览器中。我听说了可能会进入Edge的下一个版本，很不错</picture></p>
-<p>4、不同图片类别</p>
-<p><img src="/assets/img/solution4.png" alt="尺寸和密度都变化"> </p>
-<p>类型是mime类型<br>你可以有多个来源和混合类型具有媒体 ,srcset，甚至尺寸制造可怕的东西<br>这个适用于Chrome、Firefox和Opera，然后回到<img>在其他浏览器中</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">HTML</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">响应式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/08/31/img的srcset和size属性是什么？/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1350,6 +1324,30 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">JSON</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">JS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">前端</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Mockjs</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Ajax</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">模拟数据</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">对象</a>
               </li>
              
@@ -1366,47 +1364,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">VsCode</a>
+                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Sass</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">JSON</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">JS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">前端</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">css</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">布局</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Mockjs</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Ajax</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">模拟数据</a>
+                <a href="javascript:void(0)" class="js-tag color4">响应式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1418,79 +1380,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
+                <a href="javascript:void(0)" class="js-tag color4">css</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">响应式</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">db</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">jdk1.8</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">java</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Primefaces</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">jsf</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">ajax</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">es6</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">reduce</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">作用域</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">执行环境</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Javascript</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">递归算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">cornerstone</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">dicomweb</a>
+                <a href="javascript:void(0)" class="js-tag color3">布局</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1510,6 +1404,54 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">jdk1.8</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">db</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Primefaces</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">jsf</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">ajax</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">后端</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">作用域</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">执行环境</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">微信公众号</a>
               </li>
              
@@ -1519,6 +1461,46 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">WeixinJSBridge</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">es6</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">reduce</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">错误处理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">js</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">递归算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">cornerstone</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">dicomweb</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">javasScript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">closure</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1542,14 +1524,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">错误处理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">js</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">http</a>
               </li>
              
@@ -1558,19 +1532,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">VsCode</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Sass</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">JavaScript</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">浏览器</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">closure</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">javasScript</a>
               </li>
              
               <li class="article-tag-list-item">
