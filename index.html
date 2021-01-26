@@ -160,6 +160,143 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-JavaScript内存" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/26/JavaScript内存/">JavaScript内存</a>
+    </h1>
+  
+
+        
+        <a href="/2021/01/26/JavaScript内存/" class="archive-article-date">
+  	<time datetime="2021-01-26T03:07:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-26</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>前言<br>在小猪面试中，被面试官问到一个问题,javascritp的原始值和引用值在内存中如何存放？</p>
+</blockquote>
+<h3 id="javascript内存大家都知道分为堆内存和栈内存"><a href="#javascript内存大家都知道分为堆内存和栈内存" class="headerlink" title="javascript内存大家都知道分为堆内存和栈内存"></a>javascript内存大家都知道分为堆内存和栈内存</h3><ul>
+<li><p>什么是堆内存？<br>堆(heap)和数据结构堆二者没有太深的关系，同名而已。是一片动态不连续的内存空间,访问速度比栈内存慢。适合存放时间周期较长，占用空间较大或者占用空间不固定的数据。</p>
+</li>
+<li><p>什么是栈内存？<br>栈(stack)是一种数据结构,遵循LIFO原则。是一段连续的内存空间，访问和读取速度比堆内存快，容量较小。适合存放生命周期短，占空间小的固定数据。</p>
+</li>
+</ul>
+<h3 id="javascript中存储变量"><a href="#javascript中存储变量" class="headerlink" title="javascript中存储变量"></a>javascript中存储变量</h3><ul>
+<li><p>原始类型(primitive type)<br>原始类型也叫原始值或者基本类型: string number boolean null undefined symbol等<br>原始类型数据存储在栈内存</p>
+</li>
+<li><p>引用类型(reference type)<br>引用类型：Object Array Function Date RegExp String Number Boolean等<br>引用类型数据存储在堆内存</p>
+</li>
+</ul>
+<p><em>注意</em> 全局变量以及闭包引用的变量是存储在堆内存的。</p>
+<h3 id="javascript不可变原始值和可变对象引用"><a href="#javascript不可变原始值和可变对象引用" class="headerlink" title="javascript不可变原始值和可变对象引用"></a>javascript不可变原始值和可变对象引用</h3><p>上面提到原始值：当我们定义一个原始类型变量的时候，javascript会激活一块栈内存存储，当修改原始值时，会再激活一块栈内存存储新值并将变量指向新值。而不是改变原始值那块栈内存的值【栈内存中的原始值一旦确定就不能被修改】</p>
+<p><img src="/assets/img/memory.jpg" alt="示例"> </p>
+<p>上面提到的引用类型，我们在堆内存中存储对象，在栈内存中存储对象的引用(堆内存地址)，当把引用类型变量赋值给另一个变量，就是复制了对象的引用(堆内存的地址)并未在堆内存中生成一个新对象。当直接修改变量指向，会给对象引用指向堆内存的新对象。【堆内存中对象的引用是可以被修改的】</p>
+<p><img src="/assets/img/memory2.jpg" alt="示例"> </p>
+<p><em>作业: </em> 实现对象的深拷贝？</p>
+<h3 id="javascript内存的声明周期"><a href="#javascript内存的声明周期" class="headerlink" title="javascript内存的声明周期"></a>javascript内存的声明周期</h3><ul>
+<li>垃圾回收</li>
+<li>可达性</li>
+<li>内存泄露</li>
+</ul>
+<h3 id="javascript垃圾回收算法"><a href="#javascript垃圾回收算法" class="headerlink" title="javascript垃圾回收算法"></a>javascript垃圾回收算法</h3><ul>
+<li>标记删除(mark and sweep)</li>
+<li>引用计数(reference counting)</li>
+<li>循环引用(circular references)</li>
+<li>双管齐下</li>
+</ul>
+<p><em>作业：</em> 什么是闭包，闭包对内存性能影响？</p>
+<h3 id="如何查看chrome中内存使用情况？"><a href="#如何查看chrome中内存使用情况？" class="headerlink" title="如何查看chrome中内存使用情况？"></a>如何查看chrome中内存使用情况？</h3><ul>
+<li>Memory in Devtools(内存面板) </li>
+</ul>
+<ul>
+<li>1、堆快照(Heap snapshot): 记录了当前页面当前时刻JS对象及DOM节点内存分配</li>
+<li>2、内存分配时间轴(Allocation instrumentation on timeline)在一段时间内持续记录内存分配</li>
+<li>3、内存分配采样(Allocation sampling)使用采样方法记录内存分配，开销小，可用于长时间记录</li>
+<li>4、堆内存占用</li>
+<li>5、前两分钟内的内存占用变化趋势</li>
+<li>6、实例名称</li>
+<li>7、堆内存总占用大小</li>
+<li>8、前两分钟内内存中占用变化趋势<br><img src="/assets/img/memory-tool.png" alt="示例"> </li>
+</ul>
+<ul>
+<li>堆快照列表</li>
+</ul>
+<ul>
+<li>1、视图列表(summary摘要视图、comparsion比较视图、containment包含视图、statistics统计视图)</li>
+<li>2、根距离(Distance)对象与GC根之间的最短距离</li>
+<li>3、浅层大小(shallow size)当前对象自身占用内存大小，不包含引用对象单位bytes字节</li>
+<li>4、保留大小(retained size)当前对象被GC回收后总共能释放的内存大小单位bytes字节</li>
+<li>5、持有者(retainers)直接引用目标对象的变量<br><img src="/assets/img/snapshot.png" alt="示例"> </li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">JavaScript</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">浏览器</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/01/26/JavaScript内存/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-将富文本字符串html转为带格式的文本text" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1138,95 +1275,6 @@ console.log(payment);
 
 
   
-    <article id="post-java接口的default方法和static方法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/23/java接口的default方法和static方法/">java接口的default方法和static方法</a>
-    </h1>
-  
-
-        
-        <a href="/2020/10/23/java接口的default方法和static方法/" class="archive-article-date">
-  	<time datetime="2020-10-23T06:14:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>接口中的变量未声明类型，默认都是public static final也就是常量。方法默认都是public abstract 抽象方法。但是在jdk1.8中接口中可以定义default和static方法。我们一起来看看</p>
-</blockquote>
-<p>声明两个接口DefaultAndStaticTest.java,里面包含了abstract method、default method、static method</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public interface DefaultAndStaticTest &#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     *  必须被实现类重写</span><br><span class="line">     */</span><br><span class="line">    void  overideMethod();</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     *  如果实现类继承的多个接口都有该default方法，需要在实现类中重写</span><br><span class="line">     */</span><br><span class="line">    default void <span class="function"><span class="title">commonDefault</span></span>()&#123;</span><br><span class="line">        System.out.println(<span class="string">"interface default method commonDefault"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 可以被实现类重写，也可以不重写</span><br><span class="line">     */</span><br><span class="line">    default void <span class="function"><span class="title">sayDefault</span></span>()&#123;</span><br><span class="line">        System.out.println(<span class="string">"interface default method sayDefault"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * method does not override method from its superclass</span><br><span class="line">     * 不能被实现类重写</span><br><span class="line">     */</span><br><span class="line">    static void sayStatic()</span><br><span class="line">    &#123;</span><br><span class="line">        System.out.println(<span class="string">"interface static method"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>声明另一个接口DefaultTest.java，包含一个default方法，和上面的接口相同签名的default方法</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public interface DefaultTest &#123;</span><br><span class="line"></span><br><span class="line">    default void <span class="function"><span class="title">commonDefault</span></span>()&#123;</span><br><span class="line">        System.out.println(<span class="string">"interface default method commonDefault"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>编写实现类TestUtil</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public class TestUtil implements DefaultAndStaticTest, DefaultTest &#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     *  must either be declared abstract or implement abstract method</span><br><span class="line">     *  必须声明或者实现抽象方法</span><br><span class="line">     */</span><br><span class="line">    @Override</span><br><span class="line">    public void <span class="function"><span class="title">overideMethod</span></span>() &#123;</span><br><span class="line">        System.out.println(<span class="string">"必须实现接口中抽象方法"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     *  inherits unrelated default <span class="keyword">for</span> commonDefault() from DefaultAndStaticTest and DefaultTest</span><br><span class="line">     *  当类实现的两个接口中都有default方法commonDefault，需要在实现类中重写该default方法</span><br><span class="line">     */</span><br><span class="line">    @Override</span><br><span class="line">    public void <span class="function"><span class="title">commonDefault</span></span>() &#123;</span><br><span class="line">        System.out.println(<span class="string">"我是DefaultAndStaticTest和DefaultTest两个接口都有的default已经被重写"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void <span class="function"><span class="title">sayStatic</span></span>() &#123;</span><br><span class="line">        System.out.println(<span class="string">"我是TestUtil中方法而非接口静态方法"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        new TestUtil().commonDefault();</span><br><span class="line">        new TestUtil().sayStatic();</span><br><span class="line">        DefaultAndStaticTest.sayStatic();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>控制台输出：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">interface default method sayDefault</span><br><span class="line">我是DefaultAndStaticTest和DefaultTest两个接口都有的default已经被重写</span><br><span class="line">我是TestUtil中方法而非接口静态方法</span><br><span class="line">interface static method</span><br><span class="line">Process finished with exit code 0</span><br></pre></td></tr></table></figure>
-<p><font color="orange">思考：如果interface中实现了default，实现类中也重写了该方法， 声明个子类继承实现类并实现接口，用子类实例调用default方法调用的是接口的default还是实现类重写的default呢？</font></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">jdk1.8</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/23/java接口的default方法和static方法/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1241,7 +1289,7 @@ console.log(payment);
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2020 刘明仔
+    		&copy; 2021 刘明仔
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -1324,30 +1372,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">JSON</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">JS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">前端</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Mockjs</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Ajax</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">模拟数据</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">对象</a>
               </li>
              
@@ -1364,11 +1388,67 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">JavaScript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">前端</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">浏览器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Mockjs</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Ajax</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">模拟数据</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">VsCode</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Sass</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">HTML</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">响应式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">JSON</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">JS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">db</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1380,11 +1460,83 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">jdk1.8</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">css</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">布局</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">es6</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">reduce</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Primefaces</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">jsf</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">ajax</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">作用域</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">执行环境</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">递归算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">后端</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">cornerstone</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">dicomweb</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">微信公众号</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">微信浏览器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">WeixinJSBridge</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1404,71 +1556,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">jdk1.8</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">java</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">db</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Primefaces</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">jsf</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">ajax</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">后端</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">作用域</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">执行环境</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">微信公众号</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">微信浏览器</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">WeixinJSBridge</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">es6</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">reduce</a>
+                <a href="javascript:void(0)" class="js-tag color3">closure</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1480,27 +1568,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Javascript</a>
+                <a href="javascript:void(0)" class="js-tag color5">http</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">递归算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">cornerstone</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">dicomweb</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">javasScript</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">closure</a>
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1524,31 +1596,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">http</a>
+                <a href="javascript:void(0)" class="js-tag color4">XSS</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
+                <a href="javascript:void(0)" class="js-tag color1">SQL注入</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">VsCode</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Sass</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">JavaScript</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">浏览器</a>
+                <a href="javascript:void(0)" class="js-tag color5">安全漏洞</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1560,15 +1616,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">XSS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">SQL注入</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">安全漏洞</a>
+                <a href="javascript:void(0)" class="js-tag color2">javasScript</a>
               </li>
             
             <div class="clearfix"></div>
