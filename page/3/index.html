@@ -160,6 +160,297 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-数据库加密与java加密一致性" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/10/22/数据库加密与java加密一致性/">数据库加密与java加密一致性</a>
+    </h1>
+  
+
+        
+        <a href="/2019/10/22/数据库加密与java加密一致性/" class="archive-article-date">
+  	<time datetime="2019-10-22T09:49:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-22</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本篇博主主要根据红宝书里讲到的JSON大家不常用到的功能，但是很实用的功能做介绍。</p>
+</blockquote>
+<h2 id="栏目"><a href="#栏目" class="headerlink" title="栏目"></a>栏目</h2><ul>
+<li>目的</li>
+<li>JAVA加密/解密具类</li>
+<li>Postgresql加密解密</li>
+<li>Postgresql加密解密函数</li>
+</ul>
+<hr>
+<h3 id="一、目的"><a href="#一、目的" class="headerlink" title="一、目的"></a>一、目的</h3><p>为了安全起见，项目中要对用户的敏感信息（手机号，邮箱，护照号，社保卡号，身份证号，银行卡号）进行加密处理。那么就需要一套加密解密算法，并保证服务器端和数据库端加密解密的一致性。</p>
+<h3 id="二、JAVA加密-解密工具类"><a href="#二、JAVA加密-解密工具类" class="headerlink" title="二、JAVA加密/解密工具类"></a>二、JAVA加密/解密工具类</h3><pre><code class="bash">public class AesUtil {
+
+    private static final String ALGORITHM_MODE_PADDING5 = <span class="string">"AES/ECB/PKCS5Padding"</span>; //support 16 length key
+    private final static String KEY = <span class="string">"0000000000888888"</span>;//at least 16 characters
+
+
+    /**
+     * AES加密字符串
+     * @param content
+     * @<span class="built_in">return</span> 密文
+     */
+    public static String encrypt(String content) {
+        try {
+            byte[] byteContent = content.getBytes(<span class="string">"utf-8"</span>);
+            SecretKeySpec skeySpec = new SecretKeySpec(KEY.getBytes(<span class="string">"UTF-8"</span>), <span class="string">"AES"</span>);// 转换为AES专用密钥
+            Cipher cipher = Cipher.getInstance(ALGORITHM_MODE_PADDING5);
+            cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
+            byte[] resultByter = cipher.doFinal(byteContent);// 加密
+            String result = encodeBase64(resultByter);
+            <span class="built_in">return</span> result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        <span class="built_in">return</span> null;
+    }
+
+    /**
+     * 解密AES加密过的字符串
+     * @param content
+     * @<span class="built_in">return</span> 明文
+     */
+    public static String  decrypt(String  content) {
+        try {
+            byte[] contentBytes = decodeBase64(content);
+            SecretKeySpec skeySpec = new SecretKeySpec(KEY.getBytes(<span class="string">"UTF-8"</span>), <span class="string">"AES"</span>);
+            Cipher cipher = Cipher.getInstance(ALGORITHM_MODE_PADDING5);
+            cipher.init(Cipher.DECRYPT_MODE, skeySpec);
+            String result = new String(cipher.doFinal(contentBytes),<span class="string">"UTF-8"</span>);
+            <span class="built_in">return</span> result; // 明文
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        <span class="built_in">return</span> null;
+    }
+
+
+    public static byte[] decodeBase64(String encodedText)
+    {
+        final java.util.Base64.Decoder decoder = java.util.Base64.getDecoder();
+        <span class="built_in">return</span> decoder.decode(encodedText);
+    }
+
+    public static String encodeBase64(byte[] data)
+    {
+        final java.util.Base64.Encoder encoder = java.util.Base64.getEncoder();
+        <span class="built_in">return</span> encoder.encodeToString(data);
+    }
+
+    public static void main(String[] args) throws Exception{
+        String content = <span class="string">"welcome to 明仔博客"</span>;
+        String encryptStr =  AesUtil.encrypt(content);
+        System.out.println(<span class="string">"加密后："</span> + encryptStr);
+        String decryptStr = AesUtil.decrypt(encryptStr);
+        System.out.println(<span class="string">"解密后的内容："</span> + decryptStr);
+    }
+}
+</code></pre>
+<p>运行结果如下图<br><img src="/assets/img/result.png" alt="图片"></p>
+<h3 id="二、Postgresql加密解密"><a href="#二、Postgresql加密解密" class="headerlink" title="二、Postgresql加密解密"></a>二、Postgresql加密解密</h3><p>首先需要在Postgresql数据库端安装pgcrypto模块, 为了使用decrypt和encrypt函数</p>
+<p>create extension pgcrypto</p>
+<p>SELECT encode(encrypt(‘welcome to 明仔博客’::bytea,’0000000000888888’,’aes-ecb’),’base64’) </p>
+<font color="#eb7350" size="2">值得注意的是秘钥和加密模式要一致,也可以通过创建数据库函数来简化加密过程</font>
+
+<p>运行结果如下图<br><img src="/assets/img/postgresql.png" alt="图片"></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Postgresql</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">AES</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">加密encrypt</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">解密decrypt</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/10/22/数据库加密与java加密一致性/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-JSON解析和序列化" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/10/22/JSON解析和序列化/">JSON序列化</a>
+    </h1>
+  
+
+        
+        <a href="/2019/10/22/JSON解析和序列化/" class="archive-article-date">
+  	<time datetime="2019-10-22T04:30:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-22</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本篇博主主要根据红宝书里讲到的JSON大家不常用到的功能，但是很实用的功能做介绍。</p>
+</blockquote>
+<h2 id="栏目"><a href="#栏目" class="headerlink" title="栏目"></a>栏目</h2><ul>
+<li>语法</li>
+<li>解析与序列化</li>
+<li>实例</li>
+<li>总结</li>
+</ul>
+<hr>
+<h3 id="一、语法"><a href="#一、语法" class="headerlink" title="一、语法"></a>一、语法</h3><p>不管你是前端还是后端或是全栈开发，或多或少都和JSON打过交道，当然语法方面我们都熟知有三种类型的值：</p>
+<ul>
+<li>简单值（字符串、数值、布尔值或者null甚至可能是undefined）</li>
+<li>对象（这个我就不多说了用{}包起来的）</li>
+<li>数组 (这个我也不卖弄了用[]包起来的)</li>
+</ul>
+<font color="#eb7350" size="2">值得注意的是JSON中的对象属性名任何时候都必须加双引号</font>
+
+<hr>
+<h3 id="二-解析与序列化"><a href="#二-解析与序列化" class="headerlink" title="二 解析与序列化"></a>二 解析与序列化</h3><p>JSON对象解析不用多说，用”.”导航，或者[index]下标均可，就是javascriipt对象解析</p>
+<p>序列化主要是两个方法: </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">JSON.stringfy()  // 把JavaScript对象序列化JSON字符串</span><br><span class="line">JSON.parse()     // 把JSON字符串解析为原生的JavaScript值</span><br></pre></td></tr></table></figure>
+<p>上面大家都很熟悉，现在我们带着问题出发,去挖掘一下这两个方法的其他用途，下面内容都将使用定义好的objtest来做实例演示</p>
+<p>var objtest = [{“title”: “animal”, “authors”: [“monkey”,”pig”], “edition”: 3, “year”: 2011},{“title”: “fruit”, “authors”: [“orange”,”apple”], “edition”: 3, “year”: 2012}];</p>
+<p>1、我想序列化结果只包含显示title和year？</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">JSON.stringify(objtest, [<span class="string">"title"</span>, <span class="string">"year"</span>]);</span><br><span class="line">// <span class="string">"[&#123;"</span>title<span class="string">":"</span>animal<span class="string">","</span>year<span class="string">":2011&#125;,&#123;"</span>title<span class="string">":"</span>fruit<span class="string">","</span>year<span class="string">":2012&#125;]"</span></span><br></pre></td></tr></table></figure>
+<p>2、我想序列化objtestd,但是我想把authors显示为以逗号分隔,并且去掉edition？</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">JSON.stringify(objtest, <span class="keyword">function</span>(key,value)&#123;</span><br><span class="line">	<span class="keyword">if</span> (key == <span class="string">"edition"</span>) &#123;</span><br><span class="line">    	<span class="built_in">return</span> undefined;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(key == <span class="string">"authors"</span>)&#123;</span><br><span class="line">		<span class="built_in">return</span> value.join(<span class="string">","</span>);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="built_in">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">// <span class="string">"[&#123;"</span>title<span class="string">":"</span>animal<span class="string">","</span>authors<span class="string">":"</span>monkey,pig<span class="string">","</span>year<span class="string">":2011&#125;,&#123;"</span>title<span class="string">":"</span>fruit<span class="string">","</span>authors<span class="string">":"</span>orange,apple<span class="string">","</span>year<span class="string">":2012&#125;]"</span></span><br></pre></td></tr></table></figure>
+<p>3、JSON.stringify输出是不包含任何空格字符或缩进，我想让她格式化显示。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">JSON.stringify(objtest, <span class="keyword">function</span>(key,value)&#123;</span><br><span class="line">	<span class="keyword">if</span> (key == <span class="string">"edition"</span>) &#123;</span><br><span class="line">    	<span class="built_in">return</span> undefined;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(key == <span class="string">"authors"</span>)&#123;</span><br><span class="line">		<span class="built_in">return</span> value.join(<span class="string">","</span>);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="built_in">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;,<span class="string">"\t"</span>);  // 注意第三个参数一个转义字符的制表位tab，我们也可以传入数值标识空格个数，传入特殊字符分隔符，默认是插入了换行符，增强了可读性</span><br><span class="line"></span><br><span class="line">结果如下: </span><br><span class="line"><span class="string">"[</span></span><br><span class="line"><span class="string">	&#123;</span></span><br><span class="line"><span class="string">		"</span>title<span class="string">": "</span>animal<span class="string">",</span></span><br><span class="line"><span class="string">		"</span>authors<span class="string">": "</span>monkey,pig<span class="string">",</span></span><br><span class="line"><span class="string">		"</span>year<span class="string">": 2011</span></span><br><span class="line"><span class="string">	&#125;,</span></span><br><span class="line"><span class="string">	&#123;</span></span><br><span class="line"><span class="string">		"</span>title<span class="string">": "</span>fruit<span class="string">",</span></span><br><span class="line"><span class="string">		"</span>authors<span class="string">": "</span>orange,apple<span class="string">",</span></span><br><span class="line"><span class="string">		"</span>year<span class="string">": 2012</span></span><br><span class="line"><span class="string">	&#125;</span></span><br><span class="line"><span class="string">]"</span></span><br></pre></td></tr></table></figure>
+<p>4、我想把objtest中的title取出来放到一个数组里？</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">var objtest =[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">"title"</span>: <span class="string">"animal"</span>,</span><br><span class="line">        <span class="string">"authors"</span>: [</span><br><span class="line">            <span class="string">"monkey"</span>,</span><br><span class="line">            <span class="string">"pig"</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="string">"edition"</span>: 3,</span><br><span class="line">        <span class="string">"year"</span>: 2011,</span><br><span class="line">        toJSON: <span class="function"><span class="title">function</span></span>()&#123; <span class="built_in">return</span> this.title&#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">"title"</span>: <span class="string">"fruit"</span>,</span><br><span class="line">        <span class="string">"authors"</span>: [</span><br><span class="line">            <span class="string">"orange"</span>,</span><br><span class="line">            <span class="string">"apple"</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="string">"edition"</span>: 3,</span><br><span class="line">        <span class="string">"year"</span>: 2012,</span><br><span class="line">        toJSON: <span class="function"><span class="title">function</span></span>()&#123; <span class="built_in">return</span> this.title&#125;</span><br><span class="line">    &#125;</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">JSON.stringify(objtest);</span><br><span class="line">//<span class="string">"["</span>animal<span class="string">","</span>fruit<span class="string">"]"</span></span><br></pre></td></tr></table></figure>
+<p>5、我什么都不做就想单纯的格式化JSON？<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">JSON.stringify(objtest,null,4);</span><br><span class="line">//<span class="string">"[</span></span><br><span class="line"><span class="string">    &#123;</span></span><br><span class="line"><span class="string">        "</span>title<span class="string">": "</span>animal<span class="string">",</span></span><br><span class="line"><span class="string">        "</span>authors<span class="string">": [</span></span><br><span class="line"><span class="string">            "</span>monkey<span class="string">",</span></span><br><span class="line"><span class="string">            "</span>pig<span class="string">"</span></span><br><span class="line"><span class="string">        ],</span></span><br><span class="line"><span class="string">        "</span>edition<span class="string">": 3,</span></span><br><span class="line"><span class="string">        "</span>year<span class="string">": 2011</span></span><br><span class="line"><span class="string">    &#125;,</span></span><br><span class="line"><span class="string">    &#123;</span></span><br><span class="line"><span class="string">        "</span>title<span class="string">": "</span>fruit<span class="string">",</span></span><br><span class="line"><span class="string">        "</span>authors<span class="string">": [</span></span><br><span class="line"><span class="string">            "</span>orange<span class="string">",</span></span><br><span class="line"><span class="string">            "</span>apple<span class="string">"</span></span><br><span class="line"><span class="string">        ],</span></span><br><span class="line"><span class="string">        "</span>edition<span class="string">": 3,</span></span><br><span class="line"><span class="string">        "</span>year<span class="string">": 2012</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">]"</span></span><br></pre></td></tr></table></figure></p>
+<p>值得注意的序列化顺序：如果存在toJSON就调用该方法，否则进行数组过滤，函数过滤两种过滤器进行过滤，在使用第三个参数进行格式化</p>
+<p>6、在解析JSON字符串时，如何把日期字符串还原Date对象？</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">// 定义一个带日期字符串的JSON对象</span><br><span class="line">var objtest = [</span><br><span class="line">  &#123;<span class="string">"title"</span>: <span class="string">"animal"</span>, <span class="string">"authors"</span>: [<span class="string">"monkey"</span>,<span class="string">"pig"</span>], <span class="string">"edition"</span>: 3, <span class="string">"year"</span>: 2011, showDate: new Date(2019,10,22)&#125;,</span><br><span class="line">  &#123;<span class="string">"title"</span>: <span class="string">"fruit"</span>, <span class="string">"authors"</span>: [<span class="string">"orange"</span>,<span class="string">"apple"</span>], <span class="string">"edition"</span>: 3, <span class="string">"year"</span>: 2012, showDate: new Date(2019,10,22)&#125;</span><br><span class="line">  ];</span><br><span class="line"></span><br><span class="line">// 通过JSON.stringify 格式化带日期格式的JSON字符串</span><br><span class="line">var jsonStr = JSON.stringify(objtest, null, 4); </span><br><span class="line"></span><br><span class="line"><span class="string">"[</span></span><br><span class="line"><span class="string">    &#123;</span></span><br><span class="line"><span class="string">        "</span>title<span class="string">": "</span>animal<span class="string">",</span></span><br><span class="line"><span class="string">        "</span>authors<span class="string">": [</span></span><br><span class="line"><span class="string">            "</span>monkey<span class="string">",</span></span><br><span class="line"><span class="string">            "</span>pig<span class="string">"</span></span><br><span class="line"><span class="string">        ],</span></span><br><span class="line"><span class="string">        "</span>edition<span class="string">": 3,</span></span><br><span class="line"><span class="string">        "</span>year<span class="string">": 2011,</span></span><br><span class="line"><span class="string">        "</span>showDate<span class="string">": "</span>2019-11-21T16:00:00.000Z<span class="string">"</span></span><br><span class="line"><span class="string">    &#125;,</span></span><br><span class="line"><span class="string">    &#123;</span></span><br><span class="line"><span class="string">        "</span>title<span class="string">": "</span>fruit<span class="string">",</span></span><br><span class="line"><span class="string">        "</span>authors<span class="string">": [</span></span><br><span class="line"><span class="string">            "</span>orange<span class="string">",</span></span><br><span class="line"><span class="string">            "</span>apple<span class="string">"</span></span><br><span class="line"><span class="string">        ],</span></span><br><span class="line"><span class="string">        "</span>edition<span class="string">": 3,</span></span><br><span class="line"><span class="string">        "</span>year<span class="string">": 2012,</span></span><br><span class="line"><span class="string">        "</span>showDate<span class="string">": "</span>2019-11-21T16:00:00.000Z<span class="string">"</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">]"</span></span><br><span class="line"></span><br><span class="line">// JSON.parse和JSON.stringify一样也有另一个函数参数</span><br><span class="line">var result = JSON.parse(jsonStr,<span class="keyword">function</span>(key,value) &#123; </span><br><span class="line">	<span class="keyword">if</span>(key == <span class="string">"showDate"</span>)&#123;</span><br><span class="line">		<span class="built_in">return</span> new Date(value);</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="built_in">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// 解析出来的JSON对象，showDate 里面包含_proto_日期函数的原生</span><br><span class="line">console.log(result.showDate.getFullYear()); // 2019</span><br></pre></td></tr></table></figure>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JSON</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">JS</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/10/22/JSON解析和序列化/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-微信公众号图片预览和缩放" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -989,110 +1280,9 @@ process属性值： @all(更新整个文件慎用) @parent(包含当前，同级
 
 
   
-    <article id="post-carousel" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/28/carousel/">轮播图</a>
-    </h1>
-  
-
-        
-        <a href="/2019/05/28/carousel/" class="archive-article-date">
-  	<time datetime="2019-05-28T02:34:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-28</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>不同的前端UI里都有应用轮播图，最常用的是bootstrap的carousel，轮播图的一些常用用法总结</p>
-</blockquote>
-<h2 id="怎么使用？"><a href="#怎么使用？" class="headerlink" title="怎么使用？"></a>怎么使用？</h2><h3 id="要引入css和js，bootstrap-css-和-carousel-js"><a href="#要引入css和js，bootstrap-css-和-carousel-js" class="headerlink" title="要引入css和js，bootstrap.css 和  carousel.js"></a>要引入css和js，bootstrap.css 和  carousel.js</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=<span class="string">"carousel-example-generic"</span> class=<span class="string">"carousel slide"</span> data-ride=<span class="string">"carousel"</span>&gt;</span><br><span class="line">  &lt;!-- Indicators --&gt;</span><br><span class="line">  &lt;ol class=<span class="string">"carousel-indicators"</span>&gt;</span><br><span class="line">    &lt;li data-target=<span class="string">"#carousel-example-generic"</span> data-slide-to=<span class="string">"0"</span> class=<span class="string">"active"</span>&gt;&lt;/li&gt;</span><br><span class="line">    &lt;li data-target=<span class="string">"#carousel-example-generic"</span> data-slide-to=<span class="string">"1"</span>&gt;&lt;/li&gt;</span><br><span class="line">    &lt;li data-target=<span class="string">"#carousel-example-generic"</span> data-slide-to=<span class="string">"2"</span>&gt;&lt;/li&gt;</span><br><span class="line">  &lt;/ol&gt;</span><br><span class="line"></span><br><span class="line">  &lt;!-- Wrapper <span class="keyword">for</span> slides --&gt;</span><br><span class="line">  &lt;div class=<span class="string">"carousel-inner"</span> role=<span class="string">"listbox"</span>&gt;</span><br><span class="line">    &lt;div class=<span class="string">"item active"</span>&gt;</span><br><span class="line">      &lt;img src=<span class="string">"..."</span> alt=<span class="string">"..."</span>&gt;</span><br><span class="line">      &lt;div class=<span class="string">"carousel-caption"</span>&gt;</span><br><span class="line">        ...</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div class=<span class="string">"item"</span>&gt;</span><br><span class="line">      &lt;img src=<span class="string">"..."</span> alt=<span class="string">"..."</span>&gt;</span><br><span class="line">      &lt;div class=<span class="string">"carousel-caption"</span>&gt;</span><br><span class="line">        ...</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    ...</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  &lt;!-- Controls --&gt;</span><br><span class="line">  &lt;a class=<span class="string">"left carousel-control"</span> href=<span class="string">"#carousel-example-generic"</span> role=<span class="string">"button"</span> data-slide=<span class="string">"prev"</span>&gt;</span><br><span class="line">    &lt;span class=<span class="string">"glyphicon glyphicon-chevron-left"</span> aria-hidden=<span class="string">"true"</span>&gt;&lt;/span&gt;</span><br><span class="line">    &lt;span class=<span class="string">"sr-only"</span>&gt;Previous&lt;/span&gt;</span><br><span class="line">  &lt;/a&gt;</span><br><span class="line">  &lt;a class=<span class="string">"right carousel-control"</span> href=<span class="string">"#carousel-example-generic"</span> role=<span class="string">"button"</span> data-slide=<span class="string">"next"</span>&gt;</span><br><span class="line">    &lt;span class=<span class="string">"glyphicon glyphicon-chevron-right"</span> aria-hidden=<span class="string">"true"</span>&gt;&lt;/span&gt;</span><br><span class="line">    &lt;span class=<span class="string">"sr-only"</span>&gt;Next&lt;/span&gt;</span><br><span class="line">  &lt;/a&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="Carsoul的基本参数概览"><a href="#Carsoul的基本参数概览" class="headerlink" title="Carsoul的基本参数概览"></a>Carsoul的基本参数概览</h2><p><img src="/assets/img/carousel.png" alt="参数概览"></p>
-<h2 id="Carsoul里面的常用属性说明"><a href="#Carsoul里面的常用属性说明" class="headerlink" title="Carsoul里面的常用属性说明"></a>Carsoul里面的常用属性说明</h2><ul>
-<li>data-ride=”carousel”: k页面加载时加载轮播</li>
-<li>data-interval=”2000”: 轮播时间</li>
-<li>data-warp： 轮播是否循环，默认true</li>
-<li>data-pause：鼠标覆盖循环暂停，默认true</li>
-<li>class=”carousel-indicators”: 指定本内容小圆点</li>
-<li>data-target=”#carouselContainer”：指向父元素的id</li>
-<li>data-slide-to=”0”: 指向内容索引(点击li时，跳转)</li>
-<li>carousel-inner: 指定轮播内容</li>
-<li>class=”item”: 轮播子页</li>
-<li>class=”carousel-caption”: 轮播内容中提示信息</li>
-<li>class=”left carousel-control”: 左边控制按钮</li>
-<li>href=”#carouselContainer”: 指向父容器</li>
-<li>class=”glyphicon glyphicon-chevron-left”: 左边图标</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">bootstrap</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">carousel</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/05/28/carousel/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
     </nav>
   
 
@@ -1203,6 +1393,30 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Mockjs</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Ajax</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">模拟数据</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Http</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">TCP</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">GET|POST请求</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">JavaScript</a>
               </li>
              
@@ -1215,15 +1429,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Mockjs</a>
+                <a href="javascript:void(0)" class="js-tag color5">JSON</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Ajax</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">模拟数据</a>
+                <a href="javascript:void(0)" class="js-tag color3">JS</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1247,26 +1457,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">JSON</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">JS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">db</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">bootstrap</a>
               </li>
              
@@ -1283,19 +1473,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">css</a>
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">布局</a>
+                <a href="javascript:void(0)" class="js-tag color3">db</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">es6</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">reduce</a>
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1311,6 +1497,38 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">优化</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">css</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">布局</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">队列</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">javascript</a>
               </li>
              
@@ -1323,15 +1541,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Javascript</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">递归算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">后端</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1355,26 +1565,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">队列</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">链表</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">closure</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">错误处理</a>
               </li>
              
@@ -1383,11 +1573,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">http</a>
+                <a href="javascript:void(0)" class="js-tag color4">es6</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
+                <a href="javascript:void(0)" class="js-tag color2">reduce</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">closure</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1411,15 +1605,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">XSS</a>
+                <a href="javascript:void(0)" class="js-tag color5">http</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">SQL注入</a>
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">安全漏洞</a>
+                <a href="javascript:void(0)" class="js-tag color2">javasScript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">后端</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1431,7 +1629,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">javasScript</a>
+                <a href="javascript:void(0)" class="js-tag color4">XSS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">SQL注入</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">安全漏洞</a>
               </li>
             
             <div class="clearfix"></div>

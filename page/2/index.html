@@ -160,6 +160,232 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-浏览器缓存" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/11/浏览器缓存/">浏览器缓存</a>
+    </h1>
+  
+
+        
+        <a href="/2020/11/11/浏览器缓存/" class="archive-article-date">
+  	<time datetime="2020-11-11T02:10:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>如何让公司省一点带宽(减轻服务器负担)，用户省一点流量呢(减少冗余数据传输)，提升用户体验(加快客户端加载速度)？用浏览器缓存静态资源(css, js, png,jpg等)</p>
+</blockquote>
+<h3 id="浏览器缓存策略"><a href="#浏览器缓存策略" class="headerlink" title="浏览器缓存策略"></a>浏览器缓存策略</h3><p>浏览器缓存(Browser Caching)是浏览器本地磁盘对用户最近请求的文档进行存储，再次访问时浏览器直接从磁盘加载文档，主要分如下两类：</p>
+<ul>
+<li>强制缓存</li>
+<li>协商缓存</li>
+</ul>
+<h4 id="什么是强制缓存？"><a href="#什么是强制缓存？" class="headerlink" title="什么是强制缓存？"></a>什么是强制缓存？</h4><p>强缓存就是浏览器根本不会发请求给服务器，通过http头中的Expires和cache-control两个字段来控制的(如果两者同时存在，cache-contol会优先生效)，如果两个字段满足条件，就不会去向服务器发出请求直接使用缓存。</p>
+<p>CACHE-CONTROL常用字段</p>
+<ul>
+<li>no-cache: 不使用强缓存(本地缓存)，需要使用缓存协商，先与服务器确认返回的响应是否被更改，如果之前的响应中存在ETag，那么请求的时候会与服务端验证，如果资源未被更改，则可以避免重新下载。</li>
+<li>no-store：禁止使用缓存（强制缓存&amp;协商缓存），每次请求资源都要向服务请求</li>
+<li>public：资源可被代理服务器(CDN或中间件代理)和浏览器缓存</li>
+<li>private：资源只能被浏览器缓存</li>
+<li>max-age：缓存的最长有效时间</li>
+</ul>
+<p>那怎么判断强缓存被触发？ 就判断资源是否过期max-age。主要看响应头Response headers中Cache-Control的值和no-cache，也有另一个判断过期的参考值Expires已经被淘汰且Cache-Control优先羽expires</p>
+<h4 id="什么是协商缓存？"><a href="#什么是协商缓存？" class="headerlink" title="什么是协商缓存？"></a>什么是协商缓存？</h4><p>上面的强缓存是在本地判断缓存的资源是否可以继续用，而协商缓存顾名思义就是和服务器求证这个资源是否未被更新，从而决定要不要继续使用本地缓存的资源。</p>
+<p>Last-Modified/If-Modified-Since当浏览器再次跟服务器请求资源的时候，就会加上If-Modified-Since这个请求header，它的值就是上一次服务器发回来响应头中Last-Modified的值。</p>
+<p>Etag/If-None-Match 这两个值是每一个资源唯一标识符(可以理解为md5)，Etag存在于响应头中，IF-None-Match存在于请求头中，只要资源变化了，这个值就会变，其判断过程类似上面（服务器优先验证Etag，其次Last-Modified）</p>
+<p>那么怎么判断协商缓存被触发呢？当cache-control为no-cache, 查看Response headers中ETag和LastModified，在下一次请求Request header中带上If-None-Match和If-Modified-Sine（对应ETag和LastModified）<br>1、请求资源时，把用户本地该资源的 ETag 同时带到服务端，服务端和最新资源做对比。<br>2、如果资源没更改，返回304码（携带header信息），浏览器读取本地缓存。<br>3、如果资源有更改，返回200码（携带body数据），返回最新的资源。</p>
+<h4 id="缓存流程分第一次请求和后续请求"><a href="#缓存流程分第一次请求和后续请求" class="headerlink" title="缓存流程分第一次请求和后续请求"></a>缓存流程分第一次请求和后续请求</h4><h5 id="第一次请求"><a href="#第一次请求" class="headerlink" title="第一次请求"></a>第一次请求</h5><p><img src="/assets/img/brows-cache-first.png" alt="浏览器缓存"> </p>
+<h5 id="后续请求"><a href="#后续请求" class="headerlink" title="后续请求"></a>后续请求</h5><p><img src="/assets/img/browser-cache.png" alt="浏览器缓存"> </p>
+<h4 id="为什么要有ETag，Last-Modified存在哪些问题？"><a href="#为什么要有ETag，Last-Modified存在哪些问题？" class="headerlink" title="为什么要有ETag，Last-Modified存在哪些问题？"></a>为什么要有ETag，Last-Modified存在哪些问题？</h4><p>你可能会觉得使用Last-Modified已经足以让浏览器知道本地的缓存副本是否足够新，为什么还需要Etag呢？HTTP1.1中Etag的出现（也就是说，ETag是新增的，为了解决之前只有If-Modified的缺点）主要是为了解决几个Last-Modified比较难解决的问题：</p>
+<ul>
+<li>一些文件也许会周期性的更改，但是他的内容并不改变(仅仅改变的修改时间)，这个时候我们并不希望客户端认为这个文件被修改了，而重新GET；</li>
+<li>某些文件修改非常频繁，比如在秒以下的时间内进行修改，(比方说1s内修改了N次)，If-Modified-Since能检查到的粒度是s级的，这种修改无法判断(或者说UNIX记录MTIME只能精确到秒)；</li>
+<li>某些服务器不能精确的得到文件的最后修改时间。</li>
+</ul>
+<h4 id="强缓存和协商缓存区别是什么？"><a href="#强缓存和协商缓存区别是什么？" class="headerlink" title="强缓存和协商缓存区别是什么？"></a>强缓存和协商缓存区别是什么？</h4><ul>
+<li>缓存类型一个是强缓存一个是写上缓存，通过Cache-Control判断</li>
+<li>状态码不同：强缓存状态码200，协商缓存状态码304</li>
+<li>强缓存不会去服务器拿资源。协商缓存通过服务器来告知去哪里拿资源</li>
+</ul>
+<h4 id="用户哪些行为刷新页面对缓存影响（转载：https-www-pianshen-com-article-31621262769-）"><a href="#用户哪些行为刷新页面对缓存影响（转载：https-www-pianshen-com-article-31621262769-）" class="headerlink" title="用户哪些行为刷新页面对缓存影响（转载：https://www.pianshen.com/article/31621262769/）"></a>用户哪些行为刷新页面对缓存影响（转载：<a href="https://www.pianshen.com/article/31621262769/）" target="_blank" rel="noopener">https://www.pianshen.com/article/31621262769/）</a></h4><p><img src="/assets/img/behavior.jpg" alt="用户行为"> </p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">http</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">缓存</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/11/11/浏览器缓存/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Normalize-css用途" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/10/Normalize-css用途/">Normalize.css用途</a>
+    </h1>
+  
+
+        
+        <a href="/2020/11/10/Normalize-css用途/" class="archive-article-date">
+  	<time datetime="2020-11-10T03:34:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>Normalize.css是一个可定制的CSS文件, 是归一化的css文件, Normalize.css是现代化更小的css文件,在默认的HTML元素样式上提供了跨浏览器的高度一致性</p>
+</blockquote>
+<ul>
+<li><a href="http://necolas.github.io/normalize.css/" title="Normalize.css 项目地址" target="_blank" rel="noopener">Normalize.css 项目地址</a></li>
+<li><a href="https://github.com/necolas/normalize.css" title="Normalize.css 在GitHub上的源码" target="_blank" rel="noopener">Normalize.css 在GitHub上的源码</a></li>
+</ul>
+<h3 id="Normalize-css特性"><a href="#Normalize-css特性" class="headerlink" title="Normalize.css特性"></a>Normalize.css特性</h3><ol>
+<li>保留有用的默认值，不同于许多CSS的重置</li>
+<li>标注化的样式，适用范围广的元素</li>
+<li>纠正错误和常见的浏览器的不一致性</li>
+<li>一些细节的改进，提高了易用性</li>
+<li>使用详细的注解代码</li>
+</ol>
+<h3 id="Normalize-css支持浏览器类型"><a href="#Normalize-css支持浏览器类型" class="headerlink" title="Normalize.css支持浏览器类型"></a>Normalize.css支持浏览器类型</h3><ul>
+<li>Google Chrome (latest)</li>
+<li>Mozilla Firefox (latest)</li>
+<li>Mozilla Firefox ESR</li>
+<li>Opera (latest)</li>
+<li>Apple Safari 6+</li>
+<li>Internet Explorer 8+</li>
+</ul>
+<h3 id="Normalize-css与Reset-css"><a href="#Normalize-css与Reset-css" class="headerlink" title="Normalize.css与Reset.css"></a>Normalize.css与Reset.css</h3><p> <a href="https://jerryzou.com/posts/aboutNormalizeCss/" title="转载" target="_blank" rel="noopener">转载https://jerryzou.com/posts/aboutNormalizeCss/</a></p>
+<h5 id="一、Normalize-css-保护了有价值的默认值"><a href="#一、Normalize-css-保护了有价值的默认值" class="headerlink" title="一、Normalize.css 保护了有价值的默认值"></a>一、Normalize.css 保护了有价值的默认值</h5><p>  Reset通过为几乎所有的元素施加默认样式，强行使得元素有相同的视觉效果。相比之下，Normalize.css保持了许多默认的浏览器样式。这就意味着你不用再为所有公共的排版元素重新设置样式。当一个元素<br>在不同的浏览器中有不同的默认值时，Normalize.css会力求让这些样式保持一致并尽可能与现代标准相符合。</p>
+<h5 id="二、Normalize-css-修复了浏览器的bug"><a href="#二、Normalize-css-修复了浏览器的bug" class="headerlink" title="二、Normalize.css 修复了浏览器的bug"></a>二、Normalize.css 修复了浏览器的bug</h5><p>它修复了常见的桌面端和移动端浏览器的bug。这往往超出了Reset所能做到的范畴。关于这一点，Normalize.css修复的问题包含了HTML5元素的显示设置、预格式化文字的font-size问题、在IE9中SVG的溢出、许多出现在各浏览器和操作系统中的与表单相关的bug。 例如：对于HTML5中新出现的input类型search，Normalize.css是如何保证跨浏览器的一致性的。</p>
+<h5 id="三、Normalize-css-不会让你的调试工具变的杂乱"><a href="#三、Normalize-css-不会让你的调试工具变的杂乱" class="headerlink" title="三、Normalize.css 不会让你的调试工具变的杂乱"></a>三、Normalize.css 不会让你的调试工具变的杂乱</h5><p>使用Reset最让人困扰的地方莫过于在浏览器调试工具中大段大段的继承链，如下图所示。在Normalize.css中就不会有这样的问题，因为在我们的准则中对多选择器的使用时非常谨慎的，我们仅会有目的地对目标元素设置样式。</p>
+<h5 id="四、Normalize-css-是模块化的"><a href="#四、Normalize-css-是模块化的" class="headerlink" title="四、Normalize.css 是模块化的"></a>四、Normalize.css 是模块化的</h5><p>  这个项目已经被拆分为多个相关却又独立的部分，这使得你能够很容易也很清楚地知道哪些元素被设置了特定的值。因此这能让你自己选择性地移除掉某些永远不会用到部分（比如表单的一般化）。</p>
+<h5 id="五、-Normalize-css-拥有详细的文档"><a href="#五、-Normalize-css-拥有详细的文档" class="headerlink" title="五、 Normalize.css 拥有详细的文档"></a>五、 Normalize.css 拥有详细的文档</h5><p>Normalize.css的代码基于详细而全面的跨浏览器研究与测试。这个文件中拥有详细的代码说明并在Github Wiki中有进一步的说明。这意味着你可以找到每一行代码具体完成了什么工作、为什么要写这句代码、 浏览器之间的差异，并且你可以更容易地进行自己的测试。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">css</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">布局</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/11/10/Normalize-css用途/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-java接口的default方法和static方法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -942,300 +1168,9 @@ var factorial = (<span class="keyword">function</span> f(n){
 
 
   
-    <article id="post-数据库加密与java加密一致性" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/22/数据库加密与java加密一致性/">数据库加密与java加密一致性</a>
-    </h1>
-  
-
-        
-        <a href="/2019/10/22/数据库加密与java加密一致性/" class="archive-article-date">
-  	<time datetime="2019-10-22T09:49:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>本篇博主主要根据红宝书里讲到的JSON大家不常用到的功能，但是很实用的功能做介绍。</p>
-</blockquote>
-<h2 id="栏目"><a href="#栏目" class="headerlink" title="栏目"></a>栏目</h2><ul>
-<li>目的</li>
-<li>JAVA加密/解密具类</li>
-<li>Postgresql加密解密</li>
-<li>Postgresql加密解密函数</li>
-</ul>
-<hr>
-<h3 id="一、目的"><a href="#一、目的" class="headerlink" title="一、目的"></a>一、目的</h3><p>为了安全起见，项目中要对用户的敏感信息（手机号，邮箱，护照号，社保卡号，身份证号，银行卡号）进行加密处理。那么就需要一套加密解密算法，并保证服务器端和数据库端加密解密的一致性。</p>
-<h3 id="二、JAVA加密-解密工具类"><a href="#二、JAVA加密-解密工具类" class="headerlink" title="二、JAVA加密/解密工具类"></a>二、JAVA加密/解密工具类</h3><pre><code class="bash">public class AesUtil {
-
-    private static final String ALGORITHM_MODE_PADDING5 = <span class="string">"AES/ECB/PKCS5Padding"</span>; //support 16 length key
-    private final static String KEY = <span class="string">"0000000000888888"</span>;//at least 16 characters
-
-
-    /**
-     * AES加密字符串
-     * @param content
-     * @<span class="built_in">return</span> 密文
-     */
-    public static String encrypt(String content) {
-        try {
-            byte[] byteContent = content.getBytes(<span class="string">"utf-8"</span>);
-            SecretKeySpec skeySpec = new SecretKeySpec(KEY.getBytes(<span class="string">"UTF-8"</span>), <span class="string">"AES"</span>);// 转换为AES专用密钥
-            Cipher cipher = Cipher.getInstance(ALGORITHM_MODE_PADDING5);
-            cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
-            byte[] resultByter = cipher.doFinal(byteContent);// 加密
-            String result = encodeBase64(resultByter);
-            <span class="built_in">return</span> result;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        <span class="built_in">return</span> null;
-    }
-
-    /**
-     * 解密AES加密过的字符串
-     * @param content
-     * @<span class="built_in">return</span> 明文
-     */
-    public static String  decrypt(String  content) {
-        try {
-            byte[] contentBytes = decodeBase64(content);
-            SecretKeySpec skeySpec = new SecretKeySpec(KEY.getBytes(<span class="string">"UTF-8"</span>), <span class="string">"AES"</span>);
-            Cipher cipher = Cipher.getInstance(ALGORITHM_MODE_PADDING5);
-            cipher.init(Cipher.DECRYPT_MODE, skeySpec);
-            String result = new String(cipher.doFinal(contentBytes),<span class="string">"UTF-8"</span>);
-            <span class="built_in">return</span> result; // 明文
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        <span class="built_in">return</span> null;
-    }
-
-
-    public static byte[] decodeBase64(String encodedText)
-    {
-        final java.util.Base64.Decoder decoder = java.util.Base64.getDecoder();
-        <span class="built_in">return</span> decoder.decode(encodedText);
-    }
-
-    public static String encodeBase64(byte[] data)
-    {
-        final java.util.Base64.Encoder encoder = java.util.Base64.getEncoder();
-        <span class="built_in">return</span> encoder.encodeToString(data);
-    }
-
-    public static void main(String[] args) throws Exception{
-        String content = <span class="string">"welcome to 明仔博客"</span>;
-        String encryptStr =  AesUtil.encrypt(content);
-        System.out.println(<span class="string">"加密后："</span> + encryptStr);
-        String decryptStr = AesUtil.decrypt(encryptStr);
-        System.out.println(<span class="string">"解密后的内容："</span> + decryptStr);
-    }
-}
-</code></pre>
-<p>运行结果如下图<br><img src="/assets/img/result.png" alt="图片"></p>
-<h3 id="二、Postgresql加密解密"><a href="#二、Postgresql加密解密" class="headerlink" title="二、Postgresql加密解密"></a>二、Postgresql加密解密</h3><p>首先需要在Postgresql数据库端安装pgcrypto模块, 为了使用decrypt和encrypt函数</p>
-<p>create extension pgcrypto</p>
-<p>SELECT encode(encrypt(‘welcome to 明仔博客’::bytea,’0000000000888888’,’aes-ecb’),’base64’) </p>
-<font color="#eb7350" size="2">值得注意的是秘钥和加密模式要一致,也可以通过创建数据库函数来简化加密过程</font>
-
-<p>运行结果如下图<br><img src="/assets/img/postgresql.png" alt="图片"></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Postgresql</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">AES</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">加密encrypt</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">解密decrypt</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/10/22/数据库加密与java加密一致性/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-JSON解析和序列化" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/22/JSON解析和序列化/">JSON序列化</a>
-    </h1>
-  
-
-        
-        <a href="/2019/10/22/JSON解析和序列化/" class="archive-article-date">
-  	<time datetime="2019-10-22T04:30:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>本篇博主主要根据红宝书里讲到的JSON大家不常用到的功能，但是很实用的功能做介绍。</p>
-</blockquote>
-<h2 id="栏目"><a href="#栏目" class="headerlink" title="栏目"></a>栏目</h2><ul>
-<li>语法</li>
-<li>解析与序列化</li>
-<li>实例</li>
-<li>总结</li>
-</ul>
-<hr>
-<h3 id="一、语法"><a href="#一、语法" class="headerlink" title="一、语法"></a>一、语法</h3><p>不管你是前端还是后端或是全栈开发，或多或少都和JSON打过交道，当然语法方面我们都熟知有三种类型的值：</p>
-<ul>
-<li>简单值（字符串、数值、布尔值或者null甚至可能是undefined）</li>
-<li>对象（这个我就不多说了用{}包起来的）</li>
-<li>数组 (这个我也不卖弄了用[]包起来的)</li>
-</ul>
-<font color="#eb7350" size="2">值得注意的是JSON中的对象属性名任何时候都必须加双引号</font>
-
-<hr>
-<h3 id="二-解析与序列化"><a href="#二-解析与序列化" class="headerlink" title="二 解析与序列化"></a>二 解析与序列化</h3><p>JSON对象解析不用多说，用”.”导航，或者[index]下标均可，就是javascriipt对象解析</p>
-<p>序列化主要是两个方法: </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">JSON.stringfy()  // 把JavaScript对象序列化JSON字符串</span><br><span class="line">JSON.parse()     // 把JSON字符串解析为原生的JavaScript值</span><br></pre></td></tr></table></figure>
-<p>上面大家都很熟悉，现在我们带着问题出发,去挖掘一下这两个方法的其他用途，下面内容都将使用定义好的objtest来做实例演示</p>
-<p>var objtest = [{“title”: “animal”, “authors”: [“monkey”,”pig”], “edition”: 3, “year”: 2011},{“title”: “fruit”, “authors”: [“orange”,”apple”], “edition”: 3, “year”: 2012}];</p>
-<p>1、我想序列化结果只包含显示title和year？</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">JSON.stringify(objtest, [<span class="string">"title"</span>, <span class="string">"year"</span>]);</span><br><span class="line">// <span class="string">"[&#123;"</span>title<span class="string">":"</span>animal<span class="string">","</span>year<span class="string">":2011&#125;,&#123;"</span>title<span class="string">":"</span>fruit<span class="string">","</span>year<span class="string">":2012&#125;]"</span></span><br></pre></td></tr></table></figure>
-<p>2、我想序列化objtestd,但是我想把authors显示为以逗号分隔,并且去掉edition？</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">JSON.stringify(objtest, <span class="keyword">function</span>(key,value)&#123;</span><br><span class="line">	<span class="keyword">if</span> (key == <span class="string">"edition"</span>) &#123;</span><br><span class="line">    	<span class="built_in">return</span> undefined;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(key == <span class="string">"authors"</span>)&#123;</span><br><span class="line">		<span class="built_in">return</span> value.join(<span class="string">","</span>);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="built_in">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">// <span class="string">"[&#123;"</span>title<span class="string">":"</span>animal<span class="string">","</span>authors<span class="string">":"</span>monkey,pig<span class="string">","</span>year<span class="string">":2011&#125;,&#123;"</span>title<span class="string">":"</span>fruit<span class="string">","</span>authors<span class="string">":"</span>orange,apple<span class="string">","</span>year<span class="string">":2012&#125;]"</span></span><br></pre></td></tr></table></figure>
-<p>3、JSON.stringify输出是不包含任何空格字符或缩进，我想让她格式化显示。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">JSON.stringify(objtest, <span class="keyword">function</span>(key,value)&#123;</span><br><span class="line">	<span class="keyword">if</span> (key == <span class="string">"edition"</span>) &#123;</span><br><span class="line">    	<span class="built_in">return</span> undefined;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(key == <span class="string">"authors"</span>)&#123;</span><br><span class="line">		<span class="built_in">return</span> value.join(<span class="string">","</span>);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="built_in">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;,<span class="string">"\t"</span>);  // 注意第三个参数一个转义字符的制表位tab，我们也可以传入数值标识空格个数，传入特殊字符分隔符，默认是插入了换行符，增强了可读性</span><br><span class="line"></span><br><span class="line">结果如下: </span><br><span class="line"><span class="string">"[</span></span><br><span class="line"><span class="string">	&#123;</span></span><br><span class="line"><span class="string">		"</span>title<span class="string">": "</span>animal<span class="string">",</span></span><br><span class="line"><span class="string">		"</span>authors<span class="string">": "</span>monkey,pig<span class="string">",</span></span><br><span class="line"><span class="string">		"</span>year<span class="string">": 2011</span></span><br><span class="line"><span class="string">	&#125;,</span></span><br><span class="line"><span class="string">	&#123;</span></span><br><span class="line"><span class="string">		"</span>title<span class="string">": "</span>fruit<span class="string">",</span></span><br><span class="line"><span class="string">		"</span>authors<span class="string">": "</span>orange,apple<span class="string">",</span></span><br><span class="line"><span class="string">		"</span>year<span class="string">": 2012</span></span><br><span class="line"><span class="string">	&#125;</span></span><br><span class="line"><span class="string">]"</span></span><br></pre></td></tr></table></figure>
-<p>4、我想把objtest中的title取出来放到一个数组里？</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">var objtest =[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">"title"</span>: <span class="string">"animal"</span>,</span><br><span class="line">        <span class="string">"authors"</span>: [</span><br><span class="line">            <span class="string">"monkey"</span>,</span><br><span class="line">            <span class="string">"pig"</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="string">"edition"</span>: 3,</span><br><span class="line">        <span class="string">"year"</span>: 2011,</span><br><span class="line">        toJSON: <span class="function"><span class="title">function</span></span>()&#123; <span class="built_in">return</span> this.title&#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">"title"</span>: <span class="string">"fruit"</span>,</span><br><span class="line">        <span class="string">"authors"</span>: [</span><br><span class="line">            <span class="string">"orange"</span>,</span><br><span class="line">            <span class="string">"apple"</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="string">"edition"</span>: 3,</span><br><span class="line">        <span class="string">"year"</span>: 2012,</span><br><span class="line">        toJSON: <span class="function"><span class="title">function</span></span>()&#123; <span class="built_in">return</span> this.title&#125;</span><br><span class="line">    &#125;</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">JSON.stringify(objtest);</span><br><span class="line">//<span class="string">"["</span>animal<span class="string">","</span>fruit<span class="string">"]"</span></span><br></pre></td></tr></table></figure>
-<p>5、我什么都不做就想单纯的格式化JSON？<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">JSON.stringify(objtest,null,4);</span><br><span class="line">//<span class="string">"[</span></span><br><span class="line"><span class="string">    &#123;</span></span><br><span class="line"><span class="string">        "</span>title<span class="string">": "</span>animal<span class="string">",</span></span><br><span class="line"><span class="string">        "</span>authors<span class="string">": [</span></span><br><span class="line"><span class="string">            "</span>monkey<span class="string">",</span></span><br><span class="line"><span class="string">            "</span>pig<span class="string">"</span></span><br><span class="line"><span class="string">        ],</span></span><br><span class="line"><span class="string">        "</span>edition<span class="string">": 3,</span></span><br><span class="line"><span class="string">        "</span>year<span class="string">": 2011</span></span><br><span class="line"><span class="string">    &#125;,</span></span><br><span class="line"><span class="string">    &#123;</span></span><br><span class="line"><span class="string">        "</span>title<span class="string">": "</span>fruit<span class="string">",</span></span><br><span class="line"><span class="string">        "</span>authors<span class="string">": [</span></span><br><span class="line"><span class="string">            "</span>orange<span class="string">",</span></span><br><span class="line"><span class="string">            "</span>apple<span class="string">"</span></span><br><span class="line"><span class="string">        ],</span></span><br><span class="line"><span class="string">        "</span>edition<span class="string">": 3,</span></span><br><span class="line"><span class="string">        "</span>year<span class="string">": 2012</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">]"</span></span><br></pre></td></tr></table></figure></p>
-<p>值得注意的序列化顺序：如果存在toJSON就调用该方法，否则进行数组过滤，函数过滤两种过滤器进行过滤，在使用第三个参数进行格式化</p>
-<p>6、在解析JSON字符串时，如何把日期字符串还原Date对象？</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">// 定义一个带日期字符串的JSON对象</span><br><span class="line">var objtest = [</span><br><span class="line">  &#123;<span class="string">"title"</span>: <span class="string">"animal"</span>, <span class="string">"authors"</span>: [<span class="string">"monkey"</span>,<span class="string">"pig"</span>], <span class="string">"edition"</span>: 3, <span class="string">"year"</span>: 2011, showDate: new Date(2019,10,22)&#125;,</span><br><span class="line">  &#123;<span class="string">"title"</span>: <span class="string">"fruit"</span>, <span class="string">"authors"</span>: [<span class="string">"orange"</span>,<span class="string">"apple"</span>], <span class="string">"edition"</span>: 3, <span class="string">"year"</span>: 2012, showDate: new Date(2019,10,22)&#125;</span><br><span class="line">  ];</span><br><span class="line"></span><br><span class="line">// 通过JSON.stringify 格式化带日期格式的JSON字符串</span><br><span class="line">var jsonStr = JSON.stringify(objtest, null, 4); </span><br><span class="line"></span><br><span class="line"><span class="string">"[</span></span><br><span class="line"><span class="string">    &#123;</span></span><br><span class="line"><span class="string">        "</span>title<span class="string">": "</span>animal<span class="string">",</span></span><br><span class="line"><span class="string">        "</span>authors<span class="string">": [</span></span><br><span class="line"><span class="string">            "</span>monkey<span class="string">",</span></span><br><span class="line"><span class="string">            "</span>pig<span class="string">"</span></span><br><span class="line"><span class="string">        ],</span></span><br><span class="line"><span class="string">        "</span>edition<span class="string">": 3,</span></span><br><span class="line"><span class="string">        "</span>year<span class="string">": 2011,</span></span><br><span class="line"><span class="string">        "</span>showDate<span class="string">": "</span>2019-11-21T16:00:00.000Z<span class="string">"</span></span><br><span class="line"><span class="string">    &#125;,</span></span><br><span class="line"><span class="string">    &#123;</span></span><br><span class="line"><span class="string">        "</span>title<span class="string">": "</span>fruit<span class="string">",</span></span><br><span class="line"><span class="string">        "</span>authors<span class="string">": [</span></span><br><span class="line"><span class="string">            "</span>orange<span class="string">",</span></span><br><span class="line"><span class="string">            "</span>apple<span class="string">"</span></span><br><span class="line"><span class="string">        ],</span></span><br><span class="line"><span class="string">        "</span>edition<span class="string">": 3,</span></span><br><span class="line"><span class="string">        "</span>year<span class="string">": 2012,</span></span><br><span class="line"><span class="string">        "</span>showDate<span class="string">": "</span>2019-11-21T16:00:00.000Z<span class="string">"</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">]"</span></span><br><span class="line"></span><br><span class="line">// JSON.parse和JSON.stringify一样也有另一个函数参数</span><br><span class="line">var result = JSON.parse(jsonStr,<span class="keyword">function</span>(key,value) &#123; </span><br><span class="line">	<span class="keyword">if</span>(key == <span class="string">"showDate"</span>)&#123;</span><br><span class="line">		<span class="built_in">return</span> new Date(value);</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="built_in">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// 解析出来的JSON对象，showDate 里面包含_proto_日期函数的原生</span><br><span class="line">console.log(result.showDate.getFullYear()); // 2019</span><br></pre></td></tr></table></figure>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JSON</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">JS</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/10/22/JSON解析和序列化/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
     </nav>
   
 
@@ -1346,6 +1281,30 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Mockjs</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Ajax</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">模拟数据</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Http</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">TCP</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">GET|POST请求</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">JavaScript</a>
               </li>
              
@@ -1358,15 +1317,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Mockjs</a>
+                <a href="javascript:void(0)" class="js-tag color5">JSON</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Ajax</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">模拟数据</a>
+                <a href="javascript:void(0)" class="js-tag color3">JS</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1390,26 +1345,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">JSON</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">JS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">db</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">bootstrap</a>
               </li>
              
@@ -1426,19 +1361,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">css</a>
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">布局</a>
+                <a href="javascript:void(0)" class="js-tag color3">db</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">es6</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">reduce</a>
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1454,6 +1385,38 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">优化</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">css</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">布局</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">队列</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">javascript</a>
               </li>
              
@@ -1466,15 +1429,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Javascript</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">递归算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">后端</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1498,26 +1453,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">队列</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">链表</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">closure</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">错误处理</a>
               </li>
              
@@ -1526,11 +1461,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">http</a>
+                <a href="javascript:void(0)" class="js-tag color4">es6</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
+                <a href="javascript:void(0)" class="js-tag color2">reduce</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">closure</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1554,15 +1493,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">XSS</a>
+                <a href="javascript:void(0)" class="js-tag color5">http</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">SQL注入</a>
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">安全漏洞</a>
+                <a href="javascript:void(0)" class="js-tag color2">javasScript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">后端</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1574,7 +1517,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">javasScript</a>
+                <a href="javascript:void(0)" class="js-tag color4">XSS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">SQL注入</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">安全漏洞</a>
               </li>
             
             <div class="clearfix"></div>

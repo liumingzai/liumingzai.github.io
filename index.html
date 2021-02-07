@@ -160,6 +160,222 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-get和post分别发送了1次还是2次tcp链接" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/02/07/get和post分别发送了1次还是2次tcp链接/">get和post分别发送了1次还是2次tcp链接</a>
+    </h1>
+  
+
+        
+        <a href="/2021/02/07/get和post分别发送了1次还是2次tcp链接/" class="archive-article-date">
+  	<time datetime="2021-02-07T02:50:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-02-07</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>面试ydy的时候面试官给出的一道题，让我不得不重新复习一下http请求，之前只是觉得二者请求方式，请求参数的区别。</p>
+</blockquote>
+<p><em>http请求中, get和post分别发送了就此和2次tcp链接</em></p>
+<ul>
+<li>当发送Get请求时，浏览器会携带header和data发出，客户端根据返回的状态码200获取数据</li>
+<li>当发送Post请求是，浏览器先发送header，征求服务器情况，看服务是否响应处理该请求，如果服务器返回http 100-continue客户端在吧data数据发送给服务器。同样客户端根据返回状态码200获取数据</li>
+</ul>
+<p><em>延伸输入url都发生了什么？</em> </p>
+<ul>
+<li>域名解析实际是DNS域名解析IP地址过程（浏览器自身DNS缓存-&gt;操作系统自身DNS缓存-&gt;路由器缓存-&gt;ISP互联网服务提供商DNS缓存</li>
+<li>发起TCP的3次握手</li>
+<li>建立TCP链接后发起http请求包括（请求行【请求的方法，请求地址URL，协议版本】，请求头【userAgent，数据格式、数据编码格式，数据语言，链接属性】，请求数据）</li>
+<li>服务器响应http请求包括（状态行【协议版本，状态码，状态码描述】，响应头【服务器应用软件及版本，相应数据类型，响应数据编码，相应数据格式，相应数据语言】，响应数据）</li>
+<li>浏览器解析html（并请求html中网络资源js css 图片）</li>
+<li>关闭TCP链接,浏览器对页面进行渲染</li>
+</ul>
+<p><em>http返回状态码是100是什么用途？</em><br>解释该问题前我们先了解一下http的状态码或者说响应的类型：1xx信息提示；2xx成功；3xx重定向；4xx客户端错误；500服务器错误；<br>100 Continue该状态码是HTTP/1.1版本定义的，说明服务器收到请求初始部分，返回客户端继续发送的指令<br>如果服务器不接受客户端将要发送的主体报文会返回417 Expectation Failed.</p>
+<p><em>http请求post和get的区别？</em>老生常谈的题目，我们温故而知新</p>
+<ul>
+<li>参数类型方面：Get接受ASCII字符，POST没有限制</li>
+<li>浏览器location.go(-1)回退操作，GET是无害的，POST会再次提交请求，如果不想再次发送请求，需要通过时间拦截</li>
+<li>浏览器缓存：GET请求会被浏览器主动cache，POST不会</li>
+<li>请求参数长度限制：GET请求参数有长度不超过（8kb由服务器配置不同浏览器不同） POST没有</li>
+<li>安全方面：GET参数直接暴露在url中不够安全</li>
+<li>编码方式：GET编码方式只能进行url编码（中文字符串编码和解码问题），POST可以支持多种编码方式（表单提交，文件上传，json字符串， text/xml）</li>
+<li>书签栏：GET请求产生的url会被bookMark，POST不会<br>上述是小料，面试官最想听到的还是请求次数的差异，也是本篇章的主题</li>
+</ul>
+<p><em>TCP的三次握手和四次挥手也是必考题我们复习一下</em><br>还在研究中。。。。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Http</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">TCP</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">GET|POST请求</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/02/07/get和post分别发送了1次还是2次tcp链接/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-函数的节流和防抖动" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/29/函数的节流和防抖动/">如何实现函数的节流和防抖动</a>
+    </h1>
+  
+
+        
+        <a href="/2021/01/29/函数的节流和防抖动/" class="archive-article-date">
+  	<time datetime="2021-01-29T07:00:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-29</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>面试中遇到一个问题，说一下节流和防抖动原理，动手实现。在工作中还真遇到过，比如滚动scroll事件绑定，input输入框的keypress搜索等</p>
+</blockquote>
+<h3 id="函数节流-throttle"><a href="#函数节流-throttle" class="headerlink" title="函数节流(throttle)"></a>函数节流(throttle)</h3><blockquote>
+<p>函数节流是一种提升性能的方法，避免函数在很短时间内连续调用，规定一个时间间隔，当上一次函数执行超过时间间隔才进行下一次调用。可以在一定程度上减少系统的损耗</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">function</span> throttle(func, delay) &#123;</span><br><span class="line">  <span class="built_in">let</span> timer;</span><br><span class="line">  <span class="built_in">return</span> <span class="function"><span class="title">funciton</span></span>()&#123;</span><br><span class="line">    <span class="keyword">if</span>(timer) &#123;</span><br><span class="line">      <span class="built_in">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    timer = setTimeout(()=&gt; &#123;</span><br><span class="line">      func();</span><br><span class="line">      timer = null;</span><br><span class="line">    &#125;, delay);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="防抖动-debounce"><a href="#防抖动-debounce" class="headerlink" title="防抖动(debounce)"></a>防抖动(debounce)</h3><blockquote>
+<p>函数防抖动是事件被触发n秒后在执行回调，如果在这n秒内又重新触发，则重新计算。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">function debounce(func delay) &#123;</span><br><span class="line">  let timer;</span><br><span class="line">  return function() &#123;</span><br><span class="line">    clearTimeout(timer);  // 重新触发重新计算，闭包可以访问tim</span><br><span class="line">    timer = setTimeout(func, delay);  // 延迟delay后执行fn</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="函数节流时间戳实现"><a href="#函数节流时间戳实现" class="headerlink" title="函数节流时间戳实现"></a>函数节流时间戳实现</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * new Date()相当于调用 Date.prototype.valueOf()方法</span><br><span class="line"> * 等同于（new Date()).getTime() 都可以取得当前时间戳</span><br><span class="line"> */</span><br><span class="line">function throttleTimeStamp(func, delay) &#123;</span><br><span class="line">  let last = 0;</span><br><span class="line">  return function() &#123;</span><br><span class="line">    const current = +new Date();</span><br><span class="line">    if(current - last &gt; delay) &#123;</span><br><span class="line">      func.apply(this, arguments);</span><br><span class="line">      last = +new Date();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="防抖动和节流比较"><a href="#防抖动和节流比较" class="headerlink" title="防抖动和节流比较"></a>防抖动和节流比较</h3><p><em>相同点</em></p>
+<ul>
+<li>借助setTimeout实现</li>
+<li>目的都是降低回调执行频率，提升性能，节省资源</li>
+</ul>
+<p><em>不同点</em></p>
+<ul>
+<li>防抖动在一段连续操作结束后，处理回调，李用setTimeout和clearTimeout实现</li>
+<li>函数节流再一段时间连续操作中，每一段时间只执行一次，用于使用频率较高的事件中</li>
+<li>防抖动关注一定时间连续触发事件只在最后执行一次，函数节流关注一段时间只执行一次</li>
+</ul>
+<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><p><em>函数防抖动应用</em><br>连续触发事件，只执行一次比如搜搜框输入，手机号邮箱校验，窗口大小resize</p>
+<p><em>函数节流应用</em><br>间隔一段时间执行一次比如滚动加载，高频点击，表单重复提交</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Javascript</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">优化</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/01/29/函数的节流和防抖动/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-JavaScript内存" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1049,235 +1265,9 @@ console.log(payment);
 
 
   
-    <article id="post-浏览器缓存" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/11/浏览器缓存/">浏览器缓存</a>
-    </h1>
-  
-
-        
-        <a href="/2020/11/11/浏览器缓存/" class="archive-article-date">
-  	<time datetime="2020-11-11T02:10:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>如何让公司省一点带宽(减轻服务器负担)，用户省一点流量呢(减少冗余数据传输)，提升用户体验(加快客户端加载速度)？用浏览器缓存静态资源(css, js, png,jpg等)</p>
-</blockquote>
-<h3 id="浏览器缓存策略"><a href="#浏览器缓存策略" class="headerlink" title="浏览器缓存策略"></a>浏览器缓存策略</h3><p>浏览器缓存(Browser Caching)是浏览器本地磁盘对用户最近请求的文档进行存储，再次访问时浏览器直接从磁盘加载文档，主要分如下两类：</p>
-<ul>
-<li>强制缓存</li>
-<li>协商缓存</li>
-</ul>
-<h4 id="什么是强制缓存？"><a href="#什么是强制缓存？" class="headerlink" title="什么是强制缓存？"></a>什么是强制缓存？</h4><p>强缓存就是浏览器根本不会发请求给服务器，通过http头中的Expires和cache-control两个字段来控制的(如果两者同时存在，cache-contol会优先生效)，如果两个字段满足条件，就不会去向服务器发出请求直接使用缓存。</p>
-<p>CACHE-CONTROL常用字段</p>
-<ul>
-<li>no-cache: 不使用强缓存(本地缓存)，需要使用缓存协商，先与服务器确认返回的响应是否被更改，如果之前的响应中存在ETag，那么请求的时候会与服务端验证，如果资源未被更改，则可以避免重新下载。</li>
-<li>no-store：禁止使用缓存（强制缓存&amp;协商缓存），每次请求资源都要向服务请求</li>
-<li>public：资源可被代理服务器(CDN或中间件代理)和浏览器缓存</li>
-<li>private：资源只能被浏览器缓存</li>
-<li>max-age：缓存的最长有效时间</li>
-</ul>
-<p>那怎么判断强缓存被触发？ 就判断资源是否过期max-age。主要看响应头Response headers中Cache-Control的值和no-cache，也有另一个判断过期的参考值Expires已经被淘汰且Cache-Control优先羽expires</p>
-<h4 id="什么是协商缓存？"><a href="#什么是协商缓存？" class="headerlink" title="什么是协商缓存？"></a>什么是协商缓存？</h4><p>上面的强缓存是在本地判断缓存的资源是否可以继续用，而协商缓存顾名思义就是和服务器求证这个资源是否未被更新，从而决定要不要继续使用本地缓存的资源。</p>
-<p>Last-Modified/If-Modified-Since当浏览器再次跟服务器请求资源的时候，就会加上If-Modified-Since这个请求header，它的值就是上一次服务器发回来响应头中Last-Modified的值。</p>
-<p>Etag/If-None-Match 这两个值是每一个资源唯一标识符(可以理解为md5)，Etag存在于响应头中，IF-None-Match存在于请求头中，只要资源变化了，这个值就会变，其判断过程类似上面（服务器优先验证Etag，其次Last-Modified）</p>
-<p>那么怎么判断协商缓存被触发呢？当cache-control为no-cache, 查看Response headers中ETag和LastModified，在下一次请求Request header中带上If-None-Match和If-Modified-Sine（对应ETag和LastModified）<br>1、请求资源时，把用户本地该资源的 ETag 同时带到服务端，服务端和最新资源做对比。<br>2、如果资源没更改，返回304码（携带header信息），浏览器读取本地缓存。<br>3、如果资源有更改，返回200码（携带body数据），返回最新的资源。</p>
-<h4 id="缓存流程分第一次请求和后续请求"><a href="#缓存流程分第一次请求和后续请求" class="headerlink" title="缓存流程分第一次请求和后续请求"></a>缓存流程分第一次请求和后续请求</h4><h5 id="第一次请求"><a href="#第一次请求" class="headerlink" title="第一次请求"></a>第一次请求</h5><p><img src="/assets/img/brows-cache-first.png" alt="浏览器缓存"> </p>
-<h5 id="后续请求"><a href="#后续请求" class="headerlink" title="后续请求"></a>后续请求</h5><p><img src="/assets/img/browser-cache.png" alt="浏览器缓存"> </p>
-<h4 id="为什么要有ETag，Last-Modified存在哪些问题？"><a href="#为什么要有ETag，Last-Modified存在哪些问题？" class="headerlink" title="为什么要有ETag，Last-Modified存在哪些问题？"></a>为什么要有ETag，Last-Modified存在哪些问题？</h4><p>你可能会觉得使用Last-Modified已经足以让浏览器知道本地的缓存副本是否足够新，为什么还需要Etag呢？HTTP1.1中Etag的出现（也就是说，ETag是新增的，为了解决之前只有If-Modified的缺点）主要是为了解决几个Last-Modified比较难解决的问题：</p>
-<ul>
-<li>一些文件也许会周期性的更改，但是他的内容并不改变(仅仅改变的修改时间)，这个时候我们并不希望客户端认为这个文件被修改了，而重新GET；</li>
-<li>某些文件修改非常频繁，比如在秒以下的时间内进行修改，(比方说1s内修改了N次)，If-Modified-Since能检查到的粒度是s级的，这种修改无法判断(或者说UNIX记录MTIME只能精确到秒)；</li>
-<li>某些服务器不能精确的得到文件的最后修改时间。</li>
-</ul>
-<h4 id="强缓存和协商缓存区别是什么？"><a href="#强缓存和协商缓存区别是什么？" class="headerlink" title="强缓存和协商缓存区别是什么？"></a>强缓存和协商缓存区别是什么？</h4><ul>
-<li>缓存类型一个是强缓存一个是写上缓存，通过Cache-Control判断</li>
-<li>状态码不同：强缓存状态码200，协商缓存状态码304</li>
-<li>强缓存不会去服务器拿资源。协商缓存通过服务器来告知去哪里拿资源</li>
-</ul>
-<h4 id="用户哪些行为刷新页面对缓存影响（转载：https-www-pianshen-com-article-31621262769-）"><a href="#用户哪些行为刷新页面对缓存影响（转载：https-www-pianshen-com-article-31621262769-）" class="headerlink" title="用户哪些行为刷新页面对缓存影响（转载：https://www.pianshen.com/article/31621262769/）"></a>用户哪些行为刷新页面对缓存影响（转载：<a href="https://www.pianshen.com/article/31621262769/）" target="_blank" rel="noopener">https://www.pianshen.com/article/31621262769/）</a></h4><p><img src="/assets/img/behavior.jpg" alt="用户行为"> </p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">http</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">缓存</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/11/11/浏览器缓存/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Normalize-css用途" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/10/Normalize-css用途/">Normalize.css用途</a>
-    </h1>
-  
-
-        
-        <a href="/2020/11/10/Normalize-css用途/" class="archive-article-date">
-  	<time datetime="2020-11-10T03:34:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-10</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>Normalize.css是一个可定制的CSS文件, 是归一化的css文件, Normalize.css是现代化更小的css文件,在默认的HTML元素样式上提供了跨浏览器的高度一致性</p>
-</blockquote>
-<ul>
-<li><a href="http://necolas.github.io/normalize.css/" title="Normalize.css 项目地址" target="_blank" rel="noopener">Normalize.css 项目地址</a></li>
-<li><a href="https://github.com/necolas/normalize.css" title="Normalize.css 在GitHub上的源码" target="_blank" rel="noopener">Normalize.css 在GitHub上的源码</a></li>
-</ul>
-<h3 id="Normalize-css特性"><a href="#Normalize-css特性" class="headerlink" title="Normalize.css特性"></a>Normalize.css特性</h3><ol>
-<li>保留有用的默认值，不同于许多CSS的重置</li>
-<li>标注化的样式，适用范围广的元素</li>
-<li>纠正错误和常见的浏览器的不一致性</li>
-<li>一些细节的改进，提高了易用性</li>
-<li>使用详细的注解代码</li>
-</ol>
-<h3 id="Normalize-css支持浏览器类型"><a href="#Normalize-css支持浏览器类型" class="headerlink" title="Normalize.css支持浏览器类型"></a>Normalize.css支持浏览器类型</h3><ul>
-<li>Google Chrome (latest)</li>
-<li>Mozilla Firefox (latest)</li>
-<li>Mozilla Firefox ESR</li>
-<li>Opera (latest)</li>
-<li>Apple Safari 6+</li>
-<li>Internet Explorer 8+</li>
-</ul>
-<h3 id="Normalize-css与Reset-css"><a href="#Normalize-css与Reset-css" class="headerlink" title="Normalize.css与Reset.css"></a>Normalize.css与Reset.css</h3><p> <a href="https://jerryzou.com/posts/aboutNormalizeCss/" title="转载" target="_blank" rel="noopener">转载https://jerryzou.com/posts/aboutNormalizeCss/</a></p>
-<h5 id="一、Normalize-css-保护了有价值的默认值"><a href="#一、Normalize-css-保护了有价值的默认值" class="headerlink" title="一、Normalize.css 保护了有价值的默认值"></a>一、Normalize.css 保护了有价值的默认值</h5><p>  Reset通过为几乎所有的元素施加默认样式，强行使得元素有相同的视觉效果。相比之下，Normalize.css保持了许多默认的浏览器样式。这就意味着你不用再为所有公共的排版元素重新设置样式。当一个元素<br>在不同的浏览器中有不同的默认值时，Normalize.css会力求让这些样式保持一致并尽可能与现代标准相符合。</p>
-<h5 id="二、Normalize-css-修复了浏览器的bug"><a href="#二、Normalize-css-修复了浏览器的bug" class="headerlink" title="二、Normalize.css 修复了浏览器的bug"></a>二、Normalize.css 修复了浏览器的bug</h5><p>它修复了常见的桌面端和移动端浏览器的bug。这往往超出了Reset所能做到的范畴。关于这一点，Normalize.css修复的问题包含了HTML5元素的显示设置、预格式化文字的font-size问题、在IE9中SVG的溢出、许多出现在各浏览器和操作系统中的与表单相关的bug。 例如：对于HTML5中新出现的input类型search，Normalize.css是如何保证跨浏览器的一致性的。</p>
-<h5 id="三、Normalize-css-不会让你的调试工具变的杂乱"><a href="#三、Normalize-css-不会让你的调试工具变的杂乱" class="headerlink" title="三、Normalize.css 不会让你的调试工具变的杂乱"></a>三、Normalize.css 不会让你的调试工具变的杂乱</h5><p>使用Reset最让人困扰的地方莫过于在浏览器调试工具中大段大段的继承链，如下图所示。在Normalize.css中就不会有这样的问题，因为在我们的准则中对多选择器的使用时非常谨慎的，我们仅会有目的地对目标元素设置样式。</p>
-<h5 id="四、Normalize-css-是模块化的"><a href="#四、Normalize-css-是模块化的" class="headerlink" title="四、Normalize.css 是模块化的"></a>四、Normalize.css 是模块化的</h5><p>  这个项目已经被拆分为多个相关却又独立的部分，这使得你能够很容易也很清楚地知道哪些元素被设置了特定的值。因此这能让你自己选择性地移除掉某些永远不会用到部分（比如表单的一般化）。</p>
-<h5 id="五、-Normalize-css-拥有详细的文档"><a href="#五、-Normalize-css-拥有详细的文档" class="headerlink" title="五、 Normalize.css 拥有详细的文档"></a>五、 Normalize.css 拥有详细的文档</h5><p>Normalize.css的代码基于详细而全面的跨浏览器研究与测试。这个文件中拥有详细的代码说明并在Github Wiki中有进一步的说明。这意味着你可以找到每一行代码具体完成了什么工作、为什么要写这句代码、 浏览器之间的差异，并且你可以更容易地进行自己的测试。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">css</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">布局</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/11/10/Normalize-css用途/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
   
 
@@ -1388,6 +1378,30 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Mockjs</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Ajax</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">模拟数据</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Http</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">TCP</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">GET|POST请求</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">JavaScript</a>
               </li>
              
@@ -1400,15 +1414,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Mockjs</a>
+                <a href="javascript:void(0)" class="js-tag color5">JSON</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Ajax</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">模拟数据</a>
+                <a href="javascript:void(0)" class="js-tag color3">JS</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1432,26 +1442,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">JSON</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">JS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">db</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">bootstrap</a>
               </li>
              
@@ -1468,19 +1458,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">css</a>
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">布局</a>
+                <a href="javascript:void(0)" class="js-tag color3">db</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">es6</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">reduce</a>
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1496,6 +1482,38 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">优化</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">css</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">布局</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">队列</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">javascript</a>
               </li>
              
@@ -1508,15 +1526,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Javascript</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">递归算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">后端</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1540,26 +1550,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">队列</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">链表</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">closure</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">错误处理</a>
               </li>
              
@@ -1568,11 +1558,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">http</a>
+                <a href="javascript:void(0)" class="js-tag color4">es6</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
+                <a href="javascript:void(0)" class="js-tag color2">reduce</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">closure</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1596,15 +1590,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">XSS</a>
+                <a href="javascript:void(0)" class="js-tag color5">http</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">SQL注入</a>
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">安全漏洞</a>
+                <a href="javascript:void(0)" class="js-tag color2">javasScript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">后端</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1616,7 +1614,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">javasScript</a>
+                <a href="javascript:void(0)" class="js-tag color4">XSS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">SQL注入</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">安全漏洞</a>
               </li>
             
             <div class="clearfix"></div>
