@@ -160,6 +160,137 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-reduce为何成了高逼格" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/12/reduce为何成了高逼格/">reduce为何成了高逼格</a>
+    </h1>
+  
+
+        
+        <a href="/2020/11/12/reduce为何成了高逼格/" class="archive-article-date">
+  	<time datetime="2020-11-12T02:41:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-12</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>reduce在我们实际开发中的高逼格应用</p>
+</blockquote>
+<ul>
+<li><p>reduce的语法按我的理解其实是一个callback回调包含四个参数，以及一个初始值initalValue</p>
+</li>
+<li><p>四个参数分别是: previousValue、currentValue、index、array。我觉得需要强调的可能有第一个参数，表示上一次回调返回值或者initialValue。第三个参数index是从1开始的，如果要从0开始可以设置initalValue为0</p>
+</li>
+</ul>
+<h4 id="常用来回答一套传统的面试题，求数组元素的和（工作好几年的我第一个印象还是循环）那么高逼格的写法是如何的呢？"><a href="#常用来回答一套传统的面试题，求数组元素的和（工作好几年的我第一个印象还是循环）那么高逼格的写法是如何的呢？" class="headerlink" title="常用来回答一套传统的面试题，求数组元素的和（工作好几年的我第一个印象还是循环）那么高逼格的写法是如何的呢？"></a>常用来回答一套传统的面试题，求数组元素的和（工作好几年的我第一个印象还是循环）那么高逼格的写法是如何的呢？</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">let</span> arr = [1,2,3,4,5];</span><br><span class="line"><span class="built_in">let</span> sum = arr.reduce(<span class="keyword">function</span>(prev, cur, index, arr)&#123;</span><br><span class="line">  console.log(prev, cur, index);</span><br><span class="line">  <span class="built_in">return</span> prev+cur;  // pre上一次回调返回值</span><br><span class="line">&#125;)</span><br><span class="line">console.log(sum);  //15</span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line">1 2 1</span><br><span class="line">3 3 2</span><br><span class="line">6 4 3</span><br><span class="line">10 5 4</span><br><span class="line">15</span><br></pre></td></tr></table></figure>
+<h4 id="可能有人和我一样，觉得这个initailValue又什么用呢？我们对比一下下面的代码"><a href="#可能有人和我一样，觉得这个initailValue又什么用呢？我们对比一下下面的代码" class="headerlink" title="可能有人和我一样，觉得这个initailValue又什么用呢？我们对比一下下面的代码"></a>可能有人和我一样，觉得这个initailValue又什么用呢？我们对比一下下面的代码</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">let</span> arr = [];</span><br><span class="line"><span class="built_in">let</span> sum = arr.reduce(<span class="keyword">function</span>(prev, cur)&#123;</span><br><span class="line">  <span class="built_in">return</span> prev+cur; </span><br><span class="line">&#125;)</span><br><span class="line">console.log(sum);  //报错，<span class="string">"TypeError: Reduce of empty array with no initial value"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">let</span> arr = [];</span><br><span class="line"><span class="built_in">let</span> sum = arr.reduce(<span class="keyword">function</span>(prev, cur)&#123;</span><br><span class="line">  <span class="built_in">return</span> prev+cur;  </span><br><span class="line">&#125;, 0)</span><br><span class="line">console.log(sum);  // 0</span><br></pre></td></tr></table></figure>
+<h4 id="上面简单的reduce用法已经介绍完了，那么我们看看如何玩转reduce，从几个算法面试题入手"><a href="#上面简单的reduce用法已经介绍完了，那么我们看看如何玩转reduce，从几个算法面试题入手" class="headerlink" title="上面简单的reduce用法已经介绍完了，那么我们看看如何玩转reduce，从几个算法面试题入手"></a>上面简单的reduce用法已经介绍完了，那么我们看看如何玩转reduce，从几个算法面试题入手</h4><ul>
+<li>第一道算法题：获取数组中每个元素重复次数（返回一个对象，initalValue定义为空对象）</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> arr = [<span class="string">'banana'</span>, <span class="string">'orange'</span>, <span class="string">'banana'</span>, <span class="string">'grapes'</span>, <span class="string">'melon'</span>, <span class="string">'orange'</span>,<span class="string">'pear'</span>];</span><br><span class="line"><span class="built_in">let</span> result = arr.reduce(<span class="keyword">function</span>(pre, cur) &#123;</span><br><span class="line">  <span class="keyword">if</span>(cur <span class="keyword">in</span> pre)&#123;</span><br><span class="line">    pre[cur]++;</span><br><span class="line">  &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    pre[cur]=1;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">return</span> pre;</span><br><span class="line">&#125;, &#123;&#125;)</span><br><span class="line"></span><br><span class="line">console.log(result);</span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line">&#123; banana: 2, orange: 2, grapes: 1, melon: 1, pear: 1 &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第二道算法题：数组去重(返回一个新数组，initalValue定义为空数组)</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> arr = [<span class="string">'banana'</span>, <span class="string">'orange'</span>, <span class="string">'banana'</span>, <span class="string">'grapes'</span>, <span class="string">'melon'</span>, <span class="string">'orange'</span>,<span class="string">'pear'</span>];</span><br><span class="line"> <span class="built_in">let</span> result = arr.reduce(<span class="keyword">function</span>(pre, cur)&#123;</span><br><span class="line">   <span class="keyword">if</span>(!pre.includes(cur))&#123;</span><br><span class="line">     <span class="built_in">return</span> pre.concat(cur);</span><br><span class="line">   &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">     <span class="built_in">return</span> pre;     </span><br><span class="line">   &#125;</span><br><span class="line">&#125;,[])</span><br><span class="line">console.dir(result)</span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line">[ <span class="string">'banana'</span>, <span class="string">'orange'</span>, <span class="string">'grapes'</span>, <span class="string">'melon'</span>, <span class="string">'pear'</span> ]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第三道算法题：将二维数组转换为一维有序数组</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> arr =[[1,2,4],[2,3,7],[3,5,7],[4,5,8]];</span><br><span class="line"><span class="built_in">let</span> result = arr.reduce(<span class="keyword">function</span>(pre, cur)&#123;</span><br><span class="line">     <span class="built_in">return</span> pre.concat(cur);</span><br><span class="line">&#125;,[]).sort((a,b) =&gt; a-b)</span><br><span class="line">console.log(result);</span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line">[ 1, 2, 2, 3, 3, 4, 4, 5, 5, 7, 7, 8 ]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第四道算法题：将多维数组转换为一维有序数组(偏平化)</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"> <span class="built_in">let</span> arr =[[1, [2, [3,7],[5,7]]]];</span><br><span class="line"> <span class="built_in">let</span> result = <span class="keyword">function</span>(arr) &#123;</span><br><span class="line">   <span class="built_in">return</span> arr.reduce((pre, cur) =&gt; pre.concat(Array.isArray(cur)? result(cur): cur),[])</span><br><span class="line"> &#125;</span><br><span class="line"> console.log(result(arr));</span><br><span class="line"></span><br><span class="line"> 运行结果：</span><br><span class="line">[ 1, 2, 3, 7, 5, 7 ]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第五道算法题：生成裴波那契数列</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">const fibonacci = (n) =&gt; &#123;</span><br><span class="line">  <span class="built_in">return</span> Array(n).fill(0).reduce((pre, cur,i)=&gt; &#123;</span><br><span class="line">    console.log(pre, cur, i)</span><br><span class="line">    <span class="built_in">return</span> pre.concat(i&gt;1 ? pre[i-1]+pre[i-2]: i) </span><br><span class="line">  &#125; ,[])</span><br><span class="line">    </span><br><span class="line">&#125; </span><br><span class="line">console.log(fibonacci(5))</span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line">[] 0 0</span><br><span class="line">[ 0 ] 0 1</span><br><span class="line">[ 0, 1 ] 0 2</span><br><span class="line">[ 0, 1, 1 ] 0 3</span><br><span class="line">[ 0, 1, 1, 2 ] 0 4</span><br><span class="line">[ 0, 1, 1, 2, 3 ]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第六道算法题：过滤对象key属性</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">const pick = (obj, arr)=&gt;</span><br><span class="line">  arr.reduce((pre, cur)=&gt; &#123;</span><br><span class="line">    // <span class="keyword">if</span>(cur <span class="keyword">in</span> obj) &#123;</span><br><span class="line">    <span class="keyword">if</span>(Object.keys(obj).includes(cur))&#123;</span><br><span class="line">      pre[cur] = obj[cur]</span><br><span class="line">      <span class="built_in">return</span> pre;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;, &#123;&#125;)</span><br><span class="line"></span><br><span class="line">console.dir(pick(&#123;id: 12, name: <span class="string">'张三'</span> , age:24&#125;, [<span class="string">'id'</span>, <span class="string">'name'</span>]));</span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line">&#123; id: 12, name: <span class="string">'张三'</span> &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第七道算法题：分组聚合</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">//闭包存储的变量func</span><br><span class="line">const groupBy = (arr, func) =&gt; </span><br><span class="line">  arr.map(typeof func === <span class="string">'function'</span> ? func: val=&gt;val[func])</span><br><span class="line">  .reduce((pre, cur, i)=&gt;&#123;</span><br><span class="line">    pre[cur] = (pre[cur] || []).concat(arr[i]);</span><br><span class="line">    <span class="built_in">return</span> pre;</span><br><span class="line">  &#125;,&#123;&#125;);</span><br><span class="line">  </span><br><span class="line">console.log(groupBy([<span class="string">'one'</span>,<span class="string">'two'</span>,<span class="string">'three'</span>], <span class="string">'length'</span>))</span><br><span class="line">console.log(groupBy([6.1, 6.2, 4.3]));  </span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line">&#123; <span class="string">'3'</span>: [ <span class="string">'one'</span>, <span class="string">'two'</span> ], <span class="string">'5'</span>: [ <span class="string">'three'</span> ] &#125;</span><br><span class="line">&#123; <span class="string">'4'</span>: [ 4.3 ], <span class="string">'6'</span>: [ 6.1, 6.2 ] &#125;</span><br><span class="line"></span><br><span class="line">const groupBy = </span><br><span class="line">  (arr) =&gt; arr</span><br><span class="line">    .map(Math.floor)</span><br><span class="line">    .reduce((pre, cur, i)=&gt;&#123;</span><br><span class="line">      pre[cur] = (pre[cur] || []).concat(arr[i]);</span><br><span class="line">      <span class="built_in">return</span> pre;</span><br><span class="line">  &#125;,&#123;&#125;);</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">运行结果：</span><br></pre></td></tr></table></figure>
+<h4 id="其实reduce操作不局限于数组，只要可枚举的类型都适用"><a href="#其实reduce操作不局限于数组，只要可枚举的类型都适用" class="headerlink" title="其实reduce操作不局限于数组，只要可枚举的类型都适用"></a>其实reduce操作不局限于数组，只要可枚举的类型都适用</h4><pre><code class="bash"><span class="built_in">let</span> personIncome = [{category:<span class="string">"salary"</span>, value: 2000}, {category:<span class="string">"performace"</span>, value: 500},  {category:<span class="string">"benefits"</span>, value: 500}];
+<span class="built_in">let</span> payment = personIncome.reduce((pre, cur)=&gt; {
+  <span class="built_in">return</span> pre + cur.value;
+}, 0);
+console.log(payment);
+
+
+运行结果：
+3000
+
+</code></pre>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">es6</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">reduce</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/11/12/reduce为何成了高逼格/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-浏览器缓存" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1018,11 +1149,11 @@ var factorial = (<span class="keyword">function</span> f(n){
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">JavaScript</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">JavaScript</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
@@ -1037,108 +1168,6 @@ var factorial = (<span class="keyword">function</span> f(n){
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2020/01/14/获取浏览器缩放比例/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Mockjs如何模拟数据接口" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/12/25/Mockjs如何模拟数据接口/">Mockjs如何模拟数据接口</a>
-    </h1>
-  
-
-        
-        <a href="/2019/12/25/Mockjs如何模拟数据接口/" class="archive-article-date">
-  	<time datetime="2019-12-25T05:59:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>本篇主要是介绍如何用mockjs生产后端模拟数据接口拦截Ajax,方便前后端分离,支持随机生成文本、数字、布尔值、日期、邮箱、图片等。</p>
-</blockquote>
-<h2 id="栏目"><a href="#栏目" class="headerlink" title="栏目"></a>栏目</h2><ul>
-<li>安装</li>
-<li>实例</li>
-<li>使用</li>
-</ul>
-<h3 id="一、安装"><a href="#一、安装" class="headerlink" title="一、安装"></a>一、安装</h3><p>[Mockjs官网]<a href="http://mockjs.com" target="_blank" rel="noopener">http://mockjs.com</a> “官网”</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">npm i mockjs --save </span><br><span class="line"></span><br><span class="line">bower install mockjs --save</span><br><span class="line"></span><br><span class="line">yarn add morkjs</span><br></pre></td></tr></table></figure>
-<h3 id="二、实例"><a href="#二、实例" class="headerlink" title="二、实例"></a>二、实例</h3><p>[官网示例]<a href="http://mockjs.com/examples.html" target="_blank" rel="noopener">http://mockjs.com/examples.html</a> “官网示例”</p>
-<p>打开浏览器控制台console可以随按照示例联系</p>
-<h3 id="三、使用"><a href="#三、使用" class="headerlink" title="三、使用"></a>三、使用</h3><p>项目中应用</p>
-<p>定义mock.js</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">import Mock from <span class="string">'mockjs'</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">let</span> Random = Mock.Random;</span><br><span class="line"><span class="built_in">let</span> ProductData = req =&gt; &#123;</span><br><span class="line">  <span class="built_in">let</span> productList = [];</span><br><span class="line">  <span class="keyword">for</span>(<span class="built_in">let</span> i=0; i&lt;100; i++) &#123;</span><br><span class="line">    <span class="built_in">let</span> product = &#123;</span><br><span class="line">      name: Random.ctitle(5,10),</span><br><span class="line">      img: Random.dataImage(<span class="string">'100x100'</span>, <span class="string">'茶缘'</span>+Random.integer(1, 100)),</span><br><span class="line">      price: Random.integer(1000, 10000),</span><br><span class="line">      owner: Random.cname()</span><br><span class="line">    &#125;</span><br><span class="line">    productList.push(product)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">return</span> productList;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Mock.mock(<span class="string">'http://liumingzai.com.cn/getdata4'</span>, ProductData)</span><br></pre></td></tr></table></figure>
-<p>vue中引入<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import <span class="string">'@/mock/mock.js'</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">export</span> default &#123;</span><br><span class="line">    <span class="function"><span class="title">data</span></span>()&#123;</span><br><span class="line">      <span class="built_in">return</span>  &#123;</span><br><span class="line">        products: []</span><br><span class="line">      &#125;,<span class="function"><span class="title">created</span></span>() &#123;</span><br><span class="line">        axios.get(url4).<span class="keyword">then</span>(res=&gt;&#123;</span><br><span class="line">            this.products = res.data</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
-<p>封装接口配置</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">const MOCKURL = <span class="string">'http://liumingzai.com.cn/'</span>;</span><br><span class="line"></span><br><span class="line">const URL = &#123;</span><br><span class="line">  getData1: MOCKURL + <span class="string">'getdata1'</span>,</span><br><span class="line">  getData2: MOCKURL + <span class="string">'getdata2'</span>,</span><br><span class="line">  getData3: MOCKURL + <span class="string">'getdata3'</span>,</span><br><span class="line">  getData4: MOCKURL + <span class="string">'getdata4'</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default URL;</span><br></pre></td></tr></table></figure>
-<p>页面设计</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;div class=<span class="string">"variety"</span>&gt;</span><br><span class="line">   &lt;p&gt;商品列表&lt;/p&gt;</span><br><span class="line">   &lt;ul&gt;</span><br><span class="line">     &lt;li class=<span class="string">"variety-item"</span> v-for=<span class="string">"(item, index) in products"</span> :key=<span class="string">"index"</span>&gt;</span><br><span class="line">         &lt;img :src=<span class="string">"item.img"</span> alt=<span class="string">""</span>&gt;</span><br><span class="line">         &lt;p&gt;&#123;&#123;item.name&#125;&#125;&lt;/p&gt;</span><br><span class="line">         &lt;p&gt;￥&#123;&#123;item.price&#125;&#125;&lt;/p&gt;</span><br><span class="line">     &lt;/li&gt;</span><br><span class="line">   &lt;/ul&gt;</span><br><span class="line"> &lt;/div&gt;</span><br></pre></td></tr></table></figure>
-<p>效果<br><img src="/assets/img/mock.png" alt="预览"></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Mockjs</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Ajax</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">模拟数据</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/12/25/Mockjs如何模拟数据接口/">展开全文 >></a>
         </p>
       
 
@@ -1281,6 +1310,18 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">JSON</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">JS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">前端</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Mockjs</a>
               </li>
              
@@ -1293,38 +1334,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Http</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">TCP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">GET|POST请求</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">JavaScript</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">前端</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">浏览器</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">JSON</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">JS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">VsCode</a>
               </li>
              
@@ -1334,6 +1343,34 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">CSS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">JavaScript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">浏览器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">css</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">布局</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Http</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">TCP</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">GET|POST请求</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1361,18 +1398,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">db</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Primefaces</a>
               </li>
              
@@ -1385,6 +1410,26 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">性能优化</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">db</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Javascript</a>
               </li>
              
@@ -1393,11 +1438,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">css</a>
+                <a href="javascript:void(0)" class="js-tag color4">作用域</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">布局</a>
+                <a href="javascript:void(0)" class="js-tag color5">执行环境</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1417,15 +1462,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+                <a href="javascript:void(0)" class="js-tag color2">cornerstone</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">作用域</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">执行环境</a>
+                <a href="javascript:void(0)" class="js-tag color4">dicomweb</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1433,11 +1474,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">cornerstone</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">dicomweb</a>
+                <a href="javascript:void(0)" class="js-tag color3">后端</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1453,14 +1490,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">错误处理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">js</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">es6</a>
               </li>
              
@@ -1470,6 +1499,26 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">closure</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">错误处理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">js</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">javasScript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">http</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1490,22 +1539,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">解密decrypt</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">http</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">javasScript</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">后端</a>
               </li>
              
               <li class="article-tag-list-item">

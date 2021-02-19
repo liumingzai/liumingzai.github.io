@@ -160,6 +160,138 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-事件委托" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/02/19/事件委托/">事件委托</a>
+    </h1>
+  
+
+        
+        <a href="/2021/02/19/事件委托/" class="archive-article-date">
+  	<time datetime="2021-02-19T02:27:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-02-19</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>看红宝书第13章事件处理程序，看到事件委托关系到性能，就写下此篇博客跟大家共勉</p>
+</blockquote>
+<h3 id="概念知识点概览"><a href="#概念知识点概览" class="headerlink" title="概念知识点概览"></a>概念知识点概览</h3><ul>
+<li>事件类型有哪些？</li>
+<li>什么是事件流？</li>
+<li>什么是时间对象？</li>
+<li>什么是扩展作用域，有几种方式？</li>
+<li>什么是往返缓存bfcache？</li>
+<li>什么是空事件处理程序？</li>
+<li>什么是动态创建函数？</li>
+<li>添加多个时间的执行顺序兼容IE执行顺序</li>
+<li>页面和视口及屏幕区别，pageX clientX以及screenX区别？</li>
+<li>事件对象在不同浏览器中对应的target、currentTarget以及this指向区别？</li>
+<li>addEventListener第三个参数表示什么含义？</li>
+<li>设备事件deviceorientation、devicemotion、mozorientation等如何实现陀螺仪？</li>
+</ul>
+<p><strong>事件托管</strong>本篇主要实现事件托管，我们都知道多个事件处理程序会占用内存，影响性能，所以通过事件冒泡机制指定一个事件处理程序，对同一类事件做托管处理达到性能优化。</p>
+<ul>
+<li>定义跨浏览器的时间处理程序EventUtil</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">var EventUtil = &#123;</span><br><span class="line">   // 兼容DOM0级方法、DOM2级方法、IE方法</span><br><span class="line">   addHandler: <span class="keyword">function</span>(element, <span class="built_in">type</span>, handler) &#123;</span><br><span class="line">     <span class="keyword">if</span> (element.addEventListener) &#123;</span><br><span class="line">       element.addEventListener(<span class="built_in">type</span>, handler, <span class="literal">false</span>);</span><br><span class="line">     &#125; <span class="keyword">else</span> <span class="keyword">if</span>(element.attachEvent) &#123;</span><br><span class="line">       element.attachEvent(<span class="string">"on"</span> + <span class="built_in">type</span>, handler);</span><br><span class="line">     &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">       element[<span class="string">"on"</span> + <span class="built_in">type</span>] = handler;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;,</span><br><span class="line">   </span><br><span class="line">   getEvent: <span class="keyword">function</span>(event) &#123;</span><br><span class="line">     <span class="built_in">return</span> event ? event : windwo.event; //IE中事件类型是wndow的一个event属性  </span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   getTarget: <span class="keyword">function</span>(event) &#123;</span><br><span class="line">     <span class="built_in">return</span> event.target ? event.target : event.srcElement;  //兼容IE</span><br><span class="line">   &#125;,</span><br><span class="line">   </span><br><span class="line">   preventDefault: <span class="keyword">function</span>(event) &#123;</span><br><span class="line">    <span class="keyword">if</span> (event.preventDefault) &#123;</span><br><span class="line">      event.preventDefault();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; </span><br><span class="line">      event.returnValue = <span class="literal">false</span>; //兼容IE</span><br><span class="line">    &#125;</span><br><span class="line">   &#125;,</span><br><span class="line"></span><br><span class="line">   stopPropagation: <span class="keyword">function</span>(event) &#123;</span><br><span class="line">     <span class="keyword">if</span> (event.stopPropagation) &#123;</span><br><span class="line">       event.stopPropagation();</span><br><span class="line">     &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">       event.cancelBubble = <span class="literal">true</span>; //兼容IE</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   removeHandler: <span class="keyword">function</span>(element, <span class="built_in">type</span>, handler) &#123;</span><br><span class="line">    <span class="keyword">if</span> (element.removeEventListener) &#123;</span><br><span class="line">       element.removeEventListener(<span class="built_in">type</span>, handler, <span class="literal">false</span>);</span><br><span class="line">     &#125; <span class="keyword">else</span> <span class="keyword">if</span>(element.detachEvent) &#123;</span><br><span class="line">       element.detachEvent(<span class="string">"on"</span> + <span class="built_in">type</span>, handler);</span><br><span class="line">     &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">       element[<span class="string">"on"</span> + <span class="built_in">type</span>] = null;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>事件委托实例</li>
+</ul>
+<pre><code class="bash">
+&lt;ul id=<span class="string">"itemList"</span>&gt;
+  &lt;li id=<span class="string">"item1"</span>&gt;&lt;/li&gt;
+  &lt;li id=<span class="string">"item2"</span>&gt;&lt;/li&gt;
+  ...
+  &lt;li id=<span class="string">"itemn"</span>&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script&gt;
+  var lists = document.getElementById(<span class="string">"itemList"</span>);
+  EventUtil.addHandler(lists, <span class="string">"click"</span>, <span class="keyword">function</span>(event) {
+    <span class="built_in">let</span> event = EventUtil.getEvent(event);
+    <span class="built_in">let</span> target = EventUtil.getTarget(event)      
+    switch(target.id.replace(/[^0-9]/ig,<span class="string">""</span>)) {
+      <span class="keyword">case</span> <span class="string">'1'</span>: location.href = <span class="string">"test1.html"</span>
+      <span class="keyword">case</span> <span class="string">'2'</span>: location.href = <span class="string">"test2.html"</span>
+      <span class="keyword">case</span> <span class="string">'3'</span>: location.href = <span class="string">"test3.html"</span>
+    }
+  })
+
+
+&lt;/script&gt;
+
+</code></pre>
+<p><strong>总结</strong></p>
+<p>事件是js和html之间的交互实现，深入理解事件机制以及对性能的影响，其中事件委托减少了时间处理程序的数量以及太多时间处理程序对内存的占用。让页面反应更灵敏，代码更简洁。使浏览器兼容性、页面兼容性问题得到了解决。上文概念方便大家带着问题学习，书本上的基础再此不yy了。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">javascript</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">性能优化</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/02/19/事件委托/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-get和post分别发送了1次还是2次tcp链接" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -465,11 +597,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">JavaScript</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">JavaScript</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
@@ -1134,137 +1266,6 @@
 
 
   
-    <article id="post-reduce为何成了高逼格" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/12/reduce为何成了高逼格/">reduce为何成了高逼格</a>
-    </h1>
-  
-
-        
-        <a href="/2020/11/12/reduce为何成了高逼格/" class="archive-article-date">
-  	<time datetime="2020-11-12T02:41:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-12</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>reduce在我们实际开发中的高逼格应用</p>
-</blockquote>
-<ul>
-<li><p>reduce的语法按我的理解其实是一个callback回调包含四个参数，以及一个初始值initalValue</p>
-</li>
-<li><p>四个参数分别是: previousValue、currentValue、index、array。我觉得需要强调的可能有第一个参数，表示上一次回调返回值或者initialValue。第三个参数index是从1开始的，如果要从0开始可以设置initalValue为0</p>
-</li>
-</ul>
-<h4 id="常用来回答一套传统的面试题，求数组元素的和（工作好几年的我第一个印象还是循环）那么高逼格的写法是如何的呢？"><a href="#常用来回答一套传统的面试题，求数组元素的和（工作好几年的我第一个印象还是循环）那么高逼格的写法是如何的呢？" class="headerlink" title="常用来回答一套传统的面试题，求数组元素的和（工作好几年的我第一个印象还是循环）那么高逼格的写法是如何的呢？"></a>常用来回答一套传统的面试题，求数组元素的和（工作好几年的我第一个印象还是循环）那么高逼格的写法是如何的呢？</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">let</span> arr = [1,2,3,4,5];</span><br><span class="line"><span class="built_in">let</span> sum = arr.reduce(<span class="keyword">function</span>(prev, cur, index, arr)&#123;</span><br><span class="line">  console.log(prev, cur, index);</span><br><span class="line">  <span class="built_in">return</span> prev+cur;  // pre上一次回调返回值</span><br><span class="line">&#125;)</span><br><span class="line">console.log(sum);  //15</span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line">1 2 1</span><br><span class="line">3 3 2</span><br><span class="line">6 4 3</span><br><span class="line">10 5 4</span><br><span class="line">15</span><br></pre></td></tr></table></figure>
-<h4 id="可能有人和我一样，觉得这个initailValue又什么用呢？我们对比一下下面的代码"><a href="#可能有人和我一样，觉得这个initailValue又什么用呢？我们对比一下下面的代码" class="headerlink" title="可能有人和我一样，觉得这个initailValue又什么用呢？我们对比一下下面的代码"></a>可能有人和我一样，觉得这个initailValue又什么用呢？我们对比一下下面的代码</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">let</span> arr = [];</span><br><span class="line"><span class="built_in">let</span> sum = arr.reduce(<span class="keyword">function</span>(prev, cur)&#123;</span><br><span class="line">  <span class="built_in">return</span> prev+cur; </span><br><span class="line">&#125;)</span><br><span class="line">console.log(sum);  //报错，<span class="string">"TypeError: Reduce of empty array with no initial value"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">let</span> arr = [];</span><br><span class="line"><span class="built_in">let</span> sum = arr.reduce(<span class="keyword">function</span>(prev, cur)&#123;</span><br><span class="line">  <span class="built_in">return</span> prev+cur;  </span><br><span class="line">&#125;, 0)</span><br><span class="line">console.log(sum);  // 0</span><br></pre></td></tr></table></figure>
-<h4 id="上面简单的reduce用法已经介绍完了，那么我们看看如何玩转reduce，从几个算法面试题入手"><a href="#上面简单的reduce用法已经介绍完了，那么我们看看如何玩转reduce，从几个算法面试题入手" class="headerlink" title="上面简单的reduce用法已经介绍完了，那么我们看看如何玩转reduce，从几个算法面试题入手"></a>上面简单的reduce用法已经介绍完了，那么我们看看如何玩转reduce，从几个算法面试题入手</h4><ul>
-<li>第一道算法题：获取数组中每个元素重复次数（返回一个对象，initalValue定义为空对象）</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> arr = [<span class="string">'banana'</span>, <span class="string">'orange'</span>, <span class="string">'banana'</span>, <span class="string">'grapes'</span>, <span class="string">'melon'</span>, <span class="string">'orange'</span>,<span class="string">'pear'</span>];</span><br><span class="line"><span class="built_in">let</span> result = arr.reduce(<span class="keyword">function</span>(pre, cur) &#123;</span><br><span class="line">  <span class="keyword">if</span>(cur <span class="keyword">in</span> pre)&#123;</span><br><span class="line">    pre[cur]++;</span><br><span class="line">  &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    pre[cur]=1;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">return</span> pre;</span><br><span class="line">&#125;, &#123;&#125;)</span><br><span class="line"></span><br><span class="line">console.log(result);</span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line">&#123; banana: 2, orange: 2, grapes: 1, melon: 1, pear: 1 &#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>第二道算法题：数组去重(返回一个新数组，initalValue定义为空数组)</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> arr = [<span class="string">'banana'</span>, <span class="string">'orange'</span>, <span class="string">'banana'</span>, <span class="string">'grapes'</span>, <span class="string">'melon'</span>, <span class="string">'orange'</span>,<span class="string">'pear'</span>];</span><br><span class="line"> <span class="built_in">let</span> result = arr.reduce(<span class="keyword">function</span>(pre, cur)&#123;</span><br><span class="line">   <span class="keyword">if</span>(!pre.includes(cur))&#123;</span><br><span class="line">     <span class="built_in">return</span> pre.concat(cur);</span><br><span class="line">   &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">     <span class="built_in">return</span> pre;     </span><br><span class="line">   &#125;</span><br><span class="line">&#125;,[])</span><br><span class="line">console.dir(result)</span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line">[ <span class="string">'banana'</span>, <span class="string">'orange'</span>, <span class="string">'grapes'</span>, <span class="string">'melon'</span>, <span class="string">'pear'</span> ]</span><br></pre></td></tr></table></figure>
-<ul>
-<li>第三道算法题：将二维数组转换为一维有序数组</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> arr =[[1,2,4],[2,3,7],[3,5,7],[4,5,8]];</span><br><span class="line"><span class="built_in">let</span> result = arr.reduce(<span class="keyword">function</span>(pre, cur)&#123;</span><br><span class="line">     <span class="built_in">return</span> pre.concat(cur);</span><br><span class="line">&#125;,[]).sort((a,b) =&gt; a-b)</span><br><span class="line">console.log(result);</span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line">[ 1, 2, 2, 3, 3, 4, 4, 5, 5, 7, 7, 8 ]</span><br></pre></td></tr></table></figure>
-<ul>
-<li>第四道算法题：将多维数组转换为一维有序数组(偏平化)</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"> <span class="built_in">let</span> arr =[[1, [2, [3,7],[5,7]]]];</span><br><span class="line"> <span class="built_in">let</span> result = <span class="keyword">function</span>(arr) &#123;</span><br><span class="line">   <span class="built_in">return</span> arr.reduce((pre, cur) =&gt; pre.concat(Array.isArray(cur)? result(cur): cur),[])</span><br><span class="line"> &#125;</span><br><span class="line"> console.log(result(arr));</span><br><span class="line"></span><br><span class="line"> 运行结果：</span><br><span class="line">[ 1, 2, 3, 7, 5, 7 ]</span><br></pre></td></tr></table></figure>
-<ul>
-<li>第五道算法题：生成裴波那契数列</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">const fibonacci = (n) =&gt; &#123;</span><br><span class="line">  <span class="built_in">return</span> Array(n).fill(0).reduce((pre, cur,i)=&gt; &#123;</span><br><span class="line">    console.log(pre, cur, i)</span><br><span class="line">    <span class="built_in">return</span> pre.concat(i&gt;1 ? pre[i-1]+pre[i-2]: i) </span><br><span class="line">  &#125; ,[])</span><br><span class="line">    </span><br><span class="line">&#125; </span><br><span class="line">console.log(fibonacci(5))</span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line">[] 0 0</span><br><span class="line">[ 0 ] 0 1</span><br><span class="line">[ 0, 1 ] 0 2</span><br><span class="line">[ 0, 1, 1 ] 0 3</span><br><span class="line">[ 0, 1, 1, 2 ] 0 4</span><br><span class="line">[ 0, 1, 1, 2, 3 ]</span><br></pre></td></tr></table></figure>
-<ul>
-<li>第六道算法题：过滤对象key属性</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">const pick = (obj, arr)=&gt;</span><br><span class="line">  arr.reduce((pre, cur)=&gt; &#123;</span><br><span class="line">    // <span class="keyword">if</span>(cur <span class="keyword">in</span> obj) &#123;</span><br><span class="line">    <span class="keyword">if</span>(Object.keys(obj).includes(cur))&#123;</span><br><span class="line">      pre[cur] = obj[cur]</span><br><span class="line">      <span class="built_in">return</span> pre;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;, &#123;&#125;)</span><br><span class="line"></span><br><span class="line">console.dir(pick(&#123;id: 12, name: <span class="string">'张三'</span> , age:24&#125;, [<span class="string">'id'</span>, <span class="string">'name'</span>]));</span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line">&#123; id: 12, name: <span class="string">'张三'</span> &#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>第七道算法题：分组聚合</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">//闭包存储的变量func</span><br><span class="line">const groupBy = (arr, func) =&gt; </span><br><span class="line">  arr.map(typeof func === <span class="string">'function'</span> ? func: val=&gt;val[func])</span><br><span class="line">  .reduce((pre, cur, i)=&gt;&#123;</span><br><span class="line">    pre[cur] = (pre[cur] || []).concat(arr[i]);</span><br><span class="line">    <span class="built_in">return</span> pre;</span><br><span class="line">  &#125;,&#123;&#125;);</span><br><span class="line">  </span><br><span class="line">console.log(groupBy([<span class="string">'one'</span>,<span class="string">'two'</span>,<span class="string">'three'</span>], <span class="string">'length'</span>))</span><br><span class="line">console.log(groupBy([6.1, 6.2, 4.3]));  </span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line">&#123; <span class="string">'3'</span>: [ <span class="string">'one'</span>, <span class="string">'two'</span> ], <span class="string">'5'</span>: [ <span class="string">'three'</span> ] &#125;</span><br><span class="line">&#123; <span class="string">'4'</span>: [ 4.3 ], <span class="string">'6'</span>: [ 6.1, 6.2 ] &#125;</span><br><span class="line"></span><br><span class="line">const groupBy = </span><br><span class="line">  (arr) =&gt; arr</span><br><span class="line">    .map(Math.floor)</span><br><span class="line">    .reduce((pre, cur, i)=&gt;&#123;</span><br><span class="line">      pre[cur] = (pre[cur] || []).concat(arr[i]);</span><br><span class="line">      <span class="built_in">return</span> pre;</span><br><span class="line">  &#125;,&#123;&#125;);</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">运行结果：</span><br></pre></td></tr></table></figure>
-<h4 id="其实reduce操作不局限于数组，只要可枚举的类型都适用"><a href="#其实reduce操作不局限于数组，只要可枚举的类型都适用" class="headerlink" title="其实reduce操作不局限于数组，只要可枚举的类型都适用"></a>其实reduce操作不局限于数组，只要可枚举的类型都适用</h4><pre><code class="bash"><span class="built_in">let</span> personIncome = [{category:<span class="string">"salary"</span>, value: 2000}, {category:<span class="string">"performace"</span>, value: 500},  {category:<span class="string">"benefits"</span>, value: 500}];
-<span class="built_in">let</span> payment = personIncome.reduce((pre, cur)=&gt; {
-  <span class="built_in">return</span> pre + cur.value;
-}, 0);
-console.log(payment);
-
-
-运行结果：
-3000
-
-</code></pre>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">es6</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">reduce</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/11/12/reduce为何成了高逼格/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1378,6 +1379,18 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">JSON</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">JS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">前端</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Mockjs</a>
               </li>
              
@@ -1390,38 +1403,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Http</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">TCP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">GET|POST请求</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">JavaScript</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">前端</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">浏览器</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">JSON</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">JS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">VsCode</a>
               </li>
              
@@ -1431,6 +1412,34 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">CSS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">JavaScript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">浏览器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">css</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">布局</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Http</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">TCP</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">GET|POST请求</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1458,18 +1467,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">db</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Primefaces</a>
               </li>
              
@@ -1482,6 +1479,26 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">性能优化</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">db</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Javascript</a>
               </li>
              
@@ -1490,11 +1507,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">css</a>
+                <a href="javascript:void(0)" class="js-tag color4">作用域</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">布局</a>
+                <a href="javascript:void(0)" class="js-tag color5">执行环境</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1514,15 +1531,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+                <a href="javascript:void(0)" class="js-tag color2">cornerstone</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">作用域</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">执行环境</a>
+                <a href="javascript:void(0)" class="js-tag color4">dicomweb</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1530,11 +1543,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">cornerstone</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">dicomweb</a>
+                <a href="javascript:void(0)" class="js-tag color3">后端</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1550,14 +1559,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">错误处理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">js</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">es6</a>
               </li>
              
@@ -1567,6 +1568,26 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">closure</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">错误处理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">js</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">javasScript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">http</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1587,22 +1608,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">解密decrypt</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">http</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">缓存</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">javasScript</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">后端</a>
               </li>
              
               <li class="article-tag-list-item">
