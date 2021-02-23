@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="//mingzai721252.me">
-  <title>Tag: javasScript | 明仔的博客</title>
+  <title>箭头函数this指向 | 明仔的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="天津大学07届计算机专业毕业生，主要做全债开发，前端html+css+js及三大框架的应用，以及java后台编码等。">
-<meta name="keywords" content="全栈、前端、java、大数据、MySQL、Elasticsearch、Ngnix、tomcat、angularJS、Vue、开发、编码、HTML、JS、CSS、开源">
-<meta property="og:type" content="website">
-<meta property="og:title" content="明仔的博客">
-<meta property="og:url" content="//mingzai721252.me/tags/javasScript/index.html">
+  <meta name="description" content="@(刘明仔笔记本)[javascript|es6|箭头函数] 箭头函数this指向是面试高频词，虽然只是一个小的知识点，很容易混淆，所以有必要去学习和复盘。遂写此文 普通函数this指向函数this12345678910111213141516/** * 声明式函数（严格模式也返回undefined） * */function fun() &amp;#123;  var a = 1;  consoel.l">
+<meta name="keywords" content="javascript,es6">
+<meta property="og:type" content="article">
+<meta property="og:title" content="箭头函数this指向">
+<meta property="og:url" content="//mingzai721252.me/2021/02/23/箭头函数this指向/index.html">
 <meta property="og:site_name" content="明仔的博客">
-<meta property="og:description" content="天津大学07届计算机专业毕业生，主要做全债开发，前端html+css+js及三大框架的应用，以及java后台编码等。">
+<meta property="og:description" content="@(刘明仔笔记本)[javascript|es6|箭头函数] 箭头函数this指向是面试高频词，虽然只是一个小的知识点，很容易混淆，所以有必要去学习和复盘。遂写此文 普通函数this指向函数this12345678910111213141516/** * 声明式函数（严格模式也返回undefined） * */function fun() &amp;#123;  var a = 1;  consoel.l">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-02-23T09:10:15.598Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="明仔的博客">
-<meta name="twitter:description" content="天津大学07届计算机专业毕业生，主要做全债开发，前端html+css+js及三大框架的应用，以及java后台编码等。">
+<meta name="twitter:title" content="箭头函数this指向">
+<meta name="twitter:description" content="@(刘明仔笔记本)[javascript|es6|箭头函数] 箭头函数this指向是面试高频词，虽然只是一个小的知识点，很容易混淆，所以有必要去学习和复盘。遂写此文 普通函数this指向函数this12345678910111213141516/** * 声明式函数（严格模式也返回undefined） * */function fun() &amp;#123;  var a = 1;  consoel.l">
   
     <link rel="alternative" href="/atom.xml" title="明仔的博客" type="application/atom+xml">
   
@@ -158,64 +159,184 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-箭头函数this指向" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/07/23/防篡改对象/" class="archive-article-date">
-  	<time datetime="2019-07-23T02:40:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-23</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/07/23/防篡改对象/">防篡改对象</a>
+    <h1 class="article-title" itemprop="name">
+      箭头函数this指向
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2021/02/23/箭头函数this指向/" class="archive-article-date">
+  	<time datetime="2021-02-23T02:03:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-02-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>@(刘明仔笔记本)[javascript|es6|箭头函数]</p>
+<p><strong>箭头函数this指向</strong>是面试高频词，虽然只是一个小的知识点，很容易混淆，所以有必要去学习和复盘。遂写此文</p>
+<h3 id="普通函数this指向"><a href="#普通函数this指向" class="headerlink" title="普通函数this指向"></a>普通函数this指向</h3><h4 id="函数this"><a href="#函数this" class="headerlink" title="函数this"></a>函数this</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 声明式函数（严格模式也返回undefined）</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fun</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line">  consoel.log(<span class="keyword">this</span>.a);  <span class="comment">// 在非严格模式下this指向window,a是局部变量，所以返回undefined</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 函数表达式</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="meta">'use strict'</span></span><br><span class="line"><span class="keyword">var</span> fun = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  consoel.log(<span class="keyword">this</span>); <span class="comment">// this指向undefined</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="对象中的this"><a href="#对象中的this" class="headerlink" title="对象中的this"></a>对象中的this</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">  x: <span class="number">1</span>,</span><br><span class="line">  say: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>);  <span class="comment">// this指向obj,指向调用这些方法的对象</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="for和forEach循环中的this"><a href="#for和forEach循环中的this" class="headerlink" title="for和forEach循环中的this"></a>for和forEach循环中的this</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'a'</span>,<span class="string">'b'</span>].forEach(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>);  <span class="comment">// this指向window</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h4 id="setTimeout和setInterval中的this"><a href="#setTimeout和setInterval中的this" class="headerlink" title="setTimeout和setInterval中的this-"></a>setTimeout和setInterval中的this-</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">  test: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>);   <span class="comment">//this指向obj</span></span><br><span class="line">    setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>);  <span class="comment">//this指向window，</span></span><br><span class="line">    &#125;, <span class="number">1000</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">obj.test();</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：第一个this指调用test的对象obj， 第二个this指向window，因为setTimeout里的匿名函数没有调用对象，默认指向window</p>
+</blockquote>
+<h4 id="原型链中的this-原型继承可关注我的JS原型基础篇博文"><a href="#原型链中的this-原型继承可关注我的JS原型基础篇博文" class="headerlink" title="原型链中的this * 原型继承可关注我的JS原型基础篇博文"></a>原型链中的this * <a href="https://liumingzai.github.io/2020/11/25/JS%E5%8E%9F%E5%9E%8B%E5%9F%BA%E7%A1%80%E7%AF%87/" target="_blank" rel="noopener">原型继承可关注我的JS原型基础篇博文</a></h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">var</span> cup = &#123;</span><br><span class="line">   name: <span class="string">""</span>,</span><br><span class="line">   drink: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">     <span class="keyword">return</span> <span class="string">"drink "</span> + <span class="keyword">this</span>.name;</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> coffeeCup = <span class="built_in">Object</span>.create(cup);</span><br><span class="line">coffeeCup.name = <span class="string">"coffee"</span>;</span><br><span class="line">coffeeCup.drink();  <span class="comment">// this指向调用对象coffeeCup而不是cup</span></span><br></pre></td></tr></table></figure>
+<h4 id="构造函数中的this-构造函数基础可以看《JavaScript高级程序设计》6-2-2"><a href="#构造函数中的this-构造函数基础可以看《JavaScript高级程序设计》6-2-2" class="headerlink" title="构造函数中的this-构造函数基础可以看《JavaScript高级程序设计》6.2.2"></a>构造函数中的this-构造函数基础可以看《JavaScript高级程序设计》6.2.2</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * new操作符调用构造函数发生了什么？</span></span><br><span class="line"><span class="comment"> * 1.创建一个新对象；</span></span><br><span class="line"><span class="comment"> * 2.将构造函数的作用域赋给新对象(因此this就指向了这个新对象)；</span></span><br><span class="line"><span class="comment"> * 3.执行构造函数中的代码；</span></span><br><span class="line"><span class="comment"> * 4.返回新对象；</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>); <span class="comment">//this指向一个新对象Foo &#123;&#125;, </span></span><br><span class="line">  <span class="keyword">return</span> &#123;<span class="attr">x</span>:<span class="number">1</span>&#125;;   <span class="comment">//this指向&#123;x:1&#125;  </span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">new</span> Foo().x);  <span class="comment">//1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//当return一个空对象，this指向返回对象</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.x = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">new</span> Foo().x) <span class="comment">//undefined</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//当return不是对象，this还是指向new Foo()实例</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.x = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">undefined</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">new</span> Foo().x) <span class="comment">//1</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意3和4，是先修改this指向，在执行构造函数中的代码</p>
+</blockquote>
+<h4 id="内联事件绑定this指向"><a href="#内联事件绑定this指向" class="headerlink" title="内联事件绑定this指向"></a>内联事件绑定this指向</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--this指向监听的dom--&gt;</span><br><span class="line">&lt;div onclick=<span class="string">"alert(this);"</span>&gt;click me&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--this指向window|undefined同上文中严格模式下--&gt;</span><br><span class="line">&lt;div onclick=<span class="string">"(function()&#123;alert(this)&#125;)();"</span>&gt;click me&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="箭头函数this指向"><a href="#箭头函数this指向" class="headerlink" title="箭头函数this指向"></a>箭头函数this指向</h3><ul>
+<li>默认指向定义它时，所处上下文对象的this指向。没有上下文对象，默认指向this</li>
+<li>即使通过call、apply、bind等方法也不能改变箭头函数的this指向</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"> <span class="comment">// 先来做个对比</span></span><br><span class="line"> <span class="keyword">const</span> obc = &#123;</span><br><span class="line">	x:<span class="number">1</span>,</span><br><span class="line">	say: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		 setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;<span class="built_in">console</span>.log(<span class="string">'2'</span>, <span class="keyword">this</span>);&#125;);  <span class="comment">//this指向window</span></span><br><span class="line">		 <span class="built_in">console</span>.log(<span class="string">'1'</span>, <span class="keyword">this</span>);   <span class="comment">//this指向obc</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> obc.say();</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obc = &#123;</span><br><span class="line">	x:<span class="number">1</span>,</span><br><span class="line">	say: <span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">		 setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;<span class="built_in">console</span>.log(<span class="string">'2'</span>, <span class="keyword">this</span>);&#125;);  <span class="comment">//this指向window</span></span><br><span class="line">		 <span class="built_in">console</span>.log(<span class="string">'1'</span>, <span class="keyword">this</span>);  <span class="comment">//this指向window</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"> obc.say();</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：say是箭头函数，this指向上下文函数中的this指向，这里上下文没有函数对象，所以指向window</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>); <span class="comment">// this指向document对象</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'click'</span>, ()=&gt;&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>); <span class="comment">// this指向window</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">  fun1: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>);   <span class="comment">//this指向obj</span></span><br><span class="line">  &#125;,</span><br><span class="line">  fun2: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> fun3 = <span class="function"><span class="params">()</span>=&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>);   <span class="comment">//this指向obj,因为上下文函数对象fun2指向obj</span></span><br><span class="line">    &#125;</span><br><span class="line">    fun3();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="如何改变this指向"><a href="#如何改变this指向" class="headerlink" title="如何改变this指向"></a>如何改变this指向</h3><ul>
+<li>箭头函数不能修改this指向</li>
+<li>普通函数修改this指向的方法有call、apply、bind</li>
+</ul>
+<blockquote>
+<p>注意：call和apply基本相同，仅apply只接收两个参数，第二个参数是数组，二者都是立即执行函数而bind不是立即执行函数，并且声称一个新函数,bind的实现会在后面章节更新</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">Foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.name = <span class="string">"foo"</span>;</span><br><span class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>);  <span class="comment">//指向window</span></span><br><span class="line">  &#125;,<span class="number">1000</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> f = <span class="keyword">new</span> Foo();</span><br><span class="line"></span><br><span class="line"><span class="comment">//通过bind修改this指向</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.name = <span class="string">"foo"</span>;</span><br><span class="line">  setTimeout((<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>);   <span class="comment">//指向f</span></span><br><span class="line">  &#125;).bind(<span class="keyword">this</span>),<span class="number">1000</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> f = <span class="keyword">new</span> Foo();</span><br></pre></td></tr></table></figure>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>写过jquery的同学都应该写过_this = this或者_that = this避免this指向变化<br>在严格模式下this不是指向window而是undefined<br>我们做个练习巩固一下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj1 = &#123;</span><br><span class="line">  a: <span class="number">1</span>,</span><br><span class="line">  b: &#123;</span><br><span class="line">    func: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>); <span class="comment">//指向obj.b</span></span><br><span class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>.a); <span class="comment">//undefined</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">obj1.b.func();</span><br><span class="line"></span><br><span class="line"><span class="comment">// this指向只有在函数执行时才能确定</span></span><br><span class="line"><span class="keyword">const</span> obj2 = &#123;</span><br><span class="line">  a: <span class="number">1</span>,</span><br><span class="line">  b: &#123;</span><br><span class="line">    func: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>); <span class="comment">//指向window</span></span><br><span class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>.a); <span class="comment">//undefined</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> t=obj2.b.func;</span><br><span class="line">t();</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">javascript</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">javasScript</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">es6</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://mingzai721252.me/2021/02/23/箭头函数this指向/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2021/02/19/事件委托/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">事件委托</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -238,9 +359,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
