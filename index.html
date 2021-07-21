@@ -187,6 +187,9 @@
 <li>返回这个新对象，当返回对象为null或者undefined不处理</li>
 </ul>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.name = name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person.prototype.sayName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_new</span> (<span class="params">fn, ...args</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> obj = <span class="built_in">Object</span>.create(fn.prototype);</span><br><span class="line">  <span class="keyword">const</span> res = fn.apply(obj, args);</span><br><span class="line">  <span class="keyword">return</span> res <span class="keyword">instanceof</span> <span class="built_in">Object</span> ? res : obj;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> p1 = <span class="keyword">new</span>(<span class="string">'原构造函数实例'</span>)</span><br><span class="line"><span class="keyword">var</span> p2 = _new(Person, <span class="string">'新构造函数实例'</span>);</span><br><span class="line">p1.sayName();</span><br><span class="line">p2.sayName();</span><br></pre></td></tr></table></figure>
+<h3 id="手写函数防抖"><a href="#手写函数防抖" class="headerlink" title="手写函数防抖"></a>手写函数防抖</h3><p><strong>防抖（debounce）</strong> 指的是触发事件后n秒后才执行函数，如果n秒内触发了事件，则会重新计算执行时间<br>应用场景：输入查询、滚动scroll事件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'模拟防抖'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">fn, delay</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> timeout = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">arguments</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(timeout) clearTimeout(timeout);</span><br><span class="line"></span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">      fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>)</span><br><span class="line">    &#125;, delay)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">addEventListener(<span class="string">"scroll"</span>, debounce(fn, <span class="number">500</span>))</span><br></pre></td></tr></table></figure>
+<h3 id="手写函数节流"><a href="#手写函数节流" class="headerlink" title="手写函数节流"></a>手写函数节流</h3>
       
 
       
@@ -259,16 +262,10 @@
 <li>内置对象-使用时不需要new的对象(Math, Global-window)</li>
 <li>宿主对象-DOM、BOM</li>
 </ul>
-<h2 id="什么是原型和原型链？"><a href="#什么是原型和原型链？" class="headerlink" title="什么是原型和原型链？"></a>什么是原型和原型链？</h2><h4 id="构造函数、实例对象、Function对象和原型对象之间是什么关系呢？"><a href="#构造函数、实例对象、Function对象和原型对象之间是什么关系呢？" class="headerlink" title="构造函数、实例对象、Function对象和原型对象之间是什么关系呢？"></a>构造函数、实例对象、Function对象和原型对象之间是什么关系呢？</h4><ol>
-<li><p>构造函数的prototype属性其实是Object的实例</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Foo.prototype.__proto__ === <span class="built_in">Object</span>.prototype</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>实例对象的<strong>proto</strong>属性指向构造函数的原型对象</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f.__proto__ = Foo.prototype</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>原型对象都有一个constructor属性，指向原型对象所属的构造函数</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Foo.prototype.constructor === Foo</span><br></pre></td></tr></table></figure>
-</li>
+<h2 id="什么是原型和原型链？"><a href="#什么是原型和原型链？" class="headerlink" title="什么是原型和原型链？"></a>什么是原型和原型链？</h2><h4 id="构造函数、实例对象、Function对象和原型对象之间是什么关系呢？"><a href="#构造函数、实例对象、Function对象和原型对象之间是什么关系呢？" class="headerlink" title="构造函数、实例对象、Function对象和原型对象之间是什么关系呢？"></a>构造函数、实例对象、Function对象和原型对象之间是什么关系呢？</h4><p>1.构造函数的prototype属性其实是Object的实例<br>  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Foo.prototype.__proto__ === <span class="built_in">Object</span>.prototype</span><br></pre></td></tr></table></figure></p>
+<p>2.实例对象的<strong>proto</strong>属性指向构造函数的原型对象<br>  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f.__proto__ = Foo.prototype</span><br></pre></td></tr></table></figure></p>
+<p>3.原型对象都有一个constructor属性，指向原型对象所属的构造函数<br>  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Foo.prototype.constructor === Foo</span><br></pre></td></tr></table></figure></p>
+<ol start="4">
 <li><p>Function –所有函数都是Function的实例</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Foo.__proto__ === <span class="built_in">Function</span>.prototype</span><br></pre></td></tr></table></figure>
 </li>
@@ -282,8 +279,34 @@
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//  二者都指向同一个对象。</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Foo</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line"><span class="keyword">var</span> f = <span class="keyword">new</span> Foo();</span><br><span class="line">f.__proto__ === Foo.prototype</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<p>总结：根据原型指向进行属性搜索的链路；例如在访问某个对象的某成员时，先在对象中查找，如果没有去构造函数原型对象中找<br>如果还没有就去对象原型上找，知道对象的原型是null为止</p>
-<h2 id="js如何实现继承？"><a href="#js如何实现继承？" class="headerlink" title="js如何实现继承？"></a>js如何实现继承？</h2>
+<p><em>总结：根据原型指向进行属性搜索的链路；例如在访问某个对象的某成员时，先在对象中查找，如果没有去构造函数原型对象中找<br>如果还没有就去对象原型上找，知道对象的原型是null为止</em></p>
+<h2 id="js如何实现继承？"><a href="#js如何实现继承？" class="headerlink" title="js如何实现继承？"></a>js如何实现继承？</h2><ul>
+<li><p>对象冒充闭包</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Role</span>(<span class="params">role</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.role = role;</span><br><span class="line">  <span class="keyword">this</span>.getRole = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'role:'</span>, <span class="keyword">this</span>.role);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Parent</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.name = name;</span><br><span class="line">  <span class="keyword">this</span>.getName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'name:'</span>, <span class="keyword">this</span>.name);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Child</span>(<span class="params">name, pass, role</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.pClass = Parent; <span class="comment">//定义临时属性，指向Parent</span></span><br><span class="line">  <span class="keyword">this</span>.pClass(name);  <span class="comment">//执行Parent(name)</span></span><br><span class="line">  <span class="keyword">delete</span> <span class="keyword">this</span>.pClass;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>.rClass = Role;</span><br><span class="line">  <span class="keyword">this</span>.rClass(role);</span><br><span class="line">  <span class="keyword">delete</span> <span class="keyword">this</span>.rClass;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>.getPass = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'pass'</span>, pass);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> c = <span class="keyword">new</span> Child(<span class="string">'admin'</span>, <span class="number">123</span>, <span class="string">'guess'</span>);</span><br><span class="line">c.getName();</span><br><span class="line">c.getPass();</span><br><span class="line">c.getRole();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>call()方法方式</p>
+<ul>
+<li>call方法是Function类中的方法</li>
+<li>call方法的第一个参数的值赋值给类(即方法)中出现的this</li>
+<li>call方法的第二个参数开始依次赋值给类(即方法)所接受的参数</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Role</span>(<span class="params">role</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.role = role;</span><br><span class="line">  <span class="keyword">this</span>.getRole = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'role:'</span>, <span class="keyword">this</span>.role);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Parent</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.name = name;</span><br><span class="line">  <span class="keyword">this</span>.getName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'name:'</span>, <span class="keyword">this</span>.name);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Child</span>(<span class="params">name, pass, role</span>) </span>&#123;</span><br><span class="line">  Parent.call(<span class="keyword">this</span>, name);</span><br><span class="line">  Role.call(<span class="keyword">this</span>, role);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>.getPass = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'pass'</span>, pass);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> c = <span class="keyword">new</span> Child(<span class="string">'admin'</span>, <span class="number">123</span>, <span class="string">'guess'</span>);</span><br><span class="line">c.getName();</span><br><span class="line">c.getPass();</span><br><span class="line">c.getRole();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>apply()方法方式</p>
+<ul>
+<li>A、第一个参数与call方法的第一个参数一样，即赋值给类(即方法)中出现的this</li>
+<li>B、第二个参数为数组类型，这个数组中的每个元素依次赋值给类(即方法)所接受的参数</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Role</span>(<span class="params">role</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.role = role;</span><br><span class="line">  <span class="keyword">this</span>.getRole = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'role:'</span>, <span class="keyword">this</span>.role);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Parent</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.name = name;</span><br><span class="line">  <span class="keyword">this</span>.getName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'name:'</span>, <span class="keyword">this</span>.name);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Child</span>(<span class="params">name, pass, role</span>) </span>&#123;</span><br><span class="line">  Parent.apply(<span class="keyword">this</span>, [name]);</span><br><span class="line">  Role.apply(<span class="keyword">this</span>, <span class="keyword">new</span> <span class="built_in">Array</span>(role));</span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>.getPass = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'pass'</span>, pass);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> c = <span class="keyword">new</span> Child(<span class="string">'admin'</span>, <span class="number">123</span>, <span class="string">'guess'</span>);</span><br><span class="line">c.getName();</span><br><span class="line">c.getPass();</span><br><span class="line">c.getRole();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>原型链方式</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Parent</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.name = name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Parent.prototype.getName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'name:'</span>, <span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Child</span>(<span class="params">name, pass</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.name = name;</span><br><span class="line">  <span class="keyword">this</span>.pass = pass;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Child.prototype = <span class="keyword">new</span> Parent();  <span class="comment">// 当new Child时得到的对象带有Parent对象所有方法</span></span><br><span class="line"></span><br><span class="line">Child.prototype.getPass = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'pass:'</span>, <span class="keyword">this</span>.pass);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> c = <span class="keyword">new</span> Child(<span class="string">'admin'</span>, <span class="number">123</span>);</span><br><span class="line"></span><br><span class="line">c.getName(); <span class="comment">// parent方法</span></span><br><span class="line">c.getPass();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>混合方式(混合了call方式、原型链方式)</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Parent</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.name = name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Parent.prototype.getName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'name:'</span>, <span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Child</span>(<span class="params">name, pass</span>) </span>&#123;</span><br><span class="line">  Parent.call(<span class="keyword">this</span>, name);  <span class="comment">//继承父类属性</span></span><br><span class="line">  <span class="keyword">this</span>.pass = pass;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Child.prototype = <span class="keyword">new</span> Parent(); <span class="comment">//继承父类方法</span></span><br><span class="line"></span><br><span class="line">Child.prototype.getPass = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'pass:'</span>, <span class="keyword">this</span>.pass);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> c = <span class="keyword">new</span> Child(<span class="string">'admin'</span>, <span class="number">123</span>);</span><br><span class="line"></span><br><span class="line">c.getName();</span><br><span class="line">c.getPass();</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
       
 
       
@@ -405,11 +428,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">es6</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">javascript</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">javascript</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">es6</a>
         		</li>
       		
 		</ul>
@@ -1369,18 +1392,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">VsCode</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Sass</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">JSON</a>
               </li>
              
@@ -1393,15 +1404,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">VsCode</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Sass</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">JavaScript</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">prototype</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">继承</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1429,15 +1444,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">XSS</a>
+                <a href="javascript:void(0)" class="js-tag color5">prototype</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">SQL注入</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">安全漏洞</a>
+                <a href="javascript:void(0)" class="js-tag color3">继承</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1501,14 +1512,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">es6</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">reduce</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">javascript</a>
               </li>
              
@@ -1518,10 +1521,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">执行环境</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">性能优化</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1541,11 +1540,27 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">cornerstone</a>
+                <a href="javascript:void(0)" class="js-tag color4">es6</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">dicomweb</a>
+                <a href="javascript:void(0)" class="js-tag color2">reduce</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">性能优化</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">XSS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">SQL注入</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">安全漏洞</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1557,11 +1572,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">后端</a>
+                <a href="javascript:void(0)" class="js-tag color5">递归算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">递归算法</a>
+                <a href="javascript:void(0)" class="js-tag color3">后端</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1574,6 +1589,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">WeixinJSBridge</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">cornerstone</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">dicomweb</a>
               </li>
              
               <li class="article-tag-list-item">
