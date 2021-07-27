@@ -160,6 +160,183 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-WEB攻击" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/11/WEB攻击/">WEB攻击</a>
+    </h1>
+  
+
+        
+        <a href="/2019/07/11/WEB攻击/" class="archive-article-date">
+  	<time datetime="2019-07-11T01:33:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="HTTP不具备必要的安全功能"><a href="#HTTP不具备必要的安全功能" class="headerlink" title="HTTP不具备必要的安全功能"></a>HTTP不具备必要的安全功能</h2><blockquote>
+<p>http协议不同于SSH协议，就是一个通用的单纯协议机制，没有级别认证和会话管理，导致web应用被攻击者变更篡改。常见的web应用攻击通过URL查询字段活表单，http首部，cookie等途径注入攻击代码。</p>
+</blockquote>
+<p><img src="/assets/img/attack.png" alt="Web攻击"> </p>
+<h2 id="针对Web应用的攻击模式"><a href="#针对Web应用的攻击模式" class="headerlink" title="针对Web应用的攻击模式"></a>针对Web应用的攻击模式</h2><ul>
+<li>以服务器为目标的主动攻击active attack（sql注入及os命令注入）</li>
+<li>以服务器为目标的被动攻击passive attack（跨站脚本攻击及跨站点请求伪造）</li>
+</ul>
+<h3 id="实施web应用安全对策-双重验证"><a href="#实施web应用安全对策-双重验证" class="headerlink" title="实施web应用安全对策(双重验证)"></a>实施web应用安全对策(双重验证)</h3><ul>
+<li>客户端验证</li>
+<li>服务器端验证（输入值验证，输出值转义）</li>
+</ul>
+<p><img src="/assets/img/verify.png" alt="Web攻击"> </p>
+<h2 id="跨站脚本攻击（XSS"><a href="#跨站脚本攻击（XSS" class="headerlink" title="跨站脚本攻击（XSS)"></a>跨站脚本攻击（XSS)</h2><blockquote>
+<p>跨站脚本攻击（Cross-Site Scriping）是指通过存在安全漏洞的web网站注册用户的浏览器内运行非法的html标签或者javascript脚本的一致攻击。动态生成的html存在安全漏洞隐患</p>
+</blockquote>
+<ul>
+<li>存储型XSS：存储型XSS，持久化，代码是存储在服务器中的，如在个人信息或发表文章等地方，插入代码，如果没有过滤或过滤不严，那么这些代码将储存到服务器中，用户访问该页面的时候触发代码执行。这种XSS比较危险，容易造成蠕虫，盗窃cookie</li>
+<li>反射型XSS：非持久化，需要欺骗用户自己去点击链接才能触发XSS代码（服务器中没有这样的页面和内容），一般容易出现在搜索页面。反射型XSS大多数是用来盗取用户的Cookie信息。</li>
+<li>DOM型XSS：不经过后端，DOM-XSS漏洞是基于文档对象模型(Document Objeet Model,DOM)的一种漏洞，DOM-XSS是通过url传入参数去控制触发的，其实也属于反射型XSS。 DOM的详解：DOM文档对象模型</li>
+</ul>
+<p><img src="/assets/img/XSS1.png" alt="存储型"> <img src="/assets/img/XSS2.png" alt="反射型"> <img src="/assets/img/XSS.png" alt="XSS危害"></p>
+<blockquote>
+<p>XSS防御对用户表单输入（url参数）进行过滤，对输出进行html编码。过滤掉脚本执行，对动态输出页面的内容进行html编码，使脚本转成html实体无法执行</p>
+</blockquote>
+<h2 id="SQL注入攻击"><a href="#SQL注入攻击" class="headerlink" title="SQL注入攻击"></a>SQL注入攻击</h2><blockquote>
+<p>sql 注入Injection是针对web应用使用的数据库，通过运行非法的sql而产生的的攻击。该安全隐患极大，直接导致数据机密泄露。</p>
+</blockquote>
+<ul>
+<li>非法查看或篡改数据库内数据</li>
+<li>规避认证</li>
+<li><p>执行和数据库服务器业务关联的程序</p>
+<h2 id="OS注入攻击"><a href="#OS注入攻击" class="headerlink" title="OS注入攻击"></a>OS注入攻击</h2><blockquote>
+<p>OS命令注入攻击（OS Command Injection）是通过Web应用，执行非法的操作系统命令达到攻击目的，只要能调用shell的地方都存在攻击风险。通过管道符接收用户输入，并输出到指定文件</p>
+</blockquote>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">my <span class="variable">$adr</span> = <span class="variable">$q</span>-&gt;param(<span class="string">'mailaddress'</span>);</span><br><span class="line">open(MAIL, <span class="string">"| /usr/sbin/sendmail <span class="variable">$adr</span>"</span>);</span><br><span class="line"><span class="built_in">print</span> MAIL <span class="string">"From: info@example.com\n"</span>;</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line"> <span class="comment">## HTTP首部注入攻击</span></span><br><span class="line"> &gt; HTTP首部注入攻击（HTTP Header Injection）是指通过在响应首部字段内插入换行%0D%0A，添加任意响应首部或者主体的攻击。称之为HTTP响应截断攻击（HTTP Response Splitting Attack)。会造成的如下影响：</span><br><span class="line"></span><br><span class="line">    1. 设置任何Cookie信息</span><br><span class="line">    2. 重定向任意URL</span><br><span class="line">    3. 显示任意的主体（HTTP响应截断攻击）</span><br><span class="line"></span><br><span class="line">    HTTP 首部注入攻击示例：</span><br><span class="line">    请求地址URL:101%0D%0ASet-Cookie:+SID=123456789</span><br><span class="line">    Location: http://example.com/?cat=101(%0D%0A :换行符)</span><br><span class="line">    Set-Cookie: SID=123456789</span><br><span class="line"></span><br><span class="line"><span class="comment">## HTTP响应截断攻击</span></span><br><span class="line">&gt; HTTP响应截断攻击是用在HTTP首部注入的一种，顺序相同，但是要将两个%0D%0A%0D%0A并排插入字符串后发送，利用这两个连续的换行可以做出HTTP首部和主题分隔所需的空行。这样就伪造了主题，达到攻击目的。</span><br><span class="line"></span><br><span class="line">```bash</span><br><span class="line">Set-Cookie: SID=123456789 (%0D%0A :换行符)</span><br><span class="line">(%0D%0A :换行符)</span><br><span class="line">&lt;html&gt;&lt;head&gt;&lt;title&gt;</span><br><span class="line"> ......</span><br></pre></td></tr></table></figure>
+<p>利用这种攻击，通过伪造web页面，让用户输入自己信息，达到和跨站点脚本攻击相同效果。另外滥用HTTP/1.1中汇集多响应返回功能，会导致缓存服务器对任意内容进行缓存，称之为缓存污染，使用该缓存服务器的用户，在浏览遭受攻击的网站时，会不断第浏览被替换掉的web页面</p>
+<h2 id="邮件首部注入攻击"><a href="#邮件首部注入攻击" class="headerlink" title="邮件首部注入攻击"></a>邮件首部注入攻击</h2><blockquote>
+<p>邮件首部注入(Mail Header Injection)是指 Web 应用中的邮件发送功能,攻击者通过向邮件首部 To 或 Subject 内任意添加非法内容发起的攻击。利用存在安全漏洞的 Web 网站,可对任意邮件地址发送广告邮件或病毒邮件。</p>
+</blockquote>
+<p>攻击者将以下数据作为邮件地址发起请求。<br><a href="mailto:bob@hackr.jp" target="_blank" rel="noopener">bob@hackr.jp</a>%0D%0ABcc: <a href="mailto:user@example.com" target="_blank" rel="noopener">user@example.com</a><br>%0D%0A 在邮件报文中代表换行符。一旦咨询表单所在的 Web应用接收了这个换行符,就可能实现对 Bcc 邮件地址的追加发送,而这原本是无法指定的。<br>另外像下面一样,使用两个连续的换行符就有可能篡改邮件文本内容并发送。<br><a href="mailto:bob@hackr.jp" target="_blank" rel="noopener">bob@hackr.jp</a>%0D%0A%0D%0ATest Message<br>再以相同的方法,就有可能改写 To 和 Subject 等任意邮件首部,或向文本添加附件等动作。</p>
+<h2 id="目录遍历攻击"><a href="#目录遍历攻击" class="headerlink" title="目录遍历攻击"></a>目录遍历攻击</h2><blockquote>
+<p>目录遍历(Directory Traversal)攻击是指对本无意公开的文件目录,通过非法截断其目录路径后,达成访问目的的一种攻击。这种攻击有时也称为路径遍历(Path Traversal)攻击。</p>
+</blockquote>
+<p>通过 Web 应用对文件处理操作时,在由外部指定文件名的处理存在疏漏的情况下,用户可使用 …/ 等相对路径定位到 /etc/passed 等绝对路径上,因此服务器上任意的文件或文件目录皆有可能被访问到。</p>
+<p>下面以显示读取文件功能为例,讲解目录遍历攻击。该功能通过以下查询字段,指定某个文件名。然后从 /www/log/ 文件目录下读取这个指定的文件。<br><a href="http://example.com/read.php?log=0401.log" target="_blank" rel="noopener">http://example.com/read.php?log=0401.log</a><br>攻击者设置如下查询字段后发出请求。<br><a href="http://example.com/read.php?log=../../etc/passwd" target="_blank" rel="noopener">http://example.com/read.php?log=../../etc/passwd</a><br>查询字段为了读取攻击者盯上的 /etc/passwd 文件,会从/www/log/ 目录开始定位相对路径。如果这份 read.php 脚本接受对指定目录的访问请求处理,那原本不公开的文件就存在可被访问的风险。</p>
+<h2 id="不正确的错误消息处理"><a href="#不正确的错误消息处理" class="headerlink" title="不正确的错误消息处理"></a>不正确的错误消息处理</h2><blockquote>
+<p>不正确的错误消息处理(Error Handling Vulnerability)的安全漏洞是指,Web 应用的错误信息内包含对攻击者有用的信息。</p>
+</blockquote>
+<p><strong>Web 应用抛出的错误消息</strong></p>
+<p>Web 应用不必在用户的浏览画面上展现详细的错误消息。对攻击者来说,详细的错误消息有可能给他们下一次攻击以提示。为了不让错误消息给攻击者以启发,建议将提示消息的内容仅保留到“认证错误”这种程度即可。</p>
+<p><strong>数据库等系统抛出的错误消息</strong></p>
+<p>攻击者从消息中可读出数据库选用的是 MySQL,甚至还看见了 SQL 语句的片段。这可能给攻击者进行 SQL 注入攻击以启发。<br>系统抛出的错误主要集中在以下几个方面:</p>
+<ul>
+<li>PHP 或 ASP 等脚本错误</li>
+<li>数据库或中间件的错误</li>
+<li>Web 服务器的错误</li>
+</ul>
+<h2 id="开放重定向"><a href="#开放重定向" class="headerlink" title="开放重定向"></a>开放重定向</h2><blockquote>
+<p>开放重定向(Open Redirect)是一种对指定的任意 URL 作重定向跳转的功能。而于此功能相关联的安全漏洞是指,假如指定的重定向 URL到某个具有恶意的 Web 网站,那么用户就会被诱导至那个 Web 网站。</p>
+</blockquote>
+<p>该功能就是向 URL 指定参数后,使本来的 URL 发生重定向跳转。</p>
+<p><a href="http://example.com/?redirect=http://www.tricorder.jp" target="_blank" rel="noopener">http://example.com/?redirect=http://www.tricorder.jp</a></p>
+<p><em>会话劫持</em><br><em>会话固定攻击</em><br><em>跨站点伪造</em></p>
+<h2 id="密码破解"><a href="#密码破解" class="headerlink" title="密码破解"></a>密码破解</h2><blockquote>
+<p>密码破解攻击(Password Cracking)即算出密码,突破认证。攻击不仅限于 Web 应用,还包括其他的系统(如 FTP 或 SSH 等)</p>
+</blockquote>
+<p>密码破解有以下两种手段:</p>
+<ul>
+<li>通过网络的密码试错 (穷举法、字典法、利用别处泄露ID-密码)</li>
+<li>对已加密密码的破解(指攻击者入侵系统,已获得加密或散列处理的密码数据的情况)</li>
+</ul>
+<p>除去突破认证的攻击手段,还有 SQL 注入攻击逃避认证,跨站脚本攻击窃取密码信息等方法。</p>
+<h2 id="点击劫持"><a href="#点击劫持" class="headerlink" title="点击劫持"></a>点击劫持</h2><blockquote>
+<p>点击劫持(Clickjacking)是指利用透明的按钮或链接做成陷阱,覆盖在 Web 页面之上。然后诱使用户在不知情的情况下,点击那个链接访问内容的一种攻击手段。这种行为又称为界面伪装(UIRedressing)。</p>
+</blockquote>
+<p>iframe 页面中使用透明可点击按钮的示例</p>
+<pre><code class="bash">&lt;iframe id=<span class="string">"target"</span> src=<span class="string">"http://sns.example.jp/leave"</span> style=<span class="string">"opaci</span>
+<span class="string">&lt;button style="</span>position:absolute;top:100;left:100;z-index:-1<span class="string">"&gt;PLAY</span>
+</code></pre>
+<h2 id="DoS-攻击"><a href="#DoS-攻击" class="headerlink" title="DoS 攻击"></a>DoS 攻击</h2><blockquote>
+<p>DoS 攻击(Denial of Service attack)是一种让运行中的服务呈停止状态的攻击。有时也叫做服务停止攻击或拒绝服务攻击。DoS 攻击的对象不仅限于 Web 网站,还包括网络设备及服务器等。<br>主要有以下两种 DoS 攻击方式:<br>集中利用访问请求造成资源过载,资源用尽的同时,实际上服务也就呈停止状态。<br>通过攻击安全漏洞使服务停止。</p>
+</blockquote>
+<p>多台计算机发起的 DoS 攻击称为 DDoS 攻击(Distributed Denial ofService attack)。DDoS 攻击通常利用那些感染病毒的计算机作为攻击者的攻击跳板。</p>
+<h2 id="后门程序"><a href="#后门程序" class="headerlink" title="后门程序"></a>后门程序</h2><blockquote>
+<p>后门程序(Backdoor)是指开发设置的隐藏入口,可不按正常步骤使用受限功能。利用后门程序就能够使用原本受限制的功能。</p>
+</blockquote>
+<p>通常的后门程序分为以下 3 种类型:</p>
+<ul>
+<li>开发阶段作为 Debug 调用的后门程序</li>
+<li>开发者为了自身利益植入的后门程序</li>
+<li>攻击者通过某种方法设置的后门程序</li>
+</ul>
+<p>来源：[图解HTTP图书] </p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">XSS</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">SQL注入</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">安全漏洞</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/07/11/WEB攻击/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-微信浏览器内置WexinJSBridge对象" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -732,22 +909,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">对象</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数组</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">参数解构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">ES6</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">JSON</a>
               </li>
              
@@ -772,11 +933,31 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">对象</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">参数解构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">ES6</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">JavaScript</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">浏览器</a>
+                <a href="javascript:void(0)" class="js-tag color4">css</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">布局</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -792,19 +973,31 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">css</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">布局</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">prototype</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">继承</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">bootstrap</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">carousel</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">XSS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">SQL注入</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">安全漏洞</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -817,14 +1010,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">GET|POST请求</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">bootstrap</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">carousel</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -841,6 +1026,26 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">es6</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">reduce</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">作用域</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">执行环境</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -868,15 +1073,47 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+                <a href="javascript:void(0)" class="js-tag color4">vue</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">作用域</a>
+                <a href="javascript:void(0)" class="js-tag color5">性能优化</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">执行环境</a>
+                <a href="javascript:void(0)" class="js-tag color4">浏览器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">优化</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">微信公众号</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">微信浏览器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">WeixinJSBridge</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">递归算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">cornerstone</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">dicomweb</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -896,63 +1133,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">es6</a>
+                <a href="javascript:void(0)" class="js-tag color5">错误处理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">reduce</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">性能优化</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">XSS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">SQL注入</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">安全漏洞</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Javascript</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">优化</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">递归算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">后端</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">微信公众号</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">微信浏览器</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">WeixinJSBridge</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">cornerstone</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">dicomweb</a>
+                <a href="javascript:void(0)" class="js-tag color3">js</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -976,6 +1161,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">closure</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">javasScript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">http</a>
               </li>
              
@@ -984,19 +1177,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">错误处理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">js</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">closure</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">javasScript</a>
+                <a href="javascript:void(0)" class="js-tag color3">后端</a>
               </li>
             
             <div class="clearfix"></div>

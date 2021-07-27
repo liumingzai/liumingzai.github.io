@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="//mingzai721252.me">
-  <title>Archives: 2020/12 | 明仔的博客</title>
+  <title>vue3新特性 | 明仔的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="天津大学07届计算机专业毕业生，主要做前端开发，前端html+css+js及三大框架的应用，以及java后台编码等。">
-<meta name="keywords" content="java、PHP、Node、Elasticsearch、Mongodb、Ngnix、AngularJS、Vue、TypeScript、HTML、JS、CSS、ES6">
-<meta property="og:type" content="website">
-<meta property="og:title" content="明仔的博客">
-<meta property="og:url" content="//mingzai721252.me/archives/2020/12/index.html">
+  <meta name="description" content="vue3新特性 Performance 性能 Tree-shaking support  把无用模块剪枝，不会被打包 Composition API Fragment， Teleport， Suspense （原生） Better Typescript support Custom Renderer API  Performance 重写virtual dom compiler-informed">
+<meta name="keywords" content="前端,vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue3新特性">
+<meta property="og:url" content="//mingzai721252.me/2021/07/27/vue3新特性/index.html">
 <meta property="og:site_name" content="明仔的博客">
-<meta property="og:description" content="天津大学07届计算机专业毕业生，主要做前端开发，前端html+css+js及三大框架的应用，以及java后台编码等。">
+<meta property="og:description" content="vue3新特性 Performance 性能 Tree-shaking support  把无用模块剪枝，不会被打包 Composition API Fragment， Teleport， Suspense （原生） Better Typescript support Custom Renderer API  Performance 重写virtual dom compiler-informed">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-07-27T03:06:54.101Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="明仔的博客">
-<meta name="twitter:description" content="天津大学07届计算机专业毕业生，主要做前端开发，前端html+css+js及三大框架的应用，以及java后台编码等。">
+<meta name="twitter:title" content="vue3新特性">
+<meta name="twitter:description" content="vue3新特性 Performance 性能 Tree-shaking support  把无用模块剪枝，不会被打包 Composition API Fragment， Teleport， Suspense （原生） Better Typescript support Custom Renderer API  Performance 重写virtual dom compiler-informed">
   
     <link rel="alternative" href="/atom.xml" title="明仔的博客" type="application/atom+xml">
   
@@ -158,160 +159,240 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-vue3新特性" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      vue3新特性
+    </h1>
+  
+
+        
+        <a href="/2021/07/27/vue3新特性/" class="archive-article-date">
+  	<time datetime="2021-07-27T02:34:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-27</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="vue3新特性"><a href="#vue3新特性" class="headerlink" title="vue3新特性"></a>vue3新特性</h1><ul>
+<li>Performance 性能</li>
+<li>Tree-shaking support  把无用模块剪枝，不会被打包</li>
+<li>Composition API</li>
+<li>Fragment， Teleport， Suspense （原生）</li>
+<li>Better Typescript support</li>
+<li>Custom Renderer API</li>
+</ul>
+<h2 id="Performance"><a href="#Performance" class="headerlink" title="Performance"></a>Performance</h2><ul>
+<li>重写virtual dom</li>
+<li>compiler-informed fast</li>
+<li>more effcient component initialzation</li>
+<li>better update performance</li>
+<li>faster SSR</li>
+</ul>
+<h2 id="Composition-API"><a href="#Composition-API" class="headerlink" title="Composition API"></a>Composition API</h2><blockquote>
+<p>创建Composition API 的原因是：大型组件变得难以阅读和维护。逻辑复用。</p>
+</blockquote>
+<p>Composition API带来的特性：</p>
+<ul>
+<li>更好的typescript支持</li>
+<li>更容易复用逻辑</li>
+<li>需要开发者组织代码结构</li>
+</ul>
+<h2 id="Vue2-and-Vue3核心API对比"><a href="#Vue2-and-Vue3核心API对比" class="headerlink" title="Vue2 and Vue3核心API对比"></a>Vue2 and Vue3核心API对比</h2><h3 id="性能上的提升"><a href="#性能上的提升" class="headerlink" title="性能上的提升"></a>性能上的提升</h3><ul>
+<li>核心体积更小 gzipped ~10kb</li>
+<li>支持 three-shaking</li>
+<li><p>静态节点优化</p>
+<p><em>input</em></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;</span><br><span class="line">  &lt;span <span class="class"><span class="keyword">class</span></span>=<span class="string">"foo"</span>&gt;</span><br><span class="line">    Static</span><br><span class="line">  &lt;<span class="regexp">/span&gt;</span></span><br><span class="line"><span class="regexp">  &lt;span&gt;</span></span><br><span class="line"><span class="regexp">    &#123;&#123; dynamic &#125;&#125;</span></span><br><span class="line"><span class="regexp">  &lt;/</span>span&gt;</span><br><span class="line">&lt;<span class="regexp">/div&gt;</span></span><br></pre></td></tr></table></figure>
+<p><em>output</em></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> __static1 = h(</span><br><span class="line">  <span class="string">"span"</span>, </span><br><span class="line">  &#123; <span class="attr">class</span>: <span class="string">"foo"</span> &#125;,</span><br><span class="line">  <span class="string">"static"</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">render() &#123;</span><br><span class="line">  <span class="keyword">return</span> h(<span class="string">'div'</span>, [</span><br><span class="line">    __static1,</span><br><span class="line">    h(<span class="string">'span'</span>, dynamic)</span><br><span class="line">  ])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="创建App"><a href="#创建App" class="headerlink" title="创建App"></a>创建App</h3><h5 id="Vue2"><a href="#Vue2" class="headerlink" title="Vue2"></a>Vue2</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">'./App.vue'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  render: <span class="function"><span class="params">h</span> =&gt;</span> h(App),</span><br><span class="line">&#125;).$mount(<span class="string">'#app'</span>)</span><br></pre></td></tr></table></figure>
+<h5 id="Vue3"><a href="#Vue3" class="headerlink" title="Vue3"></a>Vue3</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; createApp &#125; <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">'./App.vue'</span></span><br><span class="line"></span><br><span class="line">createApp(App).mount(<span class="string">'#app'</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="多个根节点"><a href="#多个根节点" class="headerlink" title="多个根节点"></a>多个根节点</h3><h5 id="Vue2-1"><a href="#Vue2-1" class="headerlink" title="Vue2"></a>Vue2</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;h1&gt;&#123;&#123; msg &#125;&#125;&lt;/h1&gt;</span><br><span class="line">    &lt;button @click=&quot;count++&quot;&gt;count is: &#123;&#123; count &#125;&#125;&lt;/button&gt;</span><br><span class="line">    &lt;p&gt;Edit &lt;code&gt;components/HelloWorld.vue&lt;/code&gt; to test hot module replacement.&lt;/p&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="Vue3-1"><a href="#Vue3-1" class="headerlink" title="Vue3"></a>Vue3</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;h1&gt;&#123;&#123; msg &#125;&#125;&lt;/h1&gt;</span><br><span class="line">  &lt;button @click=&quot;count++&quot;&gt;count is: &#123;&#123; count &#125;&#125;&lt;/button&gt;</span><br><span class="line">  &lt;p&gt;Edit &lt;code&gt;components/HelloWorld.vue&lt;/code&gt; to test hot module replacement.&lt;/p&gt;</span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="Vue3-setup"><a href="#Vue3-setup" class="headerlink" title="Vue3 setup"></a>Vue3 setup</h4><ul>
+<li>Props</li>
+<li>Data</li>
+<li>Methods</li>
+<li>Computed Properties</li>
+<li>Lifecycle methods</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;!-- your template code --&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script lang=&quot;ts&quot;&gt;</span><br><span class="line">import &#123; ref, onMounted &#125; from &apos;vue&apos;;</span><br><span class="line"></span><br><span class="line">interface SetupContext &#123;</span><br><span class="line">  attrs: Data</span><br><span class="line">  slots: Slots</span><br><span class="line">  emit: (event: string, ...args: unknown[]) =&gt; void</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">export default &#123;</span><br><span class="line">  setup(props, context: SetupContext) &#123;</span><br><span class="line">  	onMounted(() =&gt; &#123;&#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="Vue2-2"><a href="#Vue2-2" class="headerlink" title="Vue2"></a>Vue2</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;!-- template code --&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &quot;App&quot;,</span><br><span class="line">  props: &#123;</span><br><span class="line">  &#125;</span><br><span class="line">  components: &#123;</span><br><span class="line">  &#125;,</span><br><span class="line">  data()&#123;</span><br><span class="line">    return &#123;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  computed:&#123;</span><br><span class="line">  &#125;,</span><br><span class="line">  watch:&#123;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">  &#125;,</span><br><span class="line">  created()&#123;</span><br><span class="line">  &#125;,</span><br><span class="line">  mounted()&#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="Data"><a href="#Data" class="headerlink" title="Data"></a>Data</h3><h4 id="vue2"><a href="#vue2" class="headerlink" title="vue2"></a>vue2</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id=&quot;app&quot;&gt;</span><br><span class="line">    &lt;div&gt;Name: &#123;&#123; name &#125;&#125;&lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &quot;App&quot;,</span><br><span class="line">  data()&#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      name: &quot;Name&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="vue3"><a href="#vue3" class="headerlink" title="vue3"></a>vue3</h4><h5 id="ref"><a href="#ref" class="headerlink" title="ref"></a>ref</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;Name: &#123;&#123; name &#125;&#125;&lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">import &#123; ref &#125; from &quot;vue&quot;;</span><br><span class="line">export default &#123;</span><br><span class="line">  setup() &#123;</span><br><span class="line">    const name = ref(&apos;Name&apos;);</span><br><span class="line">    console.log(name.value);</span><br><span class="line">    return &#123; name &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="reactive"><a href="#reactive" class="headerlink" title="reactive"></a>reactive</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = reactive(&#123; <span class="attr">count</span>: <span class="number">0</span> &#125;)</span><br><span class="line">obj.count ++</span><br><span class="line"><span class="built_in">console</span>.log(obj.count) <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+<h5 id="reactive-and-ref"><a href="#reactive-and-ref" class="headerlink" title="reactive and ref"></a>reactive and ref</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> count = ref(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">const</span> state = reactive(&#123;</span><br><span class="line">  count,</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 不用state.count.value</span></span><br><span class="line"><span class="built_in">console</span>.log(state.count); <span class="comment">// 0</span></span><br></pre></td></tr></table></figure>
+<p><strong>区别：其实ref相当于reactive的简化版，ref背后也是通过reactive实现的，唯一的区别是ref返回的是包装对象</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> count = ref(<span class="number">0</span>)  </span><br><span class="line"><span class="comment">// 等价于 </span></span><br><span class="line"><span class="keyword">const</span> count = reactive(&#123;<span class="attr">value</span>:<span class="number">0</span>&#125;)</span><br></pre></td></tr></table></figure>
+<h5 id="isRef"><a href="#isRef" class="headerlink" title="isRef"></a>isRef</h5><p>用来判断某个值是否为 ref() 创建出来的对象，应用场景：当需要展开某个可能为 ref() 创建出来的值的时候</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> unwrapped = isRef(foo) ? foo.value : foo;</span><br></pre></td></tr></table></figure>
+<h5 id="toRefs"><a href="#toRefs" class="headerlink" title="toRefs"></a>toRefs</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;p&gt;&#123;&#123; obj.count &#125;&#125;&lt;/p&gt;</span><br><span class="line">  &lt;p&gt;&#123;&#123; count &#125;&#125;&lt;/p&gt;</span><br><span class="line">  &lt;p&gt;&#123;&#123; value &#125;&#125;&lt;/p&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script setup lang=&quot;ts&quot;&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  setup() &#123;</span><br><span class="line">    const obj = reactive(&#123;</span><br><span class="line">      count: 0,</span><br><span class="line">      value: 100,</span><br><span class="line">    &#125;);</span><br><span class="line">    return &#123;</span><br><span class="line">      obj,</span><br><span class="line">      ...toRefs(obj),</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="Readonly"><a href="#Readonly" class="headerlink" title="Readonly"></a>Readonly</h5><p><em>接收一个ref或者reactive包装对象，返回一个只读的响应式对象</em></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> original = reactive(&#123; <span class="attr">count</span>: <span class="number">0</span> &#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> copy = readonly(original)</span><br><span class="line"></span><br><span class="line">watchEffect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 用于响应性追踪</span></span><br><span class="line">  <span class="built_in">console</span>.log(copy.count)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 变更 original 会触发依赖于副本的侦听器</span></span><br><span class="line">original.count++</span><br><span class="line"></span><br><span class="line"><span class="comment">// 变更副本将失败并导致警告</span></span><br><span class="line">copy.count++ <span class="comment">// 警告!</span></span><br></pre></td></tr></table></figure>
+<h3 id="Methods"><a href="#Methods" class="headerlink" title="Methods"></a>Methods</h3><h4 id="vue2-1"><a href="#vue2-1" class="headerlink" title="vue2"></a>vue2</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;div&gt;Amount: &#123;&#123; amount &#125;&#125;&lt;/div&gt;</span><br><span class="line">    &lt;button @click=&quot;increaseAmount()&quot;&gt;Increase Capacity&lt;/button&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  data()&#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      amount: 3,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    increaseAmount() &#123;</span><br><span class="line">      this.amount+=1</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="vue3-1"><a href="#vue3-1" class="headerlink" title="vue3"></a>vue3</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;div&gt;Amount: &#123;&#123; amount &#125;&#125;&lt;/div&gt;</span><br><span class="line">    &lt;button @click=&quot;increaseAmount()&quot;&gt;Increase Capacity&lt;/button&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">import &#123; ref, reactive &#125; from &quot;vue&quot;;</span><br><span class="line"></span><br><span class="line">export default &#123;</span><br><span class="line">  setup() &#123;</span><br><span class="line">    const amount = ref(3);</span><br><span class="line">    const increaseAmount = () =&gt; &#123;</span><br><span class="line">      amount.value+=1</span><br><span class="line">    &#125;</span><br><span class="line">    return &#123; amount, increaseAmount &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="Computed"><a href="#Computed" class="headerlink" title="Computed"></a>Computed</h3><h4 id="vue2-2"><a href="#vue2-2" class="headerlink" title="vue2"></a>vue2</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id=&quot;app&quot;&gt;</span><br><span class="line">    &lt;p&gt;Upper: &#123;&#123; upperName &#125;&#125; out of &#123;&#123; name &#125;&#125;&lt;/p&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  data()&#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      name: &quot;author&quot;,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  computed: &#123;</span><br><span class="line">    upperName()&#123;</span><br><span class="line">      return this.name.toUpperCase() + &quot;VUE_3&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="Vue3-2"><a href="#Vue3-2" class="headerlink" title="Vue3"></a>Vue3</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id=&quot;app&quot;&gt;</span><br><span class="line">    &lt;p&gt;Upper: &#123;&#123; upperName &#125;&#125; out of &#123;&#123; name &#125;&#125;&lt;/p&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">import &#123; ref, computed &#125; from &quot;vue&quot;;</span><br><span class="line">export default &#123;</span><br><span class="line">  setup() &#123;</span><br><span class="line">    const name = ref(&quot;author&quot;);</span><br><span class="line">    const upperName = computed(() =&gt; &#123;</span><br><span class="line">      return name.value.toUpperCase() + &quot;VUE_3&quot;;</span><br><span class="line">    &#125;);</span><br><span class="line">    return &#123; name, upperName &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="Watch"><a href="#Watch" class="headerlink" title="Watch"></a>Watch</h3><h4 id="Vue2-3"><a href="#Vue2-3" class="headerlink" title="Vue2"></a>Vue2</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;input type=&quot;text&quot; v-model=&quot;name&quot; /&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  data()&#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      name: null,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  watch: &#123;</span><br><span class="line">    name(newVal, oldVal)&#123;</span><br><span class="line">      console.log(`$&#123;newVal&#125; $&#123;oldVal&#125;`);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="Vue3-3"><a href="#Vue3-3" class="headerlink" title="Vue3"></a>Vue3</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;input type=&quot;text&quot; v-model=&quot;name&quot; /&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">import &#123; ref, watchEffect &#125; from &quot;vue&quot;;</span><br><span class="line">export default &#123;</span><br><span class="line">  setup() &#123;</span><br><span class="line">    const name = ref(&apos;&apos;);</span><br><span class="line">    watchEffect(() =&gt; &#123;</span><br><span class="line">      console.log(name.value);</span><br><span class="line">    &#125;)</span><br><span class="line">    return &#123; name &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="删除了-filter"><a href="#删除了-filter" class="headerlink" title="删除了 filter"></a>删除了 filter</h3><p><strong>删除原因：</strong> 将鼓励开发者创建公用的函数来重用或在每个组件中建立明确的方法。</p>
+<h4 id="Vue2-4"><a href="#Vue2-4" class="headerlink" title="Vue2"></a>Vue2</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id=&quot;app&quot;&gt;</span><br><span class="line">    &#123;&#123; new Date() | formatUnix &#125;&#125;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">import moment from &quot;moment&quot;;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &quot;App&quot;,</span><br><span class="line">  filters: &#123;</span><br><span class="line">    formatUnix(value) &#123;</span><br><span class="line">      if (value) &#123;</span><br><span class="line">        return moment(value).format(&quot;DD/MM/YYYY&quot;);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="Vue3-4"><a href="#Vue3-4" class="headerlink" title="Vue3"></a>Vue3</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id=&quot;app&quot;&gt;</span><br><span class="line">    &lt;div&gt;&#123;&#123;new Date |&gt; formatUnix&gt; &#125;&#125;&lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">import formatUnix from &quot;./Utils/DateFormat.js&quot;;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &quot;App&quot;,</span><br><span class="line">  components: &#123;</span><br><span class="line">  &#125;,</span><br><span class="line">  setup() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      formatUnix </span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="多个v-models"><a href="#多个v-models" class="headerlink" title="多个v-models"></a>多个v-models</h3><h4 id="Vue2-5"><a href="#Vue2-5" class="headerlink" title="Vue2"></a>Vue2</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;input v-model=<span class="string">"property"</span> /&gt;</span><br><span class="line"></span><br><span class="line">&lt;input                          </span><br><span class="line">  :value=<span class="string">"property"</span>                         </span><br><span class="line">  @input=<span class="string">"property = $event.target.value"</span>                       </span><br><span class="line">/&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="Vue3-5"><a href="#Vue3-5" class="headerlink" title="Vue3"></a>Vue3</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;form&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;label for=&quot;name&quot;&gt;Name&lt;/label&gt;</span><br><span class="line">      &lt;input type=&quot;text&quot; :value=&quot;name&quot; @input=&quot;updateName($event.target.value)&quot; /&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;label for=&quot;email&quot;&gt;Email&lt;/label&gt;</span><br><span class="line">      &lt;input type=&quot;email&quot; :value=&quot;email&quot; @input=&quot;updateEmail($event.target.value)&quot; /&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/form&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  props: &#123;</span><br><span class="line">    name: String,</span><br><span class="line">    email: String,</span><br><span class="line">  &#125;,</span><br><span class="line">  setup(props, &#123; emit &#125;) &#123;</span><br><span class="line">    const updateName = (value) =&gt; &#123;</span><br><span class="line">      emit(&quot;update:name&quot;, value);</span><br><span class="line">    &#125;;</span><br><span class="line">    const updateEmail = (value) =&gt; &#123;</span><br><span class="line">      emit(&quot;update:email&quot;, value);</span><br><span class="line">    &#125;;</span><br><span class="line">    return &#123; updateName, updateEmail &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id=&quot;app&quot;&gt;</span><br><span class="line">    &lt;InviteForm v-model:name=&quot;inviteName&quot; v-model:email=&quot;inviteEmail&quot; /&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;div&gt;&#123;&#123; inviteName &#125;&#125;&lt;/div&gt;</span><br><span class="line">      &lt;div&gt;&#123;&#123; inviteEmail &#125;&#125;&lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">import InviteForm from &quot;./components/InviteForm.vue&quot;;</span><br><span class="line">import &#123; ref &#125; from &quot;vue&quot;;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &quot;App&quot;,</span><br><span class="line">  components: &#123;</span><br><span class="line">    InviteForm,</span><br><span class="line">  &#125;,</span><br><span class="line">  setup() &#123;</span><br><span class="line">    const inviteName = ref(&quot;name&quot;);</span><br><span class="line">    const inviteEmail = ref(&quot;invite&quot;);</span><br><span class="line">    return &#123;</span><br><span class="line">      inviteName,</span><br><span class="line">      inviteEmail,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="Teleport"><a href="#Teleport" class="headerlink" title="Teleport"></a>Teleport</h3><p><strong>相当于react的Portals</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;teleport to=&quot;#out-side-app&quot;&gt;</span><br><span class="line">  	This is teleport</span><br><span class="line">  &lt;/teleport&gt;</span><br><span class="line">  &lt;div&gt;APP&lt;/div&gt;</span><br><span class="line">&lt;/template&gt;Z</span><br></pre></td></tr></table></figure>
+<p><strong>支持多个teleport</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;teleport to=&quot;#modals&quot;&gt;</span><br><span class="line">    &lt;div&gt;A&lt;/div&gt;</span><br><span class="line">  &lt;/teleport&gt;</span><br><span class="line">  &lt;teleport to=&quot;#modals&quot;&gt;</span><br><span class="line">    &lt;div&gt;B&lt;/div&gt;</span><br><span class="line">  &lt;/teleport&gt;</span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- result--&gt;</span><br><span class="line">&lt;div id=<span class="string">"modals"</span>&gt;</span><br><span class="line">  &lt;div&gt;A&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">  &lt;div&gt;B&lt;/</span>div&gt;</span><br><span class="line">&lt;<span class="regexp">/div&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h3><ul>
+<li><code>beforeCreate</code> -&gt;  <code>setup()</code></li>
+<li><code>created</code> -&gt;  <code>setup()</code></li>
+<li><code>beforeMount</code> -&gt; <code>onBeforeMount</code></li>
+<li><code>mounted</code> -&gt; <code>onMounted</code></li>
+<li><code>beforeUpdate</code> -&gt; <code>onBeforeUpdate</code></li>
+<li><code>updated</code> -&gt; <code>onUpdated</code></li>
+<li><code>beforeUnmount</code> -&gt; <code>onBeforeUnmount</code></li>
+<li><code>unmounted</code> -&gt; <code>onUnmounted</code></li>
+<li><code>errorCaptured</code> -&gt; <code>onErrorCaptured</code></li>
+</ul>
+<h3 id="script-setup"><a href="#script-setup" class="headerlink" title="script-setup"></a>script-setup</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;button @click=&quot;inc&quot;&gt;&#123;&#123; count &#125;&#125;&lt;/button&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script setup lang=&quot;ts&quot;&gt;</span><br><span class="line">import &#123; ref &#125; from &quot;vue&quot;;</span><br><span class="line">const count = ref(0);</span><br><span class="line">const inc = () =&gt; count.value++;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="ref-sugar"><a href="#ref-sugar" class="headerlink" title="ref-sugar"></a>ref-sugar</h3><p><a href="https://github.com/vuejs/rfcs/pull/228" target="_blank" rel="noopener">https://github.com/vuejs/rfcs/pull/228</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;button @click=&quot;inc&quot;&gt;&#123;&#123; count &#125;&#125;&lt;/button&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script setup lang=&quot;ts&quot;&gt; // =&gt;  lang=&quot;vs&quot;</span><br><span class="line">ref: count = 0;</span><br><span class="line">const inc = () =&gt; count++;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p><em>社区中其他的方案？？？</em></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$variable</span><br><span class="line"><span class="comment">// @ref</span></span><br><span class="line"><span class="keyword">let</span> count = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> @ref count = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">ref count = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/12/16/将富文本字符串html转为带格式的文本text/" class="archive-article-date">
-  	<time datetime="2020-12-16T01:03:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-12-16</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/12/16/将富文本字符串html转为带格式的文本text/">将富文本字符串html转为带格式的文本text</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">后端</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">vue</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://mingzai721252.me/2021/07/27/vue3新特性/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/12/14/二叉树/" class="archive-article-date">
-  	<time datetime="2020-12-14T05:54:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-12-14</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2021/07/19/手写练习/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">手写练习</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/12/14/二叉树/">二叉树入门</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">树</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">队列</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">链表</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/12/09/医学影像DCM格式H5展示/" class="archive-article-date">
-  	<time datetime="2020-12-09T07:32:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/12/09/医学影像DCM格式H5展示/">医学影像DCM格式H5展示</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">javascript</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">cornerstone</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">dicomweb</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
 
 
           </div>
@@ -334,8 +415,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
